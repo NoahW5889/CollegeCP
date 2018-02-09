@@ -3,17 +3,13 @@ Meeting Minutes for _add meeting date__8:00AM-10:50AM__:
 Meeting Attendance: (list all students who were present) [1 minute]
 	Put an 'M' next to the name of the student taking minutes
 	Fulton Lin 
-<<<<<<< HEAD
 	Maurice Campbell
 	M : Noah Wutz
-	changes made
-Tasks completed since last meeting [1-_____2 minutes]
-=======
-	M : Maurice Campbell
-	Noah Wutz
 	
 Tasks completed since last meeting [1-2 minutes]
->>>>>>> branch 'master' of https://github.com/CSE116-Spring2018/s18semesterproject-a4-teamseven.git
+	
+Tasks completed since last meeting [1-2 minutes]
+
 	* (Replace with tasks that were completed in the last week)
 	  (Some weeks, including the first week your group meets, this will be blank)
 
