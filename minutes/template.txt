@@ -5,8 +5,8 @@ Meeting Attendance: (list all students who were present) [1 minute]
 	Fulton Lin 
 	Maurice Campbell
 	M : Noah Wutz
-	
-Tasks completed since last meeting [1-2 minutes]
+	changes made
+Tasks completed since last meeting [1-_____2 minutes]
 	* (Replace with tasks that were completed in the last week)
 	  (Some weeks, including the first week your group meets, this will be blank)
 
