@@ -1,4 +1,4 @@
-Meeting Minutes for _add meeting date__8:00AM-10:50AM__:
+Meeting Minutes for _add meeting date__2/16/18__:
 
 Meeting Attendance: (list all students who were present) [1 minute]
 	Put an 'M' next to the name of the student taking minutes
@@ -7,21 +7,38 @@ Meeting Attendance: (list all students who were present) [1 minute]
 	M : Noah Wutz
 	
 Tasks completed since last meeting [1-2 minutes]
-	
-Tasks completed since last meeting [1-2 minutes]
-
-	* (Replace with tasks that were completed in the last week)
-	  (Some weeks, including the first week your group meets, this will be blank)
 
 Tasks worked upon but not completed since last meeting [2-4 minutes]
-	* (Replace with tasks that are still being worked upon)
-	   - (Also document any significant discussions of ideas or actions to make progress on these item)
-	(Some weeks, including the first week your group meets, this will be blank)
 
 Goals for the next meeting [20+ minutes]
-	* (List tasks that will be worked upon in the coming week)
-	   - (Discuss what each person will do to complete that task)
+	
+	-Starting of tests and start of coding the game
 
 Schedule for the next week's set of pair programming meetings [3-4 minutes]
-	* (Pair programming sessions should be two hours long (no more, no less))
-	  (Every team member should participate in two sessions each week, with each session including a different team member)
+
+============================================================================================================================
+
+Meeting Minutes for _add meeting date__2/23/18__:
+
+Meeting Attendance: (list all students who were present) [1 minute]
+	Put an 'M' next to the name of the student taking minutes
+	Fulton Lin 
+	Maurice Campbell
+	M : Noah Wutz
+	Tim Newton
+	
+Tasks completed since last meeting [1-2 minutes]
+	
+	-Discussion of basic idea and approach on how this game will be created along with planning and outlining.
+
+Tasks worked upon but not completed since last meeting [2-4 minutes]
+	
+	-Tests
+
+Goals for the next meeting [20+ minutes]
+	
+	-Finishing of tests and start of coding the game
+
+Schedule for the next week's set of pair programming meetings [3-4 minutes]
+	-Fulton
+	-Noah
