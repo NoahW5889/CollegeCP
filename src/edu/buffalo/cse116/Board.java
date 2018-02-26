@@ -9,9 +9,10 @@ public class Board {
 	
 	int[][] board = new int[5][5];
 	String[] list = new String[25];
+	ArrayList<String> codeNames = new ArrayList<String>();
 	
 	public ArrayList<String> readCSVFile(String filename){
-		ArrayList<String> codeNames = new ArrayList<String>();
+		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
     		codeNames.add(each);
     	}
@@ -22,10 +23,11 @@ public class Board {
     	  return codeNames;
     }
 	
-	public void createList(ArrayList<String> x) {
-		for(int i=0;i<x.size();i++) {
-			list[i]=x.get((int) (Math.random()*25));
+	public String[] createList(ArrayList<String> x) {
+		for(int i=0;i<25;i++) {
+			list[i]=x.get((int) (Math.random()*codeNames.size()));
 		}
+		return list;
 	}
 	
 }

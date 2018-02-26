@@ -69,7 +69,7 @@ public class TestCases {
 	return codeNames;
 }
 	
-	public boolean noNull(String[] y) {
+	public boolean noNull(String[] selected) {
 		for(int i=0;i<board.list.length;i++) {
 			if(board.list[i]==null||board.list[i].equals(null))
 				return false;
@@ -83,7 +83,7 @@ public class TestCases {
 		assertTrue(board.board[0].length==5&&board.board.length==5); //Testing Board Size (5x5)
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
-		assertTrue(noNull(board.list)); //Tests to make sure there are no nulls in list
+		assertTrue(noNull(board.createList(codeNames))); //Tests to make sure there are no nulls in list
 	}
 
 		
