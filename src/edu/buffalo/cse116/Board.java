@@ -9,10 +9,9 @@ import code.Person;
 
 public class Board {
 	
-	int[][] board = new int[5][5];
 	String[] list = new String[25];
 	ArrayList<String> codeNames = new ArrayList<String>();
-	Person[][] bord = new Person[5][5];
+	Person[][] mainBoard = new Person[5][5];
 	
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
