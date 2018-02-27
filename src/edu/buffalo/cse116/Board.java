@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Board {
 	
@@ -34,6 +33,10 @@ public class Board {
 	}
 	
 	public void fillBord() {
-		
+		for(int i=0;i<25;i++) {
+			Person person = new Person();
+			person.setCodeName(list[i]);
+			mainBoard.add(person);
+		}
 	}
 }
