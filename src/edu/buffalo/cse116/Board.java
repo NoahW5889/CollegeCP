@@ -23,11 +23,12 @@ public class Board {
     	  return codeNames;
     }
 	
-	public String[] createList(ArrayList<String> x) {
+	public void createList() {
 		for(int i=0;i<25;i++) {
-			list[i]=x.get((int) (Math.random()*codeNames.size()));
+			int rand = (int) (Math.random()*codeNames.size());
+			list[i]=codeNames.get(rand);
+			codeNames.remove(rand);
 		}
-		return list;
 	}
 	
 }

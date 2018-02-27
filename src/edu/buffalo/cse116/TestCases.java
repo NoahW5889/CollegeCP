@@ -1,6 +1,7 @@
 package edu.buffalo.cse116;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -77,13 +78,26 @@ public class TestCases {
 		return true;
 	}
 	
+	public boolean noDoubles(String[] input) {
+		for(int i=0;i<board.list.length;i++) {
+			String check = board.list[i];
+			for(int q=0;q<board.list.length;q++) {
+				if(board.list[q].equals(check)&&q!=i)
+					return false;
+			}
+		}
+		return true;
+	}
+	
 	@Test
 	  public void testBoard() throws Exception {
 		
 		assertTrue(board.board[0].length==5&&board.board.length==5); //Testing Board Size (5x5)
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
-		assertTrue(noNull(board.createList(codeNames))); //Tests to make sure there are no nulls in list
+		board.createList();// Must create list before test for noNull
+		assertTrue(noNull(board.list));// Testing to make sure there are no nulls in list
+		assertTrue(noDoubles(board.list));
 	}
 
 		
