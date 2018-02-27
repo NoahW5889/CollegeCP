@@ -92,7 +92,7 @@ public class TestCases {
 	@Test
 	public void testBoard() throws Exception {
 
-		assertTrue(board.mainBoard[0].length==5&&board.mainBoard.length==5); //Testing Board Size (5x5)
+		assertTrue(board.mainBoard.size()==25); //Testing Board Size (5x5=25)
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull

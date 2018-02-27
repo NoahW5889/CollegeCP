@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import code.Person;
+import java.util.Collections;
 
 public class Board {
 	
 	String[] list = new String[25];
 	ArrayList<String> codeNames = new ArrayList<String>();
-	Person[][] mainBoard = new Person[5][5];
+	ArrayList<Person> mainBoard = new ArrayList<Person>();
 	
-	public ArrayList<String> readCSVFile(String filename){
+	
+	public ArrayList<String> readCSVFile(String filename){ //Reads the GameWords.txt file putting all the codenames/words into and arraylist
 		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
     		codeNames.add(each);
@@ -25,7 +25,7 @@ public class Board {
     	  return codeNames;
     }
 	
-	public void createList() {
+	public void createList() { //creates a list of 25 random codenames/words from the list created in readCSVFile
 		for(int i=0;i<25;i++) {
 			int rand = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
