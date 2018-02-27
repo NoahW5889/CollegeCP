@@ -6,13 +6,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 //import java.util.Collections;
 
-import code.Person;
-
 public class Board {
 	
 	String[] list = new String[25];
 	ArrayList<String> codeNames = new ArrayList<String>();
-	Person[][] mainBoard = new Person[5][5];
+	ArrayList<Person> mainBoard = new ArrayList<Person>();
+	
 	
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
@@ -26,14 +25,21 @@ public class Board {
     	  return codeNames;
     }
 	
-	public void createList() {
+	public void createList() { //creates a list of 25 random codenames/words from the list created in readCSVFile
 		for(int i=0;i<25;i++) {
 			int rand = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
 			codeNames.remove(rand);
 		}
-		
 	}
 	
 
+	
+	public void fillBord() {
+		for(int i=0;i<25;i++) {
+			Person person = new Person();
+			person.setCodeName(list[i]);
+			mainBoard.add(person);
+		}
+	}
 }
