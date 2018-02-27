@@ -97,7 +97,7 @@ public class TestCases {
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull
 		assertTrue(noNull(board.list));// Testing to make sure there are no nulls in list
-		assertTrue(noDoubles(board.list));
+		assertTrue(noDoubles(board.list));// Assures there are no repeated codenames
 	}
 
 		
