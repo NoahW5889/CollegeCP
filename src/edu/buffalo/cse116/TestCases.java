@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -88,18 +90,43 @@ public class TestCases {
 		}
 		return true;
 	}
+	
+	public int teamSize(String x) {
+		int size = 0;
+		for(int i=0;i<board.mainBoard.size();i++) {
+			if(x.equalsIgnoreCase(board.mainBoard.get(i).getTeam()))
+				size++;
+			}
+		return size;
+	}
+	
+	public boolean shuffleSuccess() {
+		Person original = board.mainBoard.get(0);
+		board.shuffle();
+		
+		if(original.equals(board.mainBoard.get(0)))
+			return false;
+		else
+			return true;
+	}
 
 	@Test
 	public void testBoard() throws Exception {
 
-		assertTrue(board.mainBoard.size()==25); //Testing Board Size (5x5=25)
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull
 		assertTrue(noNull(board.list));// Testing to make sure there are no nulls in list
 		assertTrue(noDoubles(board.list));// Assures there are no repeated codenames
-		
+		board.fillBoard(); // Fills board with persons
+		assertTrue(board.mainBoard.size()==25); //Testing Board Size (5x5=25)
+		assertEquals(9,teamSize("red")); //assures 9 red agents
+		assertEquals(8,teamSize("blue")); //assures 8 blue agents
+		assertEquals(7,teamSize("bystander")); //assures 7 bystanders 
+		assertEquals(1,teamSize("assassin")); //assures 1 assassin
+		assertTrue(shuffleSuccess()); //makes sure the board got shuffled
 	}
+
 
 	@Test
 	public void testWin() {
