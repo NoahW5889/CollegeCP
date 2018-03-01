@@ -51,12 +51,33 @@ Pair Programming meetup __2/27/2018__:
 	
 	
 ==================================================================================
+
+Meeting Minutes for _add meeting date__3/1/18__:
+
+Meeting Attendance: (list all students who were present) [1 minute]
+	Put an 'M' next to the name of the student taking minutes
+	Maurice Campbell
+	Noah Wutz
+	M : Tim Newton
 	
+Tasks completed since last meeting [1-2 minutes]
+
+	-Finished most constructors
+	-Created a driver class
+	-Cleaned up code
+
+Tasks worked upon but not completed since last meeting [2-4 minutes]
+
+	-Finish tests
+
+Goals for the next meeting [20+ minutes]
 	
+	-Finish tests
+
+Schedule for the next week's set of pair programming meetings [3-4 minutes]
 	
-	
-	
-	
+==================================================================================
+
 	
 	
 	
