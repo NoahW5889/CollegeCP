@@ -1,6 +1,7 @@
 package edu.buffalo.cse116;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -101,10 +102,10 @@ public class TestCases {
 	}
 	
 	public boolean shuffleSuccess() {
-		Person original = board.mainBoard.get(0);
+		ArrayList<Person> original = board.mainBoard;
 		board.shuffle();
 		
-		if(original.equals(board.mainBoard.get(0)))
+		if(original.toString()==(board.mainBoard.toString()))
 			return false;
 		else
 			return true;
@@ -127,9 +128,18 @@ public class TestCases {
 		assertTrue(shuffleSuccess()); //makes sure the board got shuffled
 	}
 
-
 	@Test
-	public void testWin() {
+	public void testClues() {
+		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));
+	}
+	
+	@Test
+	public void testWin(){
+		
+	}
+	
+	@Test
+	public void testLose() {
 		
 	}
 }

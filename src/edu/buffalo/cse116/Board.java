@@ -37,7 +37,7 @@ public class Board {
 	
 	public boolean validClue(String h) {
 		for(int i=0;i<25;i++) {
-			if(h.equalsIgnoreCase(list[i])) {
+			if(h==(list[i])) {
 				return false;
 			}
 		}
