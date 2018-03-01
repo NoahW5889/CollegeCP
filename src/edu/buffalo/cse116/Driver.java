@@ -11,7 +11,27 @@ public class Driver implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		Board b = new Board("GameWords.txt");
+		Board b = new Board("src/GameWords.txt");
+		SwingUtilities.invokeLater(new Driver(b));
+		b.startGame();
+		
+		System.out.print("Board Size: "+b.mainBoard.size());
+		System.out.println();
+		System.out.println();
+		System.out.print("List of Codenames: ");
+		for(int i=0;i<b.list.length;i++) {
+		System.out.print(b.list[i]+", ");
+		}
+		System.out.println();
+		System.out.print("List Size: "+b.list.length);
+		System.out.println();
+		System.out.println();
+		System.out.println("On Board Players");
+		for(int i=0;i<b.list.length;i++) {
+			if((i%5)==0)
+				System.out.println();
+			System.out.print("CodeName: "+b.mainBoard.get(i).getCodeName()+"\n"+"Team: "+b.mainBoard.get(i).getTeam()+"\n"+"Revealed: "+b.mainBoard.get(i).getRevealed()+"\n===============");
+			}
 	}
 
 	@Override

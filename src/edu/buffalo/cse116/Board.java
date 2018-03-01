@@ -14,8 +14,8 @@ public class Board {
 	ArrayList<Person> mainBoard = new ArrayList<Person>();
 	
 	
-	public Board(String string) {
-		
+	public Board(String file) {
+		readCSVFile(file);
 	}
 
 	public void startGame() {
