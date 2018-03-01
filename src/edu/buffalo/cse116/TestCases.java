@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class TestCases {
 
-	Board board = new Board();
+	Board board = new Board("src/GameWords.txt");
 	String filename = "src/GameWords.txt";
 	String[] file = {"AFRICA","AGENT","AIR","ALIEN","ALPS","AMAZON","AMB"
 			+ "ULANCE","AMERICA","ANGEL","ANTARCTICA","APPLE","ARM","ATLANTIS"

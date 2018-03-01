@@ -27,10 +27,9 @@ public class Driver implements Runnable {
 		System.out.println();
 		System.out.println();
 		System.out.println("On Board Players");
+		System.out.println("===============");
 		for(int i=0;i<b.list.length;i++) {
-			if((i%5)==0)
-				System.out.println();
-			System.out.print("CodeName: "+b.mainBoard.get(i).getCodeName()+"\n"+"Team: "+b.mainBoard.get(i).getTeam()+"\n"+"Revealed: "+b.mainBoard.get(i).getRevealed()+"\n===============");
+			System.out.println("CodeName: "+b.mainBoard.get(i).getCodeName()+"\n"+"Team: "+b.mainBoard.get(i).getTeam()+"\n"+"Revealed: "+b.mainBoard.get(i).getRevealed()+"\n===============");
 			}
 	}
 
