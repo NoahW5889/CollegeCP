@@ -111,6 +111,7 @@ public class TestCases {
 			return true;
 	}
 
+	
 	@Test
 	public void testBoard() throws Exception {
 
@@ -130,6 +131,7 @@ public class TestCases {
 
 	@Test
 	public void testClues() {
+		board.createList();
 		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));
 	}
 	
