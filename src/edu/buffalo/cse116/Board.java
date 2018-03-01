@@ -47,17 +47,22 @@ public class Board {
 	
 	public void fillBoard() {
 		for(int i=0;i<25;i++) {
-			Person person = new Person();
-			person.setCodeName(list[i]);
-			person.setRevealed(false);
-			if(i<9)
-				person.setTeam("red");
-			else if(i>=9&&i<17)
-				person.setTeam("blue");
-			else if(i>=18&&i<25)
-				person.setTeam("bystander");
-			else
-				person.setTeam("assassin");
+			Person person=null;
+			if(i<9) {
+			person = new Person(codeNames.get(i),"red");
+			
+			}			
+			else if(i>=9&&i<17) {
+				person = new Person(codeNames.get(i),"blue");				
+			}
+			else if(i>=18&&i<25) {
+				person = new Person(codeNames.get(i),"bystander");
+			}
+				
+			else {
+				person = new Person(codeNames.get(i),"assassin");
+			}
+				
 			mainBoard.add(person);
 		}
 	}
