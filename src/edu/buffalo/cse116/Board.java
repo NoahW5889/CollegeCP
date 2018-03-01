@@ -14,6 +14,17 @@ public class Board {
 	ArrayList<Person> mainBoard = new ArrayList<Person>();
 	
 	
+	public Board(String string) {
+		
+	}
+
+	public void startGame() {
+		Collections.shuffle(codeNames);
+		createList();
+		fillBoard();
+		shuffle();
+	}
+
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
@@ -47,22 +58,17 @@ public class Board {
 	
 	public void fillBoard() {
 		for(int i=0;i<25;i++) {
-			Person person=null;
-			if(i<9) {
-			person = new Person(codeNames.get(i),"red");
-			
-			}			
-			else if(i>=9&&i<17) {
-				person = new Person(codeNames.get(i),"blue");				
-			}
-			else if(i>=18&&i<25) {
-				person = new Person(codeNames.get(i),"bystander");
-			}
-				
-			else {
-				person = new Person(codeNames.get(i),"assassin");
-			}
-				
+			Person person = null;
+			person.setCodeName(list[i]);
+			person.setRevealed(false);
+			if(i<9)
+				person.setTeam("red");
+			else if(i>=9&&i<17)
+				person.setTeam("blue");
+			else if(i>=18&&i<25)
+				person.setTeam("bystander");
+			else
+				person.setTeam("assassin");
 			mainBoard.add(person);
 		}
 	}
@@ -71,4 +77,3 @@ public class Board {
 		Collections.shuffle(mainBoard);
 	}
 }
-
