@@ -14,6 +14,17 @@ public class Board {
 	ArrayList<Person> mainBoard = new ArrayList<Person>();
 	
 	
+	public Board(String file) {
+		readCSVFile(file);
+	}
+
+	public void startGame() {
+		Collections.shuffle(codeNames);
+		createList();
+		fillBoard();
+		shuffle();
+	}
+
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
@@ -66,9 +77,7 @@ public class Board {
 			mainBoard.add(person);
 		}
 	}
-	
 	public void shuffle() {
 		Collections.shuffle(mainBoard);
 	}
 }
-
