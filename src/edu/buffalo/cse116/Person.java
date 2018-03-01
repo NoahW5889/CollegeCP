@@ -7,12 +7,12 @@ public class Person {
 	private String team;
 	
 
-	public Person() {
+	public Person(String _code, String _team) {
+		codeName = _code;
+		team = _team;
+		revealed = false;
 	}
 	
-	public void setTeam(String x) {
-		this.team=x;
-	}
 	
 	public String getTeam() {
 		return team;
@@ -20,10 +20,6 @@ public class Person {
 	
 	public String getCodeName() {
 		return codeName;
-	}
-
-	public void setCodeName(String codeName) {
-		this.codeName = codeName;
 	}
 
 	public Boolean getRevealed() {
