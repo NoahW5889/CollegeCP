@@ -55,7 +55,7 @@ public class Board {
 	
 	public boolean validClue(String h) {
 		for(int i=0;i<25;i++) {
-			if(h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
+			if(h==null||h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
 				return false;
 			}
 		}

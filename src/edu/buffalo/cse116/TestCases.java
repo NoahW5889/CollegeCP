@@ -66,6 +66,7 @@ public class TestCases {
 			,"work","world","year"};
 	ArrayList<String> codeNames = new ArrayList<String>();
 
+
 	public ArrayList<String> createArrayList(String[] x) {
 		for(int i=0;i<x.length;i++	) {
 			codeNames.add(x[i]);
@@ -114,7 +115,6 @@ public class TestCases {
 	
 	@Test
 	public void testBoard() throws Exception {
-
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull
@@ -131,8 +131,11 @@ public class TestCases {
 
 	@Test
 	public void testClues() {
-		board.createList();
+		board.fillBoard();
 		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));
+		assertTrue(board.validClue("Noah is cool"));
+		assertTrue(board.validClue("Maurice is cool"));
+		assertTrue(board.validClue("Tim is cool"));
 	}
 	
 	@Test
