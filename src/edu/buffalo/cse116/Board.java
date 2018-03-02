@@ -16,7 +16,6 @@ public class Board {
 	int assCnt=0;
 	int redCnt=0;
 	int bluCnt=0;
-	int gameSt=0;
 	
 	public Board(String file) {
 		readCSVFile(file);
@@ -56,7 +55,7 @@ public class Board {
 	
 	public boolean validClue(String h) {
 		for(int i=0;i<25;i++) {
-			if(h.equalsIgnoreCase((list[i]))) {
+			if(h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
 				return false;
 			}
 		}
@@ -86,6 +85,65 @@ public class Board {
 		}
 	}
 	
+	public String choose(String entered) {
+		
+		if(entered==null||entered.equals(null)||entered.isEmpty())
+			return "Invalid Entry. Try Again";
+		
+		if(entered.equalsIgnoreCase("skip")) {
+			if(turn=="red") {
+				turn = "blue";
+				return "Red Team Skips their turn.";
+			}
+			else {
+				turn = "red";
+				return "Blue Team Skips their turn.";
+			}
+		}
+		
+		if(turn=="red") {
+			for(int i=0;i<mainBoard.size();i++) {
+				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)) {
+					if(mainBoard.get(i).getTeam()=="red"&&mainBoard.get(i).getRevealed()!=true) {
+						redCnt-=1;
+						mainBoard.get(i).setRevealed(true);
+						return "Correct Guess!";
+						
+					}
+					else if(mainBoard.get(i).getTeam()=="assassin")
+						assCnt-=1;
+					else if(mainBoard.get(i).getTeam()=="bystander") {
+						mainBoard.get(i).setRevealed(true);
+						return "Incorrect, Bystander revealed";
+					}
+				}
+			}
+			turn = "blue";
+			return "Incorrect Guess.";
+		}
+		
+		if(turn=="blue") {
+			for(int i=0;i<mainBoard.size();i++) {
+				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)&&mainBoard.get(i).getRevealed()!=true) {
+					if(mainBoard.get(i).getTeam()=="blue") {
+						bluCnt-=1;
+						mainBoard.get(i).setRevealed(true);
+						return "Correct Guess!";
+					}
+					else if(mainBoard.get(i).getTeam()=="assassin")
+						assCnt-=1;
+					else if(mainBoard.get(i).getTeam()=="bystander") {
+						mainBoard.get(i).setRevealed(true);
+						return "Incorrect, Bystander revealed";
+					}
+				}
+			}
+				turn = "red";
+				return "Incorrect Guess.";
+			}
+		return "ERROR";
+	}
+	
 	public String gameState() {
 		
 		if(redCnt==0||bluCnt==0||assCnt==0) {
@@ -98,9 +156,9 @@ public class Board {
 	
 	public String assassPressed() {
 		if(turn=="red") {
-			return "blue team has not lost the game";
+			return "Red Team Wins!";
 		}
-		else return "red team has not lost the game";
+		else return "Blue Team Wins!";
 	}
 	
 	public void shuffle() {

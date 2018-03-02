@@ -1,5 +1,7 @@
 package edu.buffalo.cse116;
 
+import java.util.Scanner;
+
 import javax.swing.SwingUtilities;
 
 public class Driver implements Runnable {
@@ -15,6 +17,22 @@ public class Driver implements Runnable {
 		SwingUtilities.invokeLater(new Driver(b));
 		b.startGame();
 		
+		for(int i=0;i<b.mainBoard.size();i++) {
+			System.out.println("Codename: "+b.mainBoard.get(i).getCodeName()+", Team: "+b.mainBoard.get(i).getTeam());
+		}
+		
+		System.out.println();
+		
+		while(b.redCnt!=0&&b.bluCnt!=0&&b.assCnt!=0) {
+			System.out.println(b.turn+" teams turn");
+			System.out.println("Clue: ");
+			Scanner console = new Scanner(System.in);
+			System.out.println("Enter guess: ");
+	    	String guess = console.nextLine();
+	    	System.out.println(b.choose(guess));
+		}
+		
+		/* TESTING GAME SETTUP
 		System.out.print("Board Size: "+b.mainBoard.size());
 		System.out.println();
 		System.out.println();
@@ -31,6 +49,8 @@ public class Driver implements Runnable {
 		for(int i=0;i<b.list.length;i++) {
 			System.out.println("CodeName: "+b.mainBoard.get(i).getCodeName()+"\n"+"Team: "+b.mainBoard.get(i).getTeam()+"\n"+"Revealed: "+b.mainBoard.get(i).getRevealed()+"\n===============");
 			}
+			*/
+		
 	}
 
 	@Override
