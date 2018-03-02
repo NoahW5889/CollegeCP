@@ -12,7 +12,11 @@ public class Board {
 	String[] list = new String[25];
 	ArrayList<String> codeNames = new ArrayList<String>();
 	ArrayList<Person> mainBoard = new ArrayList<Person>();
-	
+	String turn=null;
+	int assCnt=0;
+	int redCnt=0;
+	int bluCnt=0;
+	int gameSt=0;
 	
 	public Board(String file) {
 		readCSVFile(file);
@@ -23,6 +27,10 @@ public class Board {
 		createList();
 		fillBoard();
 		shuffle();
+		turn="red";
+		assCnt=1;
+		redCnt=9;
+		bluCnt=8;
 	}
 
 	public ArrayList<String> readCSVFile(String filename){
@@ -77,6 +85,24 @@ public class Board {
 			mainBoard.add(person);
 		}
 	}
+	
+	public String gameState() {
+		
+		if(redCnt==0||bluCnt==0||assCnt==0) {
+		return"the game has been won";
+		}
+		
+		else return"no one has won the game";
+	}
+	
+	
+	public String assassPressed() {
+		if(turn=="red") {
+			return "blue team has not lost the game";
+		}
+		else return "red team has not lost the game";
+	}
+	
 	public void shuffle() {
 		Collections.shuffle(mainBoard);
 	}
