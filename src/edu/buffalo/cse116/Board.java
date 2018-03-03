@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 //import java.util.Collections;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class Board {
 	
@@ -20,7 +21,7 @@ public class Board {
 	public Board(String file) {
 		readCSVFile(file);
 	}
-
+	
 	public void startGame() {
 		Collections.shuffle(codeNames);
 		createList();
@@ -32,6 +33,16 @@ public class Board {
 		bluCnt=8;
 	}
 
+	public void display() {
+		System.out.println(turn+" teams turn");
+		System.out.println("Clue: ");
+		Scanner console = new Scanner(System.in);
+		System.out.println("Enter guess: ");
+    	String guess = console.nextLine();
+    	System.out.println(choose(guess));
+	}
+	
+	
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
@@ -90,7 +101,17 @@ public class Board {
 		if(entered==null||entered.equals(null)||entered.isEmpty())
 			return "Invalid Entry. Try Again";
 		
-		if(entered.equalsIgnoreCase("skip")) {
+		else if(entered.equalsIgnoreCase("end game"))
+			return endGame();
+		
+		else if(entered.equalsIgnoreCase("rules")) {
+			return ("===============\nRules.\n===============\nPlease refer to video."
+					+ "\nhttps://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
+					+ "\n===============");
+		}
+			
+		
+		else if(entered.equalsIgnoreCase("skip")) {
 			if(turn=="red") {
 				turn = "blue";
 				return "Red Team Skips their turn.";
@@ -101,7 +122,7 @@ public class Board {
 			}
 		}
 		
-		if(turn=="red") {
+		else if(turn=="red") {
 			for(int i=0;i<mainBoard.size();i++) {
 				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)) {
 					if(mainBoard.get(i).getTeam()=="red"&&mainBoard.get(i).getRevealed()!=true) {
@@ -110,8 +131,10 @@ public class Board {
 						return "Correct Guess!";
 						
 					}
-					else if(mainBoard.get(i).getTeam()=="assassin")
-						assCnt-=1;
+					else if(mainBoard.get(i).getTeam()=="assassin") {
+					assCnt-=1;
+					return assassPressed();
+					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
 						return "Incorrect, Bystander revealed";
@@ -122,7 +145,7 @@ public class Board {
 			return "Incorrect Guess.";
 		}
 		
-		if(turn=="blue") {
+		else if(turn=="blue") {
 			for(int i=0;i<mainBoard.size();i++) {
 				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)&&mainBoard.get(i).getRevealed()!=true) {
 					if(mainBoard.get(i).getTeam()=="blue") {
@@ -130,8 +153,10 @@ public class Board {
 						mainBoard.get(i).setRevealed(true);
 						return "Correct Guess!";
 					}
-					else if(mainBoard.get(i).getTeam()=="assassin")
+					else if(mainBoard.get(i).getTeam()=="assassin") {
 						assCnt-=1;
+						return assassPressed();
+					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
 						return "Incorrect, Bystander revealed";
@@ -142,6 +167,12 @@ public class Board {
 				return "Incorrect Guess.";
 			}
 		return "ERROR";
+	}
+	
+	public String endGame() {
+		System.out.println("Game has been ended.");
+		System.exit(0);
+		return "Ended.";
 	}
 	
 	public String gameState() {
@@ -156,9 +187,9 @@ public class Board {
 	
 	public String assassPressed() {
 		if(turn=="red") {
-			return "Red Team Wins!";
+			return "Assassin chosen! Blue Team Wins!";
 		}
-		else return "Blue Team Wins!";
+		else return "Assassin chosen! Rlue Team Wins!";
 	}
 	
 	public void shuffle() {

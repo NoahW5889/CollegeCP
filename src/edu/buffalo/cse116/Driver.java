@@ -24,12 +24,14 @@ public class Driver implements Runnable {
 		System.out.println();
 		
 		while(b.redCnt!=0&&b.bluCnt!=0&&b.assCnt!=0) {
-			System.out.println(b.turn+" teams turn");
+			b.display();
+		/*	System.out.println(b.turn+" teams turn");
 			System.out.println("Clue: ");
 			Scanner console = new Scanner(System.in);
 			System.out.println("Enter guess: ");
 	    	String guess = console.nextLine();
 	    	System.out.println(b.choose(guess));
+		*/
 		}
 		
 		/* TESTING GAME SETTUP
