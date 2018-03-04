@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-//import java.util.Collections;
 import java.util.Collections;
-import java.util.Scanner;
 
 public class Board {
 	
@@ -18,11 +16,11 @@ public class Board {
 	int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
 	
-	public Board(String file) {	//contructor used to send in filename to read for codeNames
+	public Board(String file) {	//constructor used to send in filename to read for codeNames
 		readCSVFile(file);
 	}
 	
-	public void startGame() {	//start game BULLET POINT 6 || refer to createList() & fillBoard() for instances created, autoset revealed=false in person class
+	public void startGame() {	//start game BULLET POINT 6 || refer to createList() & fillBoard() for instances created, auto set revealed=false in person class
 		Collections.shuffle(codeNames);
 		createList();
 		fillBoard();
@@ -30,7 +28,7 @@ public class Board {
 		turn="red";
 	}
 
-	public ArrayList<String> readCSVFile(String filename){	//Reads codenames from a file, stores them in ArrayList BULLET POINT 3
+	public ArrayList<String> readCSVFile(String filename){	//Reads codeNames from a file, stores them in ArrayList BULLET POINT 3
 		codeNames = new ArrayList<String>();
     	try { for(String each: Files.readAllLines(Paths.get(filename))) {
     		codeNames.add(each);
@@ -43,7 +41,7 @@ public class Board {
     }
 	
 	
-	public void createList() { //Creates a list of 25 random codenames/words from the list created in readCSVFile BULLET POINT 4
+	public void createList() { //Creates a list of 25 random codeNames/words from the list created in readCSVFile BULLET POINT 4
 		for(int i=0;i<25;i++) {
 			int rand = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
@@ -51,7 +49,7 @@ public class Board {
 		}
 	}
 	
-	public boolean validClue(String h) { //legal clue BULLET POINT 7
+	public boolean validClue(String h) { //checks if a clue is legal, BULLET POINT 7
 		for(int i=0;i<25;i++) {
 			if(h==null||h.trim().isEmpty()||h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
 				return false;
@@ -82,7 +80,7 @@ public class Board {
 		}
 	}
 	
-	public String choose(String entered) {	//BULLET POINT 8 (along with other commands)
+	public String choose(String entered) {	//Takes in entry/chosen card, determines if correct,BULLET POINT 8 (along with other commands)
 		
 		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty())
 			return "Invalid Entry. Try Again";
@@ -154,7 +152,7 @@ public class Board {
 		return "ERROR";
 	}
 	
-	public String gameState() {	//BULLET POINT 9
+	public String gameState() {	//Returns whether the game has been won or not, BULLET POINT 9
 		
 		if(redCnt==0||bluCnt==0||assCnt==0) {
 		return "The game has been won.";
@@ -164,16 +162,16 @@ public class Board {
 	}
 	
 	
-	public String assassPressed() {	//BULLET POINT 10
+	public String assassPressed() {	//Method called when assassin is chosen, returns winner, BULLET POINT 10
 		if(turn=="red") {
 			return "Assassin chosen by Red Team! Blue Team Wins!";
-			//in future there will be a system.exit(0);
+			//In future there will be a system.exit(0);
 		}
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
-		//in future there will be a system.exit(0);
+		//In future there will be a system.exit(0);
 	}
 	
-	public void shuffle() {	//3 times for thorough shuffle BULLET POINT 5.2
+	public void shuffle() {	//Shuffles board locations, 3 times for thorough shuffle BULLET POINT 5.2
 		Collections.shuffle(mainBoard);
 		Collections.shuffle(mainBoard);
 		Collections.shuffle(mainBoard);
