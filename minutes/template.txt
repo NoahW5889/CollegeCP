@@ -52,16 +52,14 @@ Pair Programming meetup __3/1/18__:
 	-Maurice
 	-Tim
 	
-	
 ==================================================================================
+
+SNOW DAY MISSED DATE __3/2/2018__
 
 Meeting Minutes for _add meeting date___:
 
 Meeting Attendance: (list all students who were present) [1 minute]
 	Put an 'M' next to the name of the student taking minutes
-	Maurice Campbell
-	Noah Wutz
-	M : Tim Newton
 	
 Tasks completed since last meeting [1-2 minutes]
 
@@ -81,30 +79,4 @@ Schedule for the next week's set of pair programming meetings [3-4 minutes]
 	
 ==================================================================================
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
