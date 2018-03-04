@@ -13,8 +13,10 @@ import org.junit.Test;
 
 public class TestCases {
 
-	Board board = new Board("src/GameWords.txt");
-	String filename = "src/GameWords.txt";
+	Board board = new Board("src/GameWords.txt");	//Create/links board to this class, sends in file to read for codeNames
+	String filename = "src/GameWords.txt";	//Used in testing to show where to find file for codeNames
+	
+	//Long list of all codeNames to assure they were read and put in list correctly
 	String[] file = {"AFRICA","AGENT","AIR","ALIEN","ALPS","AMAZON","AMB"
 			+ "ULANCE","AMERICA","ANGEL","ANTARCTICA","APPLE","ARM","ATLANTIS"
 			,"AUSTRALIA","AZTEC","BACK","BALL","BAND","BANK","BAR","BARK","BAT"
@@ -64,25 +66,28 @@ public class TestCases {
 			,"point","problem","program","question","right","room","school","state","story"
 			,"student","study","system","thing","time","water","way","week","woman","word"
 			,"work","world","year"};
-	ArrayList<String> codeNames = new ArrayList<String>();
+	ArrayList<String> codeNames = new ArrayList<String>();	//used in testing to store codeNames
+	int bluPos = 0;
+	int redPos = 0;
+	int assPos = 0;
+	int byPos = 0;
 
-
-	public ArrayList<String> createArrayList(String[] x) {
+	public ArrayList<String> createArrayList(String[] x) {	//Creates arrayList to compare to readCSVFile in Board class
 		for(int i=0;i<x.length;i++	) {
 			codeNames.add(x[i]);
 		}
 		return codeNames;
 	}
 
-	public boolean noNull(String[] selected) {
+	public boolean noNull(String[] selected) {	//used to test if any nulls are in board.list
 		for(int i=0;i<board.list.length;i++) {
-			if(board.list[i]==null||board.list[i].equals(null))
+			if(board.list[i]==null||board.list[i].equals(null)||board.list[i].trim().isEmpty())
 				return false;
 		}
 		return true;
 	}
 
-	public boolean noDoubles(String[] input) {
+	public boolean noDoubles(String[] input) {	//assures there are no repeated codeNames in board.list
 		for(int i=0;i<board.list.length;i++) {
 			String check = board.list[i];
 			for(int q=0;q<board.list.length;q++) {
@@ -93,7 +98,7 @@ public class TestCases {
 		return true;
 	}
 	
-	public int teamSize(String x) {
+	public int teamSize(String x) {	//assures the correct team size for string entered ex. "red" should equal 9
 		int size = 0;
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(x.equalsIgnoreCase(board.mainBoard.get(i).getTeam()))
@@ -102,7 +107,7 @@ public class TestCases {
 		return size;
 	}
 	
-	public boolean shuffleSuccess() {
+	public boolean shuffleSuccess() {	//assures the board was shuffled, compares original to after shuffle board
 		ArrayList<Person> original = board.mainBoard;
 		board.shuffle();
 		
@@ -111,40 +116,142 @@ public class TestCases {
 		else
 			return true;
 	}
+	
+	public void bluePosition() {
+		for(int i=0;i<board.mainBoard.size();i++) {
+			if(board.mainBoard.get(i).getTeam()=="blue")
+				bluPos=i;
+		}
+	}
+	
+	public void redPosition() {
+		for(int i=0;i<board.mainBoard.size();i++) {
+			if(board.mainBoard.get(i).getTeam()=="red")
+				redPos=i;
+		}
+	}
+	
+	public void assassinPosition() {
+		for(int i=0;i<board.mainBoard.size();i++) {
+			if(board.mainBoard.get(i).getTeam()=="assassin")
+				assPos=i;
+		}
+	}
+	
+	public void bystanderPosition() {
+		for(int i=0;i<board.mainBoard.size();i++) {
+			if(board.mainBoard.get(i).getTeam()=="bystander")
+				byPos=i;
+		}
+	}
 
 	
 	@Test
-	public void testBoard() throws Exception {
-		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
+	public void testCreateList(){	//tests to make sure the board was created and filled succesfully
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull
 		assertTrue(noNull(board.list));// Testing to make sure there are no nulls in list
-		assertTrue(noDoubles(board.list));// Assures there are no repeated codenames
+		assertTrue(noDoubles(board.list));// Assures there are no repeated codeNames
+	}
+	
+	@Test
+	public void testFillBoard() {
+		board.createList();// Must create list before test for noNull
 		board.fillBoard(); // Fills board with persons
 		assertTrue(board.mainBoard.size()==25); //Testing Board Size (5x5=25)
+		
+	}
+	
+	@Test
+	public void testShuffle() {
+		board.createList();// Must create list before test for shuffle
+		board.fillBoard(); // Fills board with persons
+		assertTrue(shuffleSuccess()); //makes sure the board got shuffled
+	}
+	
+	@Test
+	public void testReadCSVFile(){
+		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
+	}
+
+	@Test
+	public void testChoose() {
+		board.createList();// Must create list before test for noNull
+		board.fillBoard(); // Fills board with persons
+		redPosition();	//gets position of red agent for testing
+		bluePosition();	//gets position of blue agent for testing
+		assassinPosition();	//gets position of assassin red agent for testing
+		bystanderPosition();	//gets position of bystander for testing
+		
+		assertEquals(board.choose(null),"Invalid Entry. Try Again"); //enters null as a choice
+		assertEquals(board.choose(""),"Invalid Entry. Try Again");	//enters empty string as choice
+		assertEquals(board.choose("  "),"Invalid Entry. Try Again");	//enters spaces as choice
+		assertEquals(board.choose("rules"),"===============\nRules.\n===============\nPlease refer to video."	//enters rules as choice
+				+ "\nhttps://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
+				+ "\n===============");
+		
+		board.turn="red";	//sets turn to red team
+		assertEquals(board.choose("skip"),"Red Team Skips their turn.");	//tests skip turn choice
+		assertEquals(board.turn,"blue");	//tests making sure skip method changed turns
+		board.turn="blue";	//sets turn to blue team
+		assertEquals(board.choose("skip"),"Blue Team Skips their turn.");	//tests skip turn choice
+		assertEquals(board.turn,"red");	//tests making sure skip method changed turns
+		
+		board.turn="red";	//sets turn to red team
+		assertEquals(board.choose(board.mainBoard.get(redPos).getCodeName()),"Correct Guess!");	//tests red turn choosing red agent
+		assertEquals(board.choose(board.mainBoard.get(bluPos).getCodeName()),"Incorrect Guess.");	//tests red turn choosing blue agent
+		assertEquals(board.turn,"blue");	//tests making sure incorrect guess changed turns
+		board.turn="red";	//sets turn to red team
+		assertEquals(board.choose(board.mainBoard.get(assPos).getCodeName()),"Assassin chosen by Red Team! Blue Team Wins!");	//tests red turn choosing assassin
+		assertEquals(board.choose(board.mainBoard.get(byPos).getCodeName()),"Incorrect, Bystander revealed");	//tests red turn choosing bystander
+		assertEquals(board.turn,"blue");	//tests making sure incorrect guess changed turns
+		board.turn="blue";	//sets turn to blue team
+		assertEquals(board.choose(board.mainBoard.get(bluPos).getCodeName()),"Correct Guess!");	//tests blue turn choosing blue agent
+		assertEquals(board.choose(board.mainBoard.get(redPos).getCodeName()),"Incorrect Guess.");	//tests blue turn choosing red agent
+		assertEquals(board.turn,"red");	//tests making sure incorrect guess changed turns
+		board.turn="blue";	//sets turn to blue team
+		assertEquals(board.choose(board.mainBoard.get(assPos).getCodeName()),"Assassin chosen by Blue Team! Red Team Wins!");	//tests blue turn choosing assassin
+		assertEquals(board.choose(board.mainBoard.get(byPos).getCodeName()),"Incorrect, Bystander revealed");	//tests blue turn choosing bystander
+		assertEquals(board.turn,"red");	//tests making sure incorrect guess changed turns
+	}
+	
+	@Test
+	public void testGameState() {
+		assertEquals(board.gameState(),"No one has won the game.");
+		board.redCnt=0;
+		assertEquals(board.gameState(),"The game has been won.");
+		board.redCnt=9;
+		board.bluCnt=0;
+		assertEquals(board.gameState(),"The game has been won.");
+		board.bluCnt=8;
+		board.assCnt=0;
+		assertEquals(board.gameState(),"The game has been won.");
+	}
+	
+	@Test
+	public void testAssassinPressed() {
+		board.turn="red";
+		assertEquals(board.assassPressed(),"Assassin chosen by Red Team! Blue Team Wins!");
+		board.turn="blue";
+		assertEquals(board.assassPressed(),"Assassin chosen by Blue Team! Red Team Wins!");
+	}
+	
+	@Test
+	public void testTeamSize() {	//tests to make sure there are the correct number of agents per team along with bystanders and assassins
+		board.createList();// Must create list before test for team sizes
+		board.fillBoard(); // Fills board with persons
 		assertEquals(9,teamSize("red")); //assures 9 red agents
 		assertEquals(8,teamSize("blue")); //assures 8 blue agents
 		assertEquals(7,teamSize("bystander")); //assures 7 bystanders 
 		assertEquals(1,teamSize("assassin")); //assures 1 assassin
-		assertTrue(shuffleSuccess()); //makes sure the board got shuffled
-	}
-
-	@Test
-	public void testClues() {
-		board.fillBoard();
-		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));
-		assertTrue(board.validClue("Noah is cool"));
-		assertTrue(board.validClue("Maurice is cool"));
-		assertTrue(board.validClue("Tim is cool"));
 	}
 	
 	@Test
-	public void testWin(){
-		
-	}
-	
-	@Test
-	public void testLose() {
-		
+	public void testClues() {	//tests if legal clue method works
+		board.fillBoard();	// Fills board with persons
+		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));	//chooses random codename from lists and tests it as clue
+		assertTrue(board.validClue("asjdkfa 123"));	//random testing
+		assertFalse(board.validClue(null));	//testing null input
+		assertFalse(board.validClue(""));	//testing empty string input
 	}
 }
