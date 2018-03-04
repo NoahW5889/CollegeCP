@@ -6,13 +6,11 @@ public class Person {
 	private Boolean revealed;	//holds reveal status for instance
 	private String team;	//holds team for instance
 	
-
 	public Person(String _code, String _team) {	//constructor creating person object
 		codeName = _code;
 		team = _team;
 		revealed = false;
 	}
-	
 	
 	public String getTeam() {	//returns team of person
 		return team;

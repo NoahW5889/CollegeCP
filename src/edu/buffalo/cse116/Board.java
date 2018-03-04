@@ -55,7 +55,6 @@ public class Board {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
@@ -75,7 +74,6 @@ public class Board {
 			else {
 				person = new Person(codeNames.get(i),"assassin");
 			}
-				
 			mainBoard.add(person);
 		}
 	}
@@ -91,7 +89,6 @@ public class Board {
 					+ "\n===============");
 		}
 			
-		
 		else if(entered.equalsIgnoreCase("skip")) {
 			if(turn=="red") {
 				turn = "blue";
@@ -157,10 +154,8 @@ public class Board {
 		if(redCnt==0||bluCnt==0||assCnt==0) {
 		return "The game has been won.";
 		}
-		
 		else return "No one has won the game.";
 	}
-	
 	
 	public String assassPressed() {	//Method called when assassin is chosen, returns winner, BULLET POINT 10
 		if(turn=="red") {

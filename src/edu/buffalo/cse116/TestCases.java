@@ -110,35 +110,34 @@ public class TestCases {
 	public boolean shuffleSuccess() {	//assures the board was shuffled, compares original to after shuffle board
 		ArrayList<Person> original = board.mainBoard;
 		board.shuffle();
-		
 		if(original.toString()==(board.mainBoard.toString()))
 			return false;
 		else
 			return true;
 	}
 	
-	public void bluePosition() {
+	public void bluePosition() {	//gets position of a blue agent for testing
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="blue")
 				bluPos=i;
 		}
 	}
 	
-	public void redPosition() {
+	public void redPosition() {	//gets position of a red agent for testing
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="red")
 				redPos=i;
 		}
 	}
 	
-	public void assassinPosition() {
+	public void assassinPosition() {	//gets position of assassin for testing
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="assassin")
 				assPos=i;
 		}
 	}
 	
-	public void bystanderPosition() {
+	public void bystanderPosition() {	//gets position of a bystander for testing
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="bystander")
 				byPos=i;
@@ -147,7 +146,7 @@ public class TestCases {
 
 	
 	@Test
-	public void testCreateList(){	//tests to make sure the board was created and filled succesfully
+	public void testCreateList(){	//tests to make sure the list was created and filled successfully
 		assertTrue(board.list.length==25); //Tests to make sure list has selected 25 names
 		board.createList();// Must create list before test for noNull
 		assertTrue(noNull(board.list));// Testing to make sure there are no nulls in list
@@ -155,7 +154,7 @@ public class TestCases {
 	}
 	
 	@Test
-	public void testFillBoard() {
+	public void testFillBoard() {	//tests the fillBoard method to make sure it is filled/created correctly
 		board.createList();// Must create list before test for noNull
 		board.fillBoard(); // Fills board with persons
 		assertTrue(board.mainBoard.size()==25); //Testing Board Size (5x5=25)
@@ -163,19 +162,19 @@ public class TestCases {
 	}
 	
 	@Test
-	public void testShuffle() {
+	public void testShuffle() {	//tests the shuffle method, makes sure the board gets randomized
 		board.createList();// Must create list before test for shuffle
 		board.fillBoard(); // Fills board with persons
 		assertTrue(shuffleSuccess()); //makes sure the board got shuffled
 	}
 	
 	@Test
-	public void testReadCSVFile(){
+	public void testReadCSVFile(){	//tests readCSVFile to ensure the file filled with codeNames was put into a list
 		assertEquals(board.readCSVFile(filename),createArrayList(file)); // Tests of Code Names file was read correctly
 	}
 
 	@Test
-	public void testChoose() {
+	public void testChoose() {	//tests the choose method to make sure the proper response is return based upon choice
 		board.createList();// Must create list before test for noNull
 		board.fillBoard(); // Fills board with persons
 		redPosition();	//gets position of red agent for testing
@@ -216,24 +215,24 @@ public class TestCases {
 	}
 	
 	@Test
-	public void testGameState() {
-		assertEquals(board.gameState(),"No one has won the game.");
-		board.redCnt=0;
-		assertEquals(board.gameState(),"The game has been won.");
-		board.redCnt=9;
-		board.bluCnt=0;
-		assertEquals(board.gameState(),"The game has been won.");
-		board.bluCnt=8;
-		board.assCnt=0;
-		assertEquals(board.gameState(),"The game has been won.");
+	public void testGameState() {	//tests game state (win, lose, or not finished)
+		assertEquals(board.gameState(),"No one has won the game.");	//tests at start of game
+		board.redCnt=0;	//adjusts red agent count to 0
+		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 red agents not revealed
+		board.redCnt=9;	//adjusts red agent count to 9
+		board.bluCnt=0;	//adjusts blue agent count to 0
+		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 blue agents not revealed
+		board.bluCnt=8;	//adjusts blue agent count to 8
+		board.assCnt=0;	//adjusts assassin count to 0
+		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 assassin agents not revealed
 	}
 	
 	@Test
-	public void testAssassinPressed() {
-		board.turn="red";
-		assertEquals(board.assassPressed(),"Assassin chosen by Red Team! Blue Team Wins!");
-		board.turn="blue";
-		assertEquals(board.assassPressed(),"Assassin chosen by Blue Team! Red Team Wins!");
+	public void testAssassinPressed() {	//tests when assassin is pressed
+		board.turn="red";	//changes turn to red
+		assertEquals(board.assassPressed(),"Assassin chosen by Red Team! Blue Team Wins!");	//tests when assassin is chosen by red team
+		board.turn="blue";	//changes turn to blue
+		assertEquals(board.assassPressed(),"Assassin chosen by Blue Team! Red Team Wins!");	//tests when assassin is chosen by blue team
 	}
 	
 	@Test
@@ -249,7 +248,7 @@ public class TestCases {
 	@Test
 	public void testClues() {	//tests if legal clue method works
 		board.fillBoard();	// Fills board with persons
-		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));	//chooses random codename from lists and tests it as clue
+		assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));	//chooses random codeName from lists and tests it as clue
 		assertTrue(board.validClue("asjdkfa 123"));	//random testing
 		assertFalse(board.validClue(null));	//testing null input
 		assertFalse(board.validClue(""));	//testing empty string input
