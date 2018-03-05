@@ -1,5 +1,5 @@
 Phase #1 Grading Rubric
-
+ 
 BP#		Class						Functionality							             		 					Method(s) 														TestCase
 #1		test.txt					labeling classes to methods, functionality, and test cases						*****************												***************
 #2		Board.java					defines board class																Board(String file)

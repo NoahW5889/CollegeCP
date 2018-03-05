@@ -16,7 +16,6 @@ public class Board {
 	public int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
 	
-	
 	/*
 	 * constructor used to send in filename to read for codeNames
 	 * @param readCSVFile Takes in the gameWords.txt and stores in codeNames
