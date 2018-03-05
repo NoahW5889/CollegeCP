@@ -2,6 +2,7 @@ package edu.buffalo.cse116;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -62,10 +63,10 @@ public class TestCases {
 			,"student","study","system","thing","time","water","way","week","woman","word"
 			,"work","world","year"};
 	ArrayList<String> codeNames = new ArrayList<String>();	//used in testing to store codeNames
-	int bluPos = 0;
-	int redPos = 0;
-	int assPos = 0;
-	int byPos = 0;
+	int bluPos = 0;	//used to hold blue agent position
+	int redPos = 0;	//used to hold red agent position
+	int assPos = 0;	//used to hold assassin position
+	int byPos = 0;	//used to hold bystander position
 
 	public ArrayList<String> createArrayList(String[] x) {	//Creates arrayList to compare to readCSVFile in Board class
 		for(int i=0;i<x.length;i++	) {
@@ -139,6 +140,15 @@ public class TestCases {
 		}
 	}
 
+	@Test
+	public void testStartGame() {	//tests that the game sets up correctly
+		ArrayList<String> codeNames = new ArrayList<String>();	//new ArrayList to set original unshuffled codeNames to
+		codeNames.addAll(board.codeNames);	//sets new ArrayList to original unshuffled CodeNames
+		board.startGame();	//calls startGame() method
+		assertNotEquals(codeNames, board.codeNames);	//Makes sure the codeNames ArrayList got shuffled
+		assertEquals(board.mainBoard.size(),25);	//Makes sure board size is 25
+		assertEquals(board.turn,"red");	//Makes sure starting turn is red
+	}
 	
 	@Test
 	public void testCreateList(){	//tests to make sure the list was created and filled successfully
@@ -220,6 +230,24 @@ public class TestCases {
 		board.bluCnt=8;	//adjusts blue agent count to 8
 		board.assCnt=0;	//adjusts assassin count to 0
 		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 assassin agents not revealed
+	}
+	
+	@Test
+	public void testPersonClass() {
+		Person test = new Person("test codeName", "test team");	//creates new person using person class and sets name and team
+		assertEquals(test.getCodeName(),"test codeName");	//tests that codeName was set correctly
+		assertEquals(test.getTeam(),"test team");	//tests that team was set correctly
+		assertFalse(test.getRevealed());	//tests that revealed status is false
+		test.setRevealed(true);	//sets revealed status to true
+		assertTrue(test.getRevealed());	//tests that revealed status is now true
+		Person test2 = new Person(null,null);	//creates new person with both nulls to ensure no crashes
+		assertEquals(test2.getCodeName(),null);	//assures no crashes with null as codeName
+		assertEquals(test2.getTeam(),null);	//assures no crashes with null as team
+		assertFalse(test2.getRevealed());	//tests that reveal status is false
+		test2.setRevealed(true);	//sets reveal status to true
+		assertTrue(test2.getRevealed());	//tests that reveal status is true
+		
+		
 	}
 	
 	@Test

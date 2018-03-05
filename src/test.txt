@@ -1,9 +1,13 @@
-Functionality							              Method 					TestCase
-Reads in GameWords.txt and sets the to codeNames      readCSVFile(String)       testReadCSVFile()
-Makes a list of 25 random codenames                   createList()              testCreateList()
-Creates list assigning the 4 different player types   fillBoard()               testFillBoard()
-Starts game and assigns codenames                     startGame()               
-Returns if clue is legal or not                       validClue()               testClues()
-Updates when location selected and checks team        choose(string)            testChoose()
-Checks if the game has been won                       gameState()               testGameState()
-Returns who did not lose the game                     assassPressed()           testAssassinPressed()
+Phase #1 Grading Rubric
+
+BP#		Class						Functionality							             		 					Method(s) 														TestCase
+#1		test.txt					labeling classes to methods, functionality, and test cases						*****************												***************
+#2		Board.java					defines board class																Board(String file)
+#3		Board.java					Reads in GameWords.txt and sets them to list codeNames		 					readCSVFile(String filename)									testReadCSVFile()
+#4		Board.java					Makes a list of 25 random codeNames                  							createList()              										testCreateList()
+#5		Board.java, Person.java		Creates board assigning the 4 different player types/person and randomizes   	fillBoard(),shuffle(), Person(String _code,String _team)       	testFillBoard(),testShuffle(), testPersonClass()
+#6		Board.java					Starts game, assigns codeNames and teams/assignments               				startGame()               										testStartGame()
+#7		Board.java					Returns if clue is legal or not                      							validClue()               										testClues()
+#8		Board.java					Updates when location selected and checks team        							choose(String entered)         									testChoose()
+#9		Board.java					Checks if the game has been won                      							gameState()                										testGameState()
+#10		Board.java					Returns who did not lose the game(who won)                     					assassPressed()            										testAssassinPressed()
