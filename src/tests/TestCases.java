@@ -70,14 +70,24 @@ public class TestCases {
 	int assPos = 0;	//used to hold assassin position
 	int byPos = 0;	//used to hold bystander position
 
-	public ArrayList<String> createArrayList(String[] x) {	//Creates arrayList to compare to readCSVFile in Board class
+	/*Creates arrayList to compare to readCSVFile in Board class
+	 * @param x 	holds String[] list to add into ArrayList<String>
+	 * @return ArrayList<String> of codeNames
+	 */
+	public ArrayList<String> createArrayList(String[] x) {
 		for(int i=0;i<x.length;i++	) {
 			codeNames.add(x[i]);
 		}
 		return codeNames;
 	}
 
-	public boolean noNull(String[] selected) {	//used to test if any nulls are in board.list
+	/*
+	 * used to test if any nulls are in board.list
+	 * @param selected	String list holding selected codeNames
+	 * @return false if the list has a null in it
+	 * @return true if the list is null free
+	 */
+	public boolean noNull(String[] selected) {	
 		for(int i=0;i<board.list.length;i++) {
 			if(board.list[i]==null||board.list[i].equals(null)||board.list[i].trim().isEmpty())
 				return false;
@@ -85,7 +95,14 @@ public class TestCases {
 		return true;
 	}
 
-	public boolean noDoubles(String[] input) {	//assures there are no repeated codeNames in board.list
+	
+	/*
+	 * assures there are no repeated codeNames in board.list
+	 * @param input	holds String list of codeNames
+	 * @return false if there is a repeated codeName
+	 * @return true	if there are no repeated codeNames
+	 */
+	public boolean noDoubles(String[] input) {	
 		for(int i=0;i<board.list.length;i++) {
 			String check = board.list[i];
 			for(int q=0;q<board.list.length;q++) {
@@ -96,7 +113,12 @@ public class TestCases {
 		return true;
 	}
 	
-	public int teamSize(String x) {	//assures the correct team size for string entered ex. "red" should equal 9
+	/*
+	 * assures the correct team size for string entered ex. "red" should equal 9
+	 * @param x	holds string of requested team size
+	 * @return size of requested team
+	 */
+	public int teamSize(String x) {	
 		int size = 0;
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(x.equalsIgnoreCase(board.mainBoard.get(i).getTeam()))
@@ -105,7 +127,13 @@ public class TestCases {
 		return size;
 	}
 	
-	public boolean shuffleSuccess() {	//assures the board was shuffled, compares original to after shuffle board
+	/*
+	 * assures the board was shuffled, compares original to after shuffle board
+	 * @param original holds original order of board.mainBoard selected codeNames list
+	 * @return false if shuffle() method did not shuffle/randomize list
+	 * @return true if shuffle() method did shuffle/randomize list
+	 */
+	public boolean shuffleSuccess() {	
 		ArrayList<Person> original = board.mainBoard;
 		board.shuffle();
 		if(original.toString()==(board.mainBoard.toString()))
@@ -114,28 +142,44 @@ public class TestCases {
 			return true;
 	}
 	
-	public void bluePosition() {	//gets position of a blue agent for testing
+	/*
+	 *gets position of a blue agent for testing 
+	 * @param sets bluPos to hold position of a blue agent
+	 */
+	public void bluePosition() {	//
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="blue")
 				bluPos=i;
 		}
 	}
 	
-	public void redPosition() {	//gets position of a red agent for testing
+	/*
+	 *gets position of a red agent for testing 
+	 * @param sets redPos to hold position of a red agent
+	 */
+	public void redPosition() {
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="red")
 				redPos=i;
 		}
 	}
 	
-	public void assassinPosition() {	//gets position of assassin for testing
+	/*
+	 *gets position of a assassin for testing 
+	 * @param sets assPos to hold position of a assassin
+	 */
+	public void assassinPosition() {
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="assassin")
 				assPos=i;
 		}
 	}
 	
-	public void bystanderPosition() {	//gets position of a bystander for testing
+	/*
+	 *gets position of a bystander for testing 
+	 * @param sets byPos to hold position of a bystander
+	 */
+	public void bystanderPosition() {
 		for(int i=0;i<board.mainBoard.size();i++) {
 			if(board.mainBoard.get(i).getTeam()=="bystander")
 				byPos=i;
