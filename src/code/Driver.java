@@ -1,4 +1,6 @@
-package edu.buffalo.cse116;
+package code;
+
+import code.Board;
 
 public class Driver implements Runnable {
 	

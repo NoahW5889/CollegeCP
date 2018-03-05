@@ -1,4 +1,4 @@
-package edu.buffalo.cse116;
+package code;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,13 +8,13 @@ import java.util.Collections;
 
 public class Board {
 	
-	String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
-	ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
-	ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
-	String turn=null;	//holds "red" or "blue" to determine turn
-	int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
-	int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
-	int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	public String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
+	public ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
+	public ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
+	public String turn=null;	//holds "red" or "blue" to determine turn
+	public int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
+	public int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
+	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
 	
 	public Board(String file) {	//constructor used to send in filename to read for codeNames
 		readCSVFile(file);
