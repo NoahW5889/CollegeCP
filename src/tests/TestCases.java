@@ -292,8 +292,6 @@ public class TestCases {
 		assertFalse(test2.getRevealed());	//tests that reveal status is false
 		test2.setRevealed(true);	//sets reveal status to true
 		assertTrue(test2.getRevealed());	//tests that reveal status is true
-		
-		
 	}
 	
 	@Test
