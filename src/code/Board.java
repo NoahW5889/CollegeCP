@@ -185,7 +185,7 @@ public class Board {
 	}
 	/*
 	 * Returns whether the game has been won or not
-	 * @return if the game has been won or not
+	 * @return if the game has been won or not 
 	 */
 	public String gameState() {	
 		
