@@ -31,7 +31,6 @@ public class Board {
 	 * board is filled
 	 * board is shuffled three times
 	 * turn is set to "red"
-	 * 
 	 */
 	public void startGame() {
 		Collections.shuffle(codeNames);
@@ -84,6 +83,7 @@ public class Board {
 		}
 		return true;
 	}
+	
 	/*
 	 * Fills board to size 25 players
 	 * @param add a player to mainBoard, while setting its team depending on number in string 
@@ -97,7 +97,7 @@ public class Board {
 			else if(i>=9&&i<17) {
 				person = new Person(codeNames.get(i),"blue");				
 			}
-			else if(i>=18&&i<23) {
+			else if(i>=18&&i<25) {
 				person = new Person(codeNames.get(i),"bystander");
 			}
 				
@@ -183,6 +183,7 @@ public class Board {
 			}
 		return "ERROR";
 	}
+	
 	/*
 	 * Returns whether the game has been won or not
 	 * @return if the game has been won or not 
@@ -207,6 +208,7 @@ public class Board {
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
 		//In future there will be a system.exit(0);
 	}
+	
 	/*
 	 * Shuffles board locations,
 	 * @param shuffles mainboard
