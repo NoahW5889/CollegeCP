@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observer;
 
 public class Board {
 	
@@ -216,5 +217,19 @@ public class Board {
 		Collections.shuffle(mainBoard);
 		Collections.shuffle(mainBoard);
 		Collections.shuffle(mainBoard);
+	}
+
+	public void submit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void exit() {
+		System.exit(0);
+		
+	}
+
+	public void newGame() {
+		System.exit(0);
 	}
 }
