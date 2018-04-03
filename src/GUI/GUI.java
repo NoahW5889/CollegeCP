@@ -102,7 +102,7 @@ public void update() {
 	}
 
 	public void setButtonProperties(JButton button) {
-		button.setFont(new Font("Courier", Font.BOLD, 44));
+		button.setFont(new Font("Courier", Font.BOLD, 30));
 		button.setBackground(Color.WHITE);
 		button.setForeground(Color.BLACK);
 		button.setOpaque(true);
@@ -110,7 +110,7 @@ public void update() {
 	}
 	
 	public void setLabelProperties(JLabel label) {
-		label.setFont(new Font("Courier", Font.BOLD, 44));
+		label.setFont(new Font("Courier", Font.BOLD, 30));
 		label.setBackground(Color.WHITE);
 		label.setForeground(Color.BLACK);
 		label.setOpaque(true);
