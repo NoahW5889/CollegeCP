@@ -213,7 +213,7 @@ public class Board {
 	}
 
 	public void submit() {
-		checkGuess(GUI.GUI.entry.getText());
+		choose(GUI.GUI.entry.getText());
 		clear();
 		notifyObservers();
 	}

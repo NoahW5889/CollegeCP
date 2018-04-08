@@ -23,6 +23,9 @@ public class GUI implements Observer {
 	private Board _board;
 	private JPanel _cardPanel;
 	public static JTextField entry;
+	private JLabel turn;
+	private JPanel controlPanel;
+	private JPanel turnPanel;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -37,12 +40,16 @@ public class GUI implements Observer {
 		JPanel middlePanel = new JPanel();
 		middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
 		_mainPanel.add(middlePanel);
-		
-		JPanel controlPanel = new JPanel();
+				
+		controlPanel = new JPanel();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
 		_mainPanel.add(controlPanel);
 		
 		middlePanel.add(_cardPanel);
+		
+		turnPanel = new JPanel();
+		turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.X_AXIS));
+		controlPanel.add(turnPanel);
 		
 		JButton submit = new JButton("Submit");
 		setButtonProperties(submit);
@@ -69,6 +76,8 @@ public class GUI implements Observer {
 	@Override
 	public void update() {
 		
+		
+		
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.mainBoard;
 		for(int i = 0; i<codeNames.size();i++) {
@@ -83,11 +92,15 @@ public class GUI implements Observer {
 				_cardPanel.add(add);
 			}
 		}
+		
+		turnPanel.removeAll();
+		JLabel turn = new JLabel("Turn: "+_board.turn);
+		setLabelProperties(turn);
+		turnPanel.add(turn);
+		
 		// This should be last statement of this method:
 		updateJFrameIfNotHeadless();
 	}
-
-	
 	
 	public void updateJFrameIfNotHeadless() {
 		if (_windowHolder != null) {
