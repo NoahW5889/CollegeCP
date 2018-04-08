@@ -4,24 +4,25 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
 import code.Board;
 import code.Driver;
+import code.Observer;
 import code.Person;
 
-public class GUI {
+public class GUI implements Observer {
 	
 	private Driver _windowHolder;
 	private Board _board;
 	private JPanel _cardPanel;
+	public static JTextField entry;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -32,7 +33,6 @@ public class GUI {
 		
 		_cardPanel = new JPanel();
 		_cardPanel.setLayout(new GridLayout(5,5));
-		_mainPanel.add(_cardPanel);
 		
 		JPanel middlePanel = new JPanel();
 		middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
@@ -42,26 +42,32 @@ public class GUI {
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
 		_mainPanel.add(controlPanel);
 		
+		middlePanel.add(_cardPanel);
+		
 		JButton submit = new JButton("Submit");
 		setButtonProperties(submit);
-		_mainPanel.add(submit);
-		submit.addActionListener(new SubmitHandler(b));
+		controlPanel.add(submit);
+		submit.addActionListener(new SubmitHandler(_board));
+		
+		entry = new JTextField();
+		controlPanel.add(entry);
 		
 		JButton exit = new JButton("Exit");
 		setButtonProperties(exit);
-		_mainPanel.add(exit);
-		exit.addActionListener(new ExitHandler(b));
+		controlPanel.add(exit);
+		exit.addActionListener(new ExitHandler(_board));
 		
 		JButton newGame = new JButton("New Game");
 		setButtonProperties(newGame);
-		_mainPanel.add(newGame);
-		newGame.addActionListener(new NewGameHandler(b));
+		controlPanel.add(newGame);
+		newGame.addActionListener(new NewGameHandler(_board));
 		
-		b.startGame();
-		update();
+		_board.startGame();
+		_board.addObserver(this);
 	}
 	
-public void update() {
+	@Override
+	public void update() {
 		
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.mainBoard;
@@ -77,24 +83,12 @@ public void update() {
 				_cardPanel.add(add);
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		// This should be last statement of this method:
 		updateJFrameIfNotHeadless();
 	}
 
+	
+	
 	public void updateJFrameIfNotHeadless() {
 		if (_windowHolder != null) {
 			_windowHolder.updateJFrame();

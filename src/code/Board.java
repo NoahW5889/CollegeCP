@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Observer;
+
 
 public class Board {
 	
@@ -16,6 +16,7 @@ public class Board {
 	public int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
 	public int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	private ArrayList<Observer> _observers;	
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -23,6 +24,7 @@ public class Board {
 	 */		
 	public Board(String file) {
 		readCSVFile(file);
+		_observers = new ArrayList<Observer>();
 	}
 	
 	/*Starts the game
@@ -36,8 +38,9 @@ public class Board {
 		Collections.shuffle(codeNames);
 		createList();
 		fillBoard();
-		shuffle();
+		Collections.shuffle(mainBoard);
 		turn="red";
+		notifyObservers();
 	}
 
 	/*
@@ -208,22 +211,38 @@ public class Board {
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
 		//In future there will be a system.exit(0);
 	}
-	
-	/*
-	 * Shuffles board locations,
-	 * @param shuffles mainboard
-	 */
-	public void shuffle() {	
-		Collections.shuffle(mainBoard);
-		Collections.shuffle(mainBoard);
-		Collections.shuffle(mainBoard);
-	}
 
 	public void submit() {
-		// TODO Auto-generated method stub
-		
+		checkGuess(GUI.GUI.entry.getText());
+		clear();
+		notifyObservers();
 	}
 
+	public boolean checkGuess(String guess) {
+		for (int i=0;i<mainBoard.size();i++) {
+			if (mainBoard.get(i).getCodeName().equalsIgnoreCase(guess)) {
+				mainBoard.get(i).setRevealed(true);
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void addObserver(Observer obs) {
+		_observers.add(obs);
+		notifyObservers();
+	}
+
+	public void notifyObservers() {
+		for (Observer obs : _observers) {
+			obs.update();
+		}
+	}
+	
+	public void clear() {
+		GUI.GUI.entry.setText("");
+	}
+	
 	public void exit() {
 		System.exit(0);
 		
