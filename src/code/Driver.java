@@ -24,6 +24,7 @@ public class Driver implements Runnable {
 	
 	@Override 
 	public void run() {
+		
 		_window = new JFrame("CodeNames");
 		_mainPanel = new JPanel();
 		_window.getContentPane().add(_mainPanel);

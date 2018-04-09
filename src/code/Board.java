@@ -35,6 +35,8 @@ public class Board {
 	 * turn is set to "red"
 	 */
 	public void startGame() {
+		list=new String[25];
+		mainBoard=new ArrayList<Person>();
 		Collections.shuffle(codeNames);
 		createList();
 		fillBoard();
@@ -249,6 +251,6 @@ public class Board {
 	}
 
 	public void newGame() {
-		System.exit(0);
+		startGame();
 	}
 }
