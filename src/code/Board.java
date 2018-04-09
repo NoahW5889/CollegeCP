@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class Board {
 	
 	public String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
@@ -15,6 +16,8 @@ public class Board {
 	public int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
 	public int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	private ArrayList<Observer> _observers;	
+	public String reply;
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -22,6 +25,7 @@ public class Board {
 	 */		
 	public Board(String file) {
 		readCSVFile(file);
+		_observers = new ArrayList<Observer>();
 	}
 	
 	/*Starts the game
@@ -32,11 +36,18 @@ public class Board {
 	 * turn is set to "red"
 	 */
 	public void startGame() {
+		reply =  "Start of Game";
+		list=new String[25];
+		mainBoard=new ArrayList<Person>();
+		assCnt=1;
+		redCnt=9;
+		bluCnt=8;
 		Collections.shuffle(codeNames);
 		createList();
 		fillBoard();
-		shuffle();
+		Collections.shuffle(mainBoard);
 		turn="red";
+		notifyObservers();
 	}
 
 	/*
@@ -117,10 +128,11 @@ public class Board {
 		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty())
 			return "Invalid Entry. Try Again";
 		
-		else if(entered.equalsIgnoreCase("rules")) {
-			return ("===============\nRules.\n===============\nPlease refer to video."
-					+ "\nhttps://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
-					+ "\n===============");
+		else if(entered.equalsIgnoreCase("rules")||entered.equalsIgnoreCase("rule")) {
+			return ("<html>===============Rules.==============="
+					+ "<br>Please refer to video."
+					+ "<br>https://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
+					+ "<br>===============");
 		}
 			
 		else if(entered.equalsIgnoreCase("skip")) {
@@ -207,14 +219,35 @@ public class Board {
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
 		//In future there will be a system.exit(0);
 	}
+
+	public void submit() {
+		reply = choose(GUI.GUI.entry.getText());
+		notifyObservers();
+		clear();
+		
+	}
 	
-	/*
-	 * Shuffles board locations,
-	 * @param shuffles mainboard
-	 */
-	public void shuffle() {	
-		Collections.shuffle(mainBoard);
-		Collections.shuffle(mainBoard);
-		Collections.shuffle(mainBoard);
+	public void addObserver(Observer obs) {
+		_observers.add(obs);
+		notifyObservers();
+	}
+
+	public void notifyObservers() {
+		for (Observer obs : _observers) {
+			obs.update();
+		}
+	}
+	
+	public void clear() {
+		GUI.GUI.entry.setText("");
+	}
+	
+	public void exit() {
+		System.exit(0);
+		
+	}
+
+	public void newGame() {
+		startGame();
 	}
 }

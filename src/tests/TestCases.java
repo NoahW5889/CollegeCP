@@ -135,7 +135,7 @@ public class TestCases {
 	 */
 	public boolean shuffleSuccess() {	
 		ArrayList<Person> original = board.mainBoard;
-		board.shuffle();
+		board.startGame();
 		if(original.toString()==(board.mainBoard.toString()))
 			return false;
 		else
