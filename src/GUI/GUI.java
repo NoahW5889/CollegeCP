@@ -136,6 +136,8 @@ public class GUI implements Observer {
 		}
 	}
 
+
+	
 	public void setButtonProperties(JButton button) {
 		button.setFont(new Font("Courier", Font.BOLD, 30));
 		button.setBackground(Color.WHITE);
