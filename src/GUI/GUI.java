@@ -23,7 +23,6 @@ public class GUI implements Observer {
 	private Board _board;
 	private JPanel _cardPanel;
 	public static JTextField entry;
-	private JLabel turn;
 	private JPanel controlPanel;
 	private JPanel turnPanel;
 	private JPanel responsePanel;
@@ -84,7 +83,6 @@ public class GUI implements Observer {
 	public void update() {
 		
 		
-		
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.mainBoard;
 		for(int i = 0; i<codeNames.size();i++) {
@@ -96,18 +94,36 @@ public class GUI implements Observer {
 			else {
 				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
 				setLabelProperties(add);
+				if(codeNames.get(i).getTeam()=="bystander")
+					add.setBackground(Color.lightGray);
+				else if(codeNames.get(i).getTeam()=="red")
+					add.setBackground(Color.red);
+				else
+					add.setBackground(Color.blue);
 				_cardPanel.add(add);
 			}
 		}
 		
 		responsePanel.removeAll();
-		JLabel response = new JLabel(_board.choose(entry.getText()));
+		JLabel response = new JLabel(_board.reply);
+		JLabel redLeft = new JLabel("Red: "+_board.redCnt);
+		JLabel bluLeft = new JLabel("Blue: "+_board.bluCnt);
 		setLabelProperties(response);
+		setLabelProperties(redLeft);
+		redLeft.setBackground(Color.red);
+		setLabelProperties(bluLeft);
+		bluLeft.setBackground(Color.blue);
+		responsePanel.add(redLeft);
 		responsePanel.add(response);
+		responsePanel.add(bluLeft);
 		
 		turnPanel.removeAll();
 		JLabel turn = new JLabel("Turn: "+_board.turn);
 		setLabelProperties(turn);
+		if(_board.turn=="red")
+			turn.setBackground(Color.red);
+		else
+			turn.setBackground(Color.blue);
 		turnPanel.add(turn);
 		
 		// This should be last statement of this method:
