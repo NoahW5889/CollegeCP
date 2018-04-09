@@ -78,5 +78,10 @@ Goals for the next meeting [20+ minutes]
 Schedule for the next week's set of pair programming meetings [3-4 minutes]
 	
 ==================================================================================
+4/9/2018 
+Group meeting 
+Maurice
+Noah
+Fulton
 
-		
+Delegated task left for project. Maurice(menubar) ,Fulton(Assasin Turn),Noah (Test)

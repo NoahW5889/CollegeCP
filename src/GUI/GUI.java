@@ -8,6 +8,9 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
@@ -26,6 +29,9 @@ public class GUI implements Observer {
 	private JPanel controlPanel;
 	private JPanel turnPanel;
 	private JPanel responsePanel;
+	JMenu toolsMenu = new JMenu("File"); 
+	JMenuBar menuBar = new JMenuBar();
+	
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -33,6 +39,23 @@ public class GUI implements Observer {
 		
 		JPanel _mainPanel = mp;
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.Y_AXIS));
+		
+		JMenuItem NewGame = new JMenuItem("New Game"); // Create a menu item.
+		NewGame.addActionListener(new NewGameHandler(_board));        // Add listener to menu item.
+		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(NewGame);
+		
+		
+		JMenuItem quitGame = new JMenuItem("Quit");   // Create a menu item.
+		quitGame.addActionListener(new ExitHandler(_board));         // Add listener to menu item.
+		quitGame.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(quitGame); // Add menu item to menu.
+		
+		
+		toolsMenu.setFont(new Font("Courier", Font.BOLD, 24));
+		menuBar.add(toolsMenu);
+		_mainPanel.add(menuBar);
+		
 		
 		_cardPanel = new JPanel();
 		_cardPanel.setLayout(new GridLayout(5,5));
