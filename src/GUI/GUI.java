@@ -26,6 +26,7 @@ public class GUI implements Observer {
 	private JLabel turn;
 	private JPanel controlPanel;
 	private JPanel turnPanel;
+	private JPanel responsePanel;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -40,6 +41,12 @@ public class GUI implements Observer {
 		JPanel middlePanel = new JPanel();
 		middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
 		_mainPanel.add(middlePanel);
+		
+		responsePanel = new JPanel();
+		responsePanel.setLayout(new BoxLayout(responsePanel, BoxLayout.X_AXIS));
+		_mainPanel.add(responsePanel);
+		
+		
 				
 		controlPanel = new JPanel();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
@@ -92,6 +99,11 @@ public class GUI implements Observer {
 				_cardPanel.add(add);
 			}
 		}
+		
+		responsePanel.removeAll();
+		JLabel response = new JLabel(_board.choose(entry.getText()));
+		setLabelProperties(response);
+		responsePanel.add(response);
 		
 		turnPanel.removeAll();
 		JLabel turn = new JLabel("Turn: "+_board.turn);
