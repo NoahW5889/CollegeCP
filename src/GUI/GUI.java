@@ -110,13 +110,14 @@ public class GUI implements Observer {
 		ArrayList<Person> codeNames = _board.mainBoard;
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
-			JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
-			setLabelProperties(add);
+			JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
+			setButtonProperties(add);
+			add.addActionListener(new cardHandler(_board,codeNames.get(i).getCodeName()));
 			_cardPanel.add(add);
 			}
 			else {
-				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
-				setLabelProperties(add);
+				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
+				setButtonProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
