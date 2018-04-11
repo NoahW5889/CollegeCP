@@ -13,6 +13,14 @@ public class SubmitHandler implements ActionListener {
 	
 
 	public void actionPerformed(ActionEvent e) {
-		_b.submit();
+		if(_b.validClue()==false) {
+			_b.reply="invalid clue";
+		}
+		else {
+			_b.reply="valid clue";
+		}
+		_b.clear();
+		_b.notifyObservers();
+		
 	}
 }

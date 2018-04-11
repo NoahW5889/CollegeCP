@@ -85,7 +85,8 @@ public class Board {
 	 * @return true if clue is valid
 	 * @return false if clue is not valid
 	 */
-	public boolean validClue(String h) { //checks if a clue is legal, BULLET POINT 7
+	public boolean validClue() { //checks if a clue is legal, BULLET POINT 7
+		String h= GUI.GUI.entry.getText();
 		for(int i=0;i<25;i++) {
 			if(h==null||h.trim().isEmpty()||h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
 				return false;
