@@ -135,17 +135,18 @@ public class GUI implements Observer {
 		}
 		
 		responsePanel.removeAll();
+	
 		JLabel response = new JLabel(_board.reply);
-		JLabel redLeft = new JLabel("Red: "+_board.redCnt);
-		JLabel bluLeft = new JLabel("Blue: "+_board.bluCnt);
+		JLabel curClu = new JLabel("Current Clue: "+_board.curClue);
+		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
 		setLabelProperties(response);
-		setLabelProperties(redLeft);
-		redLeft.setBackground(Color.red);
-		setLabelProperties(bluLeft);
-		bluLeft.setBackground(Color.blue);
-		responsePanel.add(redLeft);
+		setLabelProperties(curClu);
+		curClu.setBackground(Color.red);
+		setLabelProperties(curTurCnt);
+		curTurCnt.setBackground(Color.blue);
+		responsePanel.add(curClu);
 		responsePanel.add(response);
-		responsePanel.add(bluLeft);
+		responsePanel.add(curTurCnt);
 		
 		turnPanel.removeAll();
 		JLabel turn = new JLabel("Turn: "+_board.turn);

@@ -18,6 +18,7 @@ public class Board {
 	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
 	private ArrayList<Observer> _observers;	
 	public String reply;
+	public String curClue;
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -47,7 +48,10 @@ public class Board {
 		fillBoard();
 		Collections.shuffle(mainBoard);
 		turn="red";
+		curClue="";
 		notifyObservers();
+		
+		
 	}
 
 	/*
@@ -81,7 +85,6 @@ public class Board {
 	
 	/*
 	 * Checks if clue is legal or not
-	 * @param the clue enetered by the player
 	 * @return true if clue is valid
 	 * @return false if clue is not valid
 	 */
@@ -97,12 +100,22 @@ public class Board {
 		return true;
 	}
 	
+	public int currentTurnCnt() {
+		if(turn=="red") {
+			return redCnt;
+		}
+		else {
+			return bluCnt;
+		}
+	}
+	
 	public void validClues() {
 		if(validClue()==false) {
 			reply="The Clue is Invalid";
 		}
 		else {
 			reply="The Clue is Valid";
+			curClue=GUI.GUI.entry.getText();
 		}
 		clear();
 		notifyObservers();
@@ -244,6 +257,7 @@ public class Board {
 
 	public void submit() {
 		reply = choose(GUI.GUI.entry.getText());
+		
 		notifyObservers();
 		clear();
 		
