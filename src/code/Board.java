@@ -88,7 +88,7 @@ public class Board {
 	public boolean validClue() { //checks if a clue is legal, BULLET POINT 7
 		String h= GUI.GUI.entry.getText();
 		for(int i=0;i<25;i++) {
-			if(h==null||h.trim().isEmpty()||h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
+			if(h==null||h.trim().isEmpty()||(h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
 				
 				return false;
 			}
@@ -220,6 +220,15 @@ public class Board {
 		else return "No one has won the game.";
 	}
 	
+	public void volendTurn() {
+		if(turn=="red") {
+			turn="blue";
+		}
+		else{
+			turn="red";
+		}
+		notifyObservers();
+	}
 	/*
 	 * Method called when assassin is chosen, returns winner
 	 * @return which team has not lost the game
