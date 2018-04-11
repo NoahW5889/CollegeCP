@@ -101,7 +101,7 @@ public class Board {
 	}
 	
 	public int currentTurnCnt() {
-		if(turn=="red") {
+		if(turn=="red" || turn == "Red Spy") {
 			return redCnt;
 		}
 		else {
@@ -221,6 +221,9 @@ public class Board {
 				turn = "Red Spy";
 				return "Incorrect Guess.";
 			}
+		if(turn == "Blue Spy" || turn == "Red Spy") {
+			return "Please enter a Clue";
+		}
 		return "ERROR";
 	}
 	

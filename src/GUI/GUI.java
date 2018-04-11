@@ -137,7 +137,12 @@ public class GUI implements Observer {
 		responsePanel.removeAll();
 	
 		JLabel response = new JLabel(_board.reply);
-		JLabel curClu = new JLabel("Current Clue: "+_board.curClue);
+		JLabel curClu = null;
+		if(_board.turn == "red" || _board.turn == "blue") {
+			curClu = new JLabel("Current" + _board.turn + " Clue: "+_board.curClue);
+		}else {
+			curClu = new JLabel("Current Clue: ");
+		}
 		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
 		setLabelProperties(response);
 		setLabelProperties(curClu);
