@@ -99,7 +99,7 @@ public class GUI implements Observer {
 		newGame.addActionListener(new NewGameHandler(_board));
 		
 
-		JButton endTurn = new JButton("end turn");
+		JButton endTurn = new JButton("End Turn");
 		setButtonProperties(endTurn);
 		controlPanel.add(endTurn);
 		endTurn.addActionListener(new volendTurn(_board));
