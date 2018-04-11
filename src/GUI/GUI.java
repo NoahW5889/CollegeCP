@@ -141,9 +141,9 @@ public class GUI implements Observer {
 		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
 		setLabelProperties(response);
 		setLabelProperties(curClu);
-		curClu.setBackground(Color.red);
+		curClu.setBackground(Color.green);
 		setLabelProperties(curTurCnt);
-		curTurCnt.setBackground(Color.blue);
+		curTurCnt.setBackground(Color.green);
 		responsePanel.add(curClu);
 		responsePanel.add(response);
 		responsePanel.add(curTurCnt);
