@@ -3,6 +3,8 @@ package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -86,6 +88,13 @@ public class GUI implements Observer {
 		submit.addActionListener(new SubmitHandler(_board));
 		
 		entry = new JTextField();
+		entry.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_board.validClues();
+			}
+		});
 		controlPanel.add(entry);
 		
 		JButton exit = new JButton("Exit");

@@ -14,6 +14,5 @@ public class SubmitHandler implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		_b.validClues();
-		
 	}
 }
