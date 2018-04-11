@@ -89,12 +89,24 @@ public class Board {
 		String h= GUI.GUI.entry.getText();
 		for(int i=0;i<25;i++) {
 			if(h==null||h.trim().isEmpty()||h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false) {
+				
 				return false;
 			}
 		}
+		
 		return true;
 	}
 	
+	public void validClues() {
+		if(validClue()==false) {
+			reply="The Clue is Invalid";
+		}
+		else {
+			reply="The Clue is Valid";
+		}
+		clear();
+		notifyObservers();
+	}
 	/*
 	 * Fills board to size 25 players
 	 * @param add a player to mainBoard, while setting its team depending on number in string 
