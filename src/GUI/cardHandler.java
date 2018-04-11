@@ -15,6 +15,7 @@ public class cardHandler implements ActionListener {
 	
 
 	public void actionPerformed(ActionEvent e) {
+		
 		GUI.entry.setText(_c);
 		_b.submit();
 	}

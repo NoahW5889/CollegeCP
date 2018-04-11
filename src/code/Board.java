@@ -47,7 +47,7 @@ public class Board {
 		createList();
 		fillBoard();
 		Collections.shuffle(mainBoard);
-		turn="red";
+		turn="Red Spy";
 		curClue="";
 		notifyObservers();
 		
@@ -115,6 +115,11 @@ public class Board {
 		}
 		else {
 			reply="The Clue is Valid";
+			if(turn == "Red Spy") {
+				turn = "red";
+			}else if(turn == "Blue Spy") {
+				turn = "blue";
+			}
 			curClue=GUI.GUI.entry.getText();
 		}
 		clear();
@@ -162,17 +167,15 @@ public class Board {
 		}
 			
 		else if(entered.equalsIgnoreCase("skip")) {
-			if(turn=="red") {
-				turn = "blue";
+			if(turn=="red" || turn == "Red Spy") {
+				turn = "Blue Spy";
 				return "Red Team Skips their turn.";
 			}
 			else {
-				turn = "red";
+				turn = "Red Spy";
 				return "Blue Team Skips their turn.";
 			}
-		}
-		
-		else if(turn=="red") {
+		}else if(turn=="red") {
 			for(int i=0;i<mainBoard.size();i++) {
 				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)) {
 					if(mainBoard.get(i).getTeam()=="red"&&mainBoard.get(i).getRevealed()!=true) {
@@ -187,12 +190,12 @@ public class Board {
 					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
-						turn = "blue";
+						turn = "Blue Spy";
 						return "Incorrect, Bystander revealed";
 					}
 				}
 			}
-			turn = "blue";
+			turn = "Blue Spy";
 			return "Incorrect Guess.";
 		}
 		
@@ -210,12 +213,12 @@ public class Board {
 					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
-						turn = "red";
+						turn = "Red Spy";
 						return "Incorrect, Bystander revealed";
 					}
 				}
 			}
-				turn = "red";
+				turn = "Red Spy";
 				return "Incorrect Guess.";
 			}
 		return "ERROR";
@@ -234,11 +237,11 @@ public class Board {
 	}
 	
 	public void volendTurn() {
-		if(turn=="red") {
-			turn="blue";
+		if(turn=="red" || turn == "Red Spy") {
+			turn="Blue Spy";
 		}
 		else{
-			turn="red";
+			turn="Red Spy";
 		}
 		notifyObservers();
 	}

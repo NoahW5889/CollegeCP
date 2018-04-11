@@ -151,7 +151,7 @@ public class GUI implements Observer {
 		turnPanel.removeAll();
 		JLabel turn = new JLabel("Turn: "+_board.turn);
 		setLabelProperties(turn);
-		if(_board.turn=="red")
+		if(_board.turn=="red" || _board.turn == "Red Spy")
 			turn.setBackground(Color.red);
 		else
 			turn.setBackground(Color.blue);
