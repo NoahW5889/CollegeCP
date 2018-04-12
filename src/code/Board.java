@@ -61,11 +61,11 @@ public class Board {
 	 */
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
-    	try { for(String each: Files.readAllLines(Paths.get(filename))) {
-    		codeNames.add(each);
-    	}
-    	}
-    	catch (IOException ex){
+    	try { 
+    		for(String each: Files.readAllLines(Paths.get(filename))) {
+    			codeNames.add(each);
+    		}
+    	}catch (IOException ex){
             ex.printStackTrace();
         }
     	  return codeNames;
@@ -75,7 +75,7 @@ public class Board {
 	 * Creates a list of 25 random codeNames/words from the list created in readCSVFile 
 	 * @param list[] sets each element in list , to a random word in codeNames
 	 */
-	public void createList() { 
+	public void createList() {
 		for(int i=0;i<25;i++) {
 			int rand = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
@@ -90,9 +90,31 @@ public class Board {
 	 */
 	public boolean validClue() { //checks if a clue is legal, BULLET POINT 7
 		String h= GUI.GUI.entry.getText();
+		if(h.length() > 15) {
+			reply = "String is too long";
+			return false;
+		}
+		String pl = h.replaceAll("[^a-zA-Z]", "");
 		for(int i=0;i<25;i++) {
-			if(h==null||h.trim().isEmpty()||(h.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
-				
+			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
+				return false;
+			}
+		}
+		boolean hasNum = false;
+		String placeHolder = h.replaceAll("[^\\d.]", "");
+		if(placeHolder.trim().isEmpty()) {
+			return false;
+		}
+		for(char a: h.toCharArray()) {
+			if(Character.isDigit(a)) {
+				hasNum = true;
+			}
+		}
+		if(hasNum == true) {
+			long result = Long.parseLong(placeHolder);
+			if(turn == "Red Spy" && redCnt < result) {
+				return false;
+			}else if(turn == "Blue Spy" && bluCnt < result) {
 				return false;
 			}
 		}
@@ -156,9 +178,12 @@ public class Board {
 	 */
 	public String choose(String entered) {	
 		
-		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty())
+		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
 			return "Invalid Entry. Try Again";
-		
+		}
+		else if(entered.length() > 15) {
+			return "Entry is too long";
+		}
 		else if(entered.equalsIgnoreCase("rules")||entered.equalsIgnoreCase("rule")) {
 			return ("<html>===============Rules.==============="
 					+ "<br>Please refer to video."
@@ -222,7 +247,7 @@ public class Board {
 				return "Incorrect Guess.";
 			}
 		if(turn == "Blue Spy" || turn == "Red Spy") {
-			return "Please enter a Clue";
+			return "Enter a Clue and a num";
 		}
 		return "ERROR";
 	}

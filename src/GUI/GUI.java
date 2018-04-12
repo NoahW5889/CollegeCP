@@ -16,6 +16,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 
 import code.Board;
 import code.Driver;
@@ -31,6 +39,7 @@ public class GUI implements Observer {
 	private JPanel controlPanel;
 	private JPanel turnPanel;
 	private JPanel responsePanel;
+	private JPanel startMenu;
 	JMenu toolsMenu = new JMenu("File"); 
 	JMenuBar menuBar = new JMenuBar();
 	
@@ -58,6 +67,9 @@ public class GUI implements Observer {
 		menuBar.add(toolsMenu);
 		_mainPanel.add(menuBar);
 		
+//		startMenu.setFont(new Font("COurier", Font.BOLD, 24));
+//		_mainPanel.add(startMenu);
+		
 		
 		_cardPanel = new JPanel();
 		_cardPanel.setLayout(new GridLayout(5,5));
@@ -69,8 +81,6 @@ public class GUI implements Observer {
 		responsePanel = new JPanel();
 		responsePanel.setLayout(new BoxLayout(responsePanel, BoxLayout.X_AXIS));
 		_mainPanel.add(responsePanel);
-		
-		
 				
 		controlPanel = new JPanel();
 		controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.X_AXIS));
@@ -148,8 +158,10 @@ public class GUI implements Observer {
 		JLabel response = new JLabel(_board.reply);
 		JLabel curClu = null;
 		if(_board.turn == "red" || _board.turn == "blue") {
-			curClu = new JLabel("Current" + _board.turn + " Clue: "+_board.curClue);
+			entry.setEditable(false);
+			curClu = new JLabel("Current" + _board.turn + " Clue: "+_board.curClue.replaceAll("[^a-zA-Z0-9 ]", ""));
 		}else {
+			entry.setEditable(true);
 			curClu = new JLabel("Current Clue: ");
 		}
 		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
