@@ -13,9 +13,11 @@ public class SubmitHandler implements ActionListener {
 	
 
 	public void actionPerformed(ActionEvent e) {
+		if(_b.bluCnt>=1&&_b.redCnt>=1&&_b.assCnt>=1) {
 		if(_b.turn=="red"||_b.turn=="blue")
 			_b.submit();
 		else
 			_b.validClues();
+	}
 	}
 }

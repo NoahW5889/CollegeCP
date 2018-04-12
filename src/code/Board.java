@@ -90,7 +90,9 @@ public class Board {
 			int rand = (int) (Math.random()*codeNames.size());
 			int rand2 = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
+			if(17>=i) {
 			kameWords.add(codeNames.get(rand2));
+			}
 			if(codeNames.size()<25) {
 				readCSVFile(readinFile);
 			}
@@ -155,11 +157,11 @@ public class Board {
 	public void easterEgg() {
 		if(turn=="red") {
 			redCnt=0;
-			reply="Game Over Red Team Wins";
+			reply="Game Over Red Team Wins(EE)";
 		}
 		if(turn=="blue") {
 			bluCnt=0;
-			reply="Game Over Blue Team Wins";
+			reply="Game Over Blue Team Wins(EE)";
 		}
 		notifyObservers();
 	}
@@ -290,12 +292,19 @@ public class Board {
 	 * Returns whether the game has been won or not
 	 * @return if the game has been won or not 
 	 */
-	public void gameState() {	
+	public void gameState(String q) {	
 		
-		if(redCnt==0||bluCnt==0||assCnt==0) {
-		//reply= "The game has been won.";
+		if(q=="red") {
+			reply= "Red Team Has Won the Game";
 		}
-		//else reply= "No one has won the game.";
+		 if(q=="blue") {
+			reply= "Red Team Has Won the Game";
+		}
+		 if(q=="assass") {
+			reply= assassPressed();
+		}
+		
+		notifyObservers();
 	}
 	
 	public void volendTurn() {

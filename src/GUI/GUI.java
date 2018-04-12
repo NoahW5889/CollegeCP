@@ -117,6 +117,21 @@ public class GUI implements Observer {
 	
 	@Override
 	public void update() {
+		
+		if(_board.redCnt==0) {
+			_cardPanel.removeAll();
+				
+		}
+		else if(_board.bluCnt==0) {
+			_cardPanel.removeAll();
+			
+		}
+		else if(_board.assCnt==0) {
+			_cardPanel.removeAll();
+			
+		}
+		
+		else {
 		if (_board.turn=="Red Spy"||_board.turn=="Blue Spy") {
 			_cardPanel.removeAll();
 			ArrayList<Person> codeNames = _board.mainBoard;
@@ -174,6 +189,7 @@ public class GUI implements Observer {
 					add.setBackground(Color.blue);
 				_cardPanel.add(add);
 			}
+		}
 		}
 		}
 		responsePanel.removeAll();
