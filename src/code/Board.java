@@ -90,7 +90,7 @@ public class Board {
 			int rand = (int) (Math.random()*codeNames.size());
 			int rand2 = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
-			if(17>=i) {
+			if(16>=i) {
 			kamiWords.add(codeNames.get(rand2));
 			}
 			if(codeNames.size()<25) {

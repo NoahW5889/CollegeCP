@@ -155,6 +155,9 @@ public class GUI implements Observer {
 						add.setBackground(Color.magenta);
 						
 					}
+					if(_board.kamiWords.contains(codeNames.get(i).getCodeName())) {
+						add.setBackground(Color.yellow);
+					}
 					_cardPanel.add(add);
 				
 			}
