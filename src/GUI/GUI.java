@@ -122,7 +122,7 @@ public class GUI implements Observer {
 			ArrayList<Person> codeNames = _board.mainBoard;
 			
 			for(int i = 0; i<codeNames.size();i++) {
-				if(codeNames.get(i).getRevealed()==false) {
+				
 					JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
 					setButtonProperties(add);
 					if(codeNames.get(i).getTeam()=="bystander")
@@ -131,8 +131,11 @@ public class GUI implements Observer {
 						add.setBackground(Color.red);
 					else
 						add.setBackground(Color.blue);
+					if(codeNames.get(i).getRevealed()==true) {
+						add.setBackground(Color.magenta);
+					}
 					_cardPanel.add(add);
-				}
+				
 			}
 			
 
