@@ -129,10 +129,16 @@ public class GUI implements Observer {
 						add.setBackground(Color.lightGray);
 					else if(codeNames.get(i).getTeam()=="red")
 						add.setBackground(Color.red);
-					else
+					else if(codeNames.get(i).getTeam()=="blue")
 						add.setBackground(Color.blue);
+					else {
+						add.setBackground(Color.black);
+						add.setForeground(Color.WHITE);
+						
+					}
 					if(codeNames.get(i).getRevealed()==true) {
 						add.setBackground(Color.magenta);
+						
 					}
 					_cardPanel.add(add);
 				
