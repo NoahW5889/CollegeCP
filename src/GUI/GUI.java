@@ -170,7 +170,7 @@ public class GUI implements Observer {
 				
 			JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
 			setButtonProperties(add);
-			if(_board.kameWords.contains(codeNames.get(i).getCodeName())) {
+			if(_board.kamiWords.contains(codeNames.get(i).getCodeName())) {
 				add.addActionListener(new easterEggHandler(_board));
 				}
 			else{

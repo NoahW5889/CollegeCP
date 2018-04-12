@@ -21,7 +21,7 @@ public class Board {
 	private ArrayList<Observer> _observers;	
 	public String reply;
 	public String curClue;
-	public ArrayList<String> kameWords=new ArrayList<String>();
+	public ArrayList<String> kamiWords=new ArrayList<String>();
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -42,7 +42,7 @@ public class Board {
 	 * turn is set to "red"
 	 */
 	public void startGame() {
-		kameWords= new ArrayList<String>();
+		kamiWords= new ArrayList<String>();
 		reply =  "Start of Game";
 		list=new String[25];
 		mainBoard=new ArrayList<Person>();
@@ -91,7 +91,7 @@ public class Board {
 			int rand2 = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
 			if(17>=i) {
-			kameWords.add(codeNames.get(rand2));
+			kamiWords.add(codeNames.get(rand2));
 			}
 			if(codeNames.size()<25) {
 				readCSVFile(readinFile);
