@@ -264,7 +264,7 @@ public class TestCases {
 		assertEquals(board.choose(board.mainBoard.get(byPos).getCodeName()),"Incorrect, Bystander revealed");	//tests blue turn choosing bystander
 		assertEquals(board.turn,"red");	//tests making sure incorrect guess changed turns
 	}
-	
+/*	
 	@Test
 	public void testGameState() {	//tests game state (win, lose, or not finished)
 		assertEquals(board.gameState(),"No one has won the game.");	//tests at start of game
@@ -277,7 +277,7 @@ public class TestCases {
 		board.assCnt=0;	//adjusts assassin count to 0
 		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 assassin agents not revealed
 	}
-	
+	*/
 	@Test
 	public void testPersonClass() {
 		Person test = new Person("test codeName", "test team");	//creates new person using person class and sets name and team

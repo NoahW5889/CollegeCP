@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 
+
 public class Board {
 	
 	public String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
 	public ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
+	String readinFile=null;
 	public ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
 	public String turn=null;	//holds "red" or "blue" to determine turn
 	public int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
@@ -19,12 +21,15 @@ public class Board {
 	private ArrayList<Observer> _observers;	
 	public String reply;
 	public String curClue;
+	public ArrayList<String> kameWords=new ArrayList<String>();
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
 	 * @param readCSVFile Takes in the gameWords.txt and stores in codeNames
 	 */		
 	public Board(String file) {
+		
+		readinFile=file;
 		readCSVFile(file);
 		_observers = new ArrayList<Observer>();
 	}
@@ -37,6 +42,7 @@ public class Board {
 	 * turn is set to "red"
 	 */
 	public void startGame() {
+		kameWords= new ArrayList<String>();
 		reply =  "Start of Game";
 		list=new String[25];
 		mainBoard=new ArrayList<Person>();
@@ -49,6 +55,7 @@ public class Board {
 		Collections.shuffle(mainBoard);
 		turn="Red Spy";
 		curClue="";
+		
 		notifyObservers();
 		
 		
@@ -61,9 +68,11 @@ public class Board {
 	 */
 	public ArrayList<String> readCSVFile(String filename){
 		codeNames = new ArrayList<String>();
+		
     	try { 
     		for(String each: Files.readAllLines(Paths.get(filename))) {
     			codeNames.add(each);
+    			
     		}
     	}catch (IOException ex){
             ex.printStackTrace();
@@ -76,12 +85,21 @@ public class Board {
 	 * @param list[] sets each element in list , to a random word in codeNames
 	 */
 	public void createList() {
+	
 		for(int i=0;i<25;i++) {
 			int rand = (int) (Math.random()*codeNames.size());
+			int rand2 = (int) (Math.random()*codeNames.size());
 			list[i]=codeNames.get(rand);
+			kameWords.add(codeNames.get(rand2));
+			if(codeNames.size()<25) {
+				readCSVFile(readinFile);
+			}
 			codeNames.remove(rand);
+			
 		}
+	
 	}
+	
 	
 	/*
 	 * Checks if clue is legal or not
@@ -94,6 +112,7 @@ public class Board {
 			reply = "Invalid Clue. String is too long.";
 			return false;
 		}
+		
 		String pl = h.replaceAll("[^a-zA-Z]", "");
 		for(int i=0;i<25;i++) {
 			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
@@ -133,6 +152,18 @@ public class Board {
 		}
 	}
 	
+	public void easterEgg() {
+		if(turn=="red") {
+			redCnt=0;
+			reply="Game Over Red Team Wins";
+		}
+		if(turn=="blue") {
+			bluCnt=0;
+			reply="Game Over Blue Team Wins";
+		}
+		notifyObservers();
+	}
+	
 	public void validClues() {
 		if(validClue()==true) {
 			reply="The Clue is Valid";
@@ -150,7 +181,9 @@ public class Board {
 	 * Fills board to size 25 players
 	 * @param add a player to mainBoard, while setting its team depending on number in string 
 	 */
-	public void fillBoard() {	
+	public void fillBoard() {
+		
+		
 		for(int i=0;i<25;i++) {
 			Person person=null;
 			if(i<9) {
@@ -189,6 +222,7 @@ public class Board {
 					+ "<br>https://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
 					+ "<br>===============");
 		}
+		
 			
 		else if(entered.equalsIgnoreCase("skip")) {
 			if(turn=="red" || turn == "Red Spy") {
@@ -205,11 +239,11 @@ public class Board {
 					if(mainBoard.get(i).getTeam()=="red"&&mainBoard.get(i).getRevealed()!=true) {
 						redCnt-=1;
 						mainBoard.get(i).setRevealed(true);
+						turn="Red Spy";
 						return "Correct Guess!";
 						
 					}
 					else if(mainBoard.get(i).getTeam()=="assassin") {
-						assCnt-=1;
 						return assassPressed();
 					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
@@ -229,10 +263,11 @@ public class Board {
 					if(mainBoard.get(i).getTeam()=="blue"&&mainBoard.get(i).getRevealed()!=true) {
 						bluCnt-=1;
 						mainBoard.get(i).setRevealed(true);
+						turn="Blue Spy";
 						return "Correct Guess!";
 					}
 					else if(mainBoard.get(i).getTeam()=="assassin") {
-						assCnt-=1;
+						
 						return assassPressed();
 					}
 					else if(mainBoard.get(i).getTeam()=="bystander") {
@@ -255,12 +290,12 @@ public class Board {
 	 * Returns whether the game has been won or not
 	 * @return if the game has been won or not 
 	 */
-	public String gameState() {	
+	public void gameState() {	
 		
 		if(redCnt==0||bluCnt==0||assCnt==0) {
-		return "The game has been won.";
+		//reply= "The game has been won.";
 		}
-		else return "No one has won the game.";
+		//else reply= "No one has won the game.";
 	}
 	
 	public void volendTurn() {
@@ -277,6 +312,7 @@ public class Board {
 	 * @return which team has not lost the game
 	 */
 	public String assassPressed() {	
+		assCnt-=1;
 		if(turn=="red") {
 			return "Assassin chosen by Red Team! Blue Team Wins!";
 			//In future there will be a system.exit(0);

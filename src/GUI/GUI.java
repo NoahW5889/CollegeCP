@@ -30,8 +30,8 @@ public class GUI implements Observer {
 	private JPanel turnPanel;
 	private JPanel responsePanel;
 	private JPanel startMenu;
-	JMenu toolsMenu = new JMenu("File"); 
-	JMenuBar menuBar = new JMenuBar();
+	private JMenu toolsMenu = new JMenu("File"); 
+	private JMenuBar menuBar = new JMenuBar();
 	
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
@@ -51,6 +51,11 @@ public class GUI implements Observer {
 		quitGame.addActionListener(new ExitHandler(_board));         // Add listener to menu item.
 		quitGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(quitGame); // Add menu item to menu.
+		
+		JMenuItem easterEgg = new JMenuItem("Easter Egg");   // Create a menu item.
+		easterEgg.addActionListener(new easterEggHandler(_board));         // Add listener to menu item.
+		easterEgg.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(easterEgg); // Add menu item to menu.
 		
 		
 		toolsMenu.setFont(new Font("Courier", Font.BOLD, 24));
@@ -112,15 +117,41 @@ public class GUI implements Observer {
 	
 	@Override
 	public void update() {
-		
-		
+		if (_board.turn=="Red Spy"||_board.turn=="Blue Spy") {
+			_cardPanel.removeAll();
+			ArrayList<Person> codeNames = _board.mainBoard;
+			
+			for(int i = 0; i<codeNames.size();i++) {
+				if(codeNames.get(i).getRevealed()==false) {
+					JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
+					setButtonProperties(add);
+					if(codeNames.get(i).getTeam()=="bystander")
+						add.setBackground(Color.lightGray);
+					else if(codeNames.get(i).getTeam()=="red")
+						add.setBackground(Color.red);
+					else
+						add.setBackground(Color.blue);
+					_cardPanel.add(add);
+				}
+			}
+			
+
+			
+		}
+		else {
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.mainBoard;
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
+				
 			JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
 			setButtonProperties(add);
+			if(_board.kameWords.contains(codeNames.get(i).getCodeName())) {
+				add.addActionListener(new easterEggHandler(_board));
+				}
+			else{
 			add.addActionListener(new cardHandler(_board,codeNames.get(i).getCodeName()));
+				}
 			_cardPanel.add(add);
 			}
 			else {
@@ -135,7 +166,7 @@ public class GUI implements Observer {
 				_cardPanel.add(add);
 			}
 		}
-		
+		}
 		responsePanel.removeAll();
 	
 		JLabel response = new JLabel(_board.reply);
@@ -163,7 +194,7 @@ public class GUI implements Observer {
 		else
 			turn.setBackground(Color.blue);
 		turnPanel.add(turn);
-		
+	
 		// This should be last statement of this method:
 		updateJFrameIfNotHeadless();
 	}
