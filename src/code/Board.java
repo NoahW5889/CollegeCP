@@ -91,18 +91,20 @@ public class Board {
 	public boolean validClue() { //checks if a clue is legal, BULLET POINT 7
 		String h= GUI.GUI.entry.getText();
 		if(h.length() > 15) {
-			reply = "String is too long";
+			reply = "Invalid Clue. String is too long.";
 			return false;
 		}
 		String pl = h.replaceAll("[^a-zA-Z]", "");
 		for(int i=0;i<25;i++) {
 			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
+				reply = "Invalid Clue.";
 				return false;
 			}
 		}
 		boolean hasNum = false;
 		String placeHolder = h.replaceAll("[^\\d.]", "");
 		if(placeHolder.trim().isEmpty()) {
+			reply = "Invalid Clue. No Number.";
 			return false;
 		}
 		for(char a: h.toCharArray()) {
@@ -132,10 +134,7 @@ public class Board {
 	}
 	
 	public void validClues() {
-		if(validClue()==false) {
-			reply="The Clue is Invalid";
-		}
-		else {
+		if(validClue()==true) {
 			reply="The Clue is Valid";
 			if(turn == "Red Spy") {
 				turn = "red";
@@ -288,10 +287,8 @@ public class Board {
 
 	public void submit() {
 		reply = choose(GUI.GUI.entry.getText());
-		
 		notifyObservers();
 		clear();
-		
 	}
 	
 	public void addObserver(Observer obs) {

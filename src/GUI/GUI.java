@@ -3,8 +3,6 @@ package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,14 +14,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.Position;
-import javax.swing.text.Segment;
 
 import code.Board;
 import code.Driver;
@@ -67,9 +57,9 @@ public class GUI implements Observer {
 		menuBar.add(toolsMenu);
 		_mainPanel.add(menuBar);
 		
-//		startMenu.setFont(new Font("COurier", Font.BOLD, 24));
-//		_mainPanel.add(startMenu);
-		
+		startMenu = new JPanel();
+		startMenu.setFont(new Font("COurier", Font.BOLD, 24));
+		_mainPanel.add(startMenu);
 		
 		_cardPanel = new JPanel();
 		_cardPanel.setLayout(new GridLayout(5,5));
@@ -98,13 +88,6 @@ public class GUI implements Observer {
 		submit.addActionListener(new SubmitHandler(_board));
 		
 		entry = new JTextField();
-		entry.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				_board.validClues();
-			}
-		});
 		controlPanel.add(entry);
 		
 		JButton exit = new JButton("Exit");
@@ -158,10 +141,8 @@ public class GUI implements Observer {
 		JLabel response = new JLabel(_board.reply);
 		JLabel curClu = null;
 		if(_board.turn == "red" || _board.turn == "blue") {
-			entry.setEditable(false);
 			curClu = new JLabel("Current" + _board.turn + " Clue: "+_board.curClue.replaceAll("[^a-zA-Z0-9 ]", ""));
 		}else {
-			entry.setEditable(true);
 			curClu = new JLabel("Current Clue: ");
 		}
 		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
