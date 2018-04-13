@@ -55,10 +55,7 @@ public class Board {
 		Collections.shuffle(mainBoard);
 		turn="Red Spy";
 		curClue="";
-		
 		notifyObservers();
-		
-		
 	}
 
 	/*
@@ -213,10 +210,10 @@ public class Board {
 	public String choose(String entered) {	
 		
 		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
-			return "Invalid Entry. Try Again";
+			return "Invalid Entry. Try Again.";
 		}
 		else if(entered.length() > 15) {
-			return "Entry is too long";
+			return "Entry is too long.";
 		}
 		else if(entered.equalsIgnoreCase("rules")||entered.equalsIgnoreCase("rule")) {
 			return ("<html>===============Rules.==============="
@@ -251,7 +248,7 @@ public class Board {
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
 						turn = "Blue Spy";
-						return "Incorrect, Bystander revealed";
+						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
@@ -275,7 +272,7 @@ public class Board {
 					else if(mainBoard.get(i).getTeam()=="bystander") {
 						mainBoard.get(i).setRevealed(true);
 						turn = "Red Spy";
-						return "Incorrect, Bystander revealed";
+						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
@@ -283,7 +280,7 @@ public class Board {
 				return "Incorrect Guess.";
 			}
 		if(turn == "Blue Spy" || turn == "Red Spy") {
-			return "Enter a Clue and a num";
+			return "Enter a Clue and a num.";
 		}
 		return "ERROR";
 	}
@@ -310,9 +307,11 @@ public class Board {
 	public void volendTurn() {
 		if(turn=="red" || turn == "Red Spy") {
 			turn="Blue Spy";
+			reply = "Red Team Skips their turn.";
 		}
 		else{
 			turn="Red Spy";
+			reply = "Blue Team Skips their turn.";
 		}
 		notifyObservers();
 	}
@@ -359,4 +358,13 @@ public class Board {
 	public void newGame() {
 		startGame();
 	}
+
+	public void egg2() {
+		redCnt=1337;
+		bluCnt=1337;
+		assCnt=1337;
+		turn="egg";
+		notifyObservers();
+	}
+	
 }
