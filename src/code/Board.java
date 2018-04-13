@@ -10,18 +10,18 @@ import java.util.Collections;
 
 public class Board {
 	
-	public String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
-	public ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
+	private String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
+	private ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
 	String readinFile=null;
-	public ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
-	public String turn=null;	//holds "red" or "blue" to determine turn
-	public int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
-	public int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
-	public int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	private ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
+	private String turn=null;	//holds "red" or "blue" to determine turn
+	private int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
+	private int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
+	private int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
 	private ArrayList<Observer> _observers;	
-	public String reply;
-	public String curClue;
-	public ArrayList<String> kamiWords=new ArrayList<String>();
+	private String reply;
+	private String curClue;
+	private ArrayList<String> kamiWords=new ArrayList<String>();
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -42,19 +42,19 @@ public class Board {
 	 * turn is set to "red"
 	 */
 	public void startGame() {
-		kamiWords= new ArrayList<String>();
-		reply =  "Start of Game";
-		list=new String[25];
-		mainBoard=new ArrayList<Person>();
-		assCnt=1;
-		redCnt=9;
-		bluCnt=8;
-		Collections.shuffle(codeNames);
+		setKamiWords(new ArrayList<String>());
+		setReply("Start of Game");
+		setList(new String[25]);
+		setMainBoard(new ArrayList<Person>());
+		setAssCnt(1);
+		setRedCnt(9);
+		setBluCnt(8);
+		Collections.shuffle(getCodeNames());
 		createList();
 		fillBoard();
-		Collections.shuffle(mainBoard);
-		turn="Red Spy";
-		curClue="";
+		Collections.shuffle(getMainBoard());
+		setTurn("Red Spy");
+		setCurClue("");
 		notifyObservers();
 	}
 
@@ -64,17 +64,17 @@ public class Board {
 	 * @return an arraylist of game words read in from a file
 	 */
 	public ArrayList<String> readCSVFile(String filename){
-		codeNames = new ArrayList<String>();
+		setCodeNames(new ArrayList<String>());
 		
     	try { 
     		for(String each: Files.readAllLines(Paths.get(filename))) {
-    			codeNames.add(each);
+    			getCodeNames().add(each);
     			
     		}
     	}catch (IOException ex){
             ex.printStackTrace();
         }
-    	  return codeNames;
+    	  return getCodeNames();
     }
 	
 	/*
@@ -84,16 +84,16 @@ public class Board {
 	public void createList() {
 	
 		for(int i=0;i<25;i++) {
-			int rand = (int) (Math.random()*codeNames.size());
-			int rand2 = (int) (Math.random()*codeNames.size());
-			list[i]=codeNames.get(rand);
+			int rand = (int) (Math.random()*getCodeNames().size());
+			int rand2 = (int) (Math.random()*getCodeNames().size());
+			getList()[i]=getCodeNames().get(rand);
 			if(2>=i) {
-			kamiWords.add(codeNames.get(rand2));
+			getKamiWords().add(getCodeNames().get(rand2));
 			}
-			if(codeNames.size()<25) {
+			if(getCodeNames().size()<25) {
 				readCSVFile(readinFile);
 			}
-			codeNames.remove(rand);
+			getCodeNames().remove(rand);
 			
 		}
 	
@@ -108,21 +108,21 @@ public class Board {
 	public boolean validClue() { //checks if a clue is legal, BULLET POINT 7
 		String h= GUI.GUI.entry.getText();
 		if(h.length() > 15) {
-			reply = "Invalid Clue. String is too long.";
+			setReply("Invalid Clue. String is too long.");
 			return false;
 		}
 		
 		String pl = h.replaceAll("[^a-zA-Z]", "");
 		for(int i=0;i<25;i++) {
-			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((mainBoard.get(i).getCodeName()))&&mainBoard.get(i).getRevealed()==false)) {
-				reply = "Invalid Clue.";
+			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((getMainBoard().get(i).getCodeName()))&&getMainBoard().get(i).getRevealed()==false)) {
+				setReply("Invalid Clue.");
 				return false;
 			}
 		}
 		boolean hasNum = false;
 		String placeHolder = h.replaceAll("[^\\d.]", "");
 		if(placeHolder.trim().isEmpty()) {
-			reply = "Invalid Clue. No Number.";
+			setReply("Invalid Clue. No Number.");
 			return false;
 		}
 		for(char a: h.toCharArray()) {
@@ -132,9 +132,9 @@ public class Board {
 		}
 		if(hasNum == true) {
 			long result = Long.parseLong(placeHolder);
-			if(turn == "Red Spy" && redCnt < result) {
+			if(getTurn() == "Red Spy" && getRedCnt() < result) {
 				return false;
-			}else if(turn == "Blue Spy" && bluCnt < result) {
+			}else if(getTurn() == "Blue Spy" && getBluCnt() < result) {
 				return false;
 			}
 		}
@@ -143,35 +143,35 @@ public class Board {
 	}
 	
 	public int currentTurnCnt() {
-		if(turn=="red" || turn == "Red Spy") {
-			return redCnt;
+		if(getTurn()=="red" || getTurn() == "Red Spy") {
+			return getRedCnt();
 		}
 		else {
-			return bluCnt;
+			return getBluCnt();
 		}
 	}
 	
 	public void easterEgg() {
-		if(turn=="red") {
-			redCnt=0;
-			reply="Game Over Red Team Wins(EE)";
+		if(getTurn()=="red") {
+			setRedCnt(0);
+			setReply("Game Over Red Team Wins(EE)");
 		}
-		if(turn=="blue") {
-			bluCnt=0;
-			reply="Game Over Blue Team Wins(EE)";
+		if(getTurn()=="blue") {
+			setBluCnt(0);
+			setReply("Game Over Blue Team Wins(EE)");
 		}
 		notifyObservers();
 	}
 	
 	public void validClues() {
 		if(validClue()==true) {
-			reply="The Clue is Valid";
-			if(turn == "Red Spy") {
-				turn = "red";
-			}else if(turn == "Blue Spy") {
-				turn = "blue";
+			setReply("The Clue is Valid");
+			if(getTurn() == "Red Spy") {
+				setTurn("red");
+			}else if(getTurn() == "Blue Spy") {
+				setTurn("blue");
 			}
-			curClue=GUI.GUI.entry.getText();
+			setCurClue(GUI.GUI.entry.getText());
 		}
 		clear();
 		notifyObservers();
@@ -186,19 +186,19 @@ public class Board {
 		for(int i=0;i<25;i++) {
 			Person person=null;
 			if(i<9) {
-			person = new Person(codeNames.get(i),"red");
+			person = new Person(getCodeNames().get(i),"red");
 			}			
 			else if(i>=9&&i<17) {
-				person = new Person(codeNames.get(i),"blue");				
+				person = new Person(getCodeNames().get(i),"blue");				
 			}
 			else if(i>=18&&i<25) {
-				person = new Person(codeNames.get(i),"bystander");
+				person = new Person(getCodeNames().get(i),"bystander");
 			}
 				
 			else {
-				person = new Person(codeNames.get(i),"assassin");
+				person = new Person(getCodeNames().get(i),"assassin");
 			}
-			mainBoard.add(person);
+			getMainBoard().add(person);
 		}
 	}
 	
@@ -224,62 +224,62 @@ public class Board {
 		
 			
 		else if(entered.equalsIgnoreCase("skip")) {
-			if(turn=="red" || turn == "Red Spy") {
-				turn = "Blue Spy";
+			if(getTurn()=="red" || getTurn() == "Red Spy") {
+				setTurn("Blue Spy");
 				return "Red Team Skips their turn.";
 			}
 			else {
-				turn = "Red Spy";
+				setTurn("Red Spy");
 				return "Blue Team Skips their turn.";
 			}
-		}else if(turn=="red") {
-			for(int i=0;i<mainBoard.size();i++) {
-				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)) {
-					if(mainBoard.get(i).getTeam()=="red"&&mainBoard.get(i).getRevealed()!=true) {
-						redCnt-=1;
-						mainBoard.get(i).setRevealed(true);
-						turn="Red Spy";
+		}else if(getTurn()=="red") {
+			for(int i=0;i<getMainBoard().size();i++) {
+				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+						setRedCnt(getRedCnt() - 1);
+						getMainBoard().get(i).setRevealed(true);
+						setTurn("Red Spy");
 						return "Correct Guess!";
 						
 					}
-					else if(mainBoard.get(i).getTeam()=="assassin") {
+					else if(getMainBoard().get(i).getTeam()=="assassin") {
 						return assassPressed();
 					}
-					else if(mainBoard.get(i).getTeam()=="bystander") {
-						mainBoard.get(i).setRevealed(true);
-						turn = "Blue Spy";
+					else if(getMainBoard().get(i).getTeam()=="bystander") {
+						getMainBoard().get(i).setRevealed(true);
+						setTurn("Blue Spy");
 						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
-			turn = "Blue Spy";
+			setTurn("Blue Spy");
 			return "Incorrect Guess.";
 		}
 		
-		else if(turn=="blue") {
-			for(int i=0;i<mainBoard.size();i++) {
-				if(mainBoard.get(i).getCodeName().equalsIgnoreCase(entered)) {
-					if(mainBoard.get(i).getTeam()=="blue"&&mainBoard.get(i).getRevealed()!=true) {
-						bluCnt-=1;
-						mainBoard.get(i).setRevealed(true);
-						turn="Blue Spy";
+		else if(getTurn()=="blue") {
+			for(int i=0;i<getMainBoard().size();i++) {
+				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+						setBluCnt(getBluCnt() - 1);
+						getMainBoard().get(i).setRevealed(true);
+						setTurn("Blue Spy");
 						return "Correct Guess!";
 					}
-					else if(mainBoard.get(i).getTeam()=="assassin") {
+					else if(getMainBoard().get(i).getTeam()=="assassin") {
 						
 						return assassPressed();
 					}
-					else if(mainBoard.get(i).getTeam()=="bystander") {
-						mainBoard.get(i).setRevealed(true);
-						turn = "Red Spy";
+					else if(getMainBoard().get(i).getTeam()=="bystander") {
+						getMainBoard().get(i).setRevealed(true);
+						setTurn("Red Spy");
 						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
-				turn = "Red Spy";
+				setTurn("Red Spy");
 				return "Incorrect Guess.";
 			}
-		if(turn == "Blue Spy" || turn == "Red Spy") {
+		if(getTurn() == "Blue Spy" || getTurn() == "Red Spy") {
 			return "Enter a Clue and a num.";
 		}
 		return "ERROR";
@@ -292,26 +292,26 @@ public class Board {
 	public void gameState(String q) {	
 		
 		if(q=="red") {
-			reply= "Red Team Has Won the Game";
+			setReply("Red Team Has Won the Game");
 		}
 		 if(q=="blue") {
-			reply= "Red Team Has Won the Game";
+			setReply("Red Team Has Won the Game");
 		}
 		 if(q=="assass") {
-			reply= assassPressed();
+			setReply(assassPressed());
 		}
 		
 		notifyObservers();
 	}
 	
 	public void volendTurn() {
-		if(turn=="red" || turn == "Red Spy") {
-			turn="Blue Spy";
-			reply = "Red Team Skips their turn.";
+		if(getTurn()=="red" || getTurn() == "Red Spy") {
+			setTurn("Blue Spy");
+			setReply("Red Team Skips their turn.");
 		}
 		else{
-			turn="Red Spy";
-			reply = "Blue Team Skips their turn.";
+			setTurn("Red Spy");
+			setReply("Blue Team Skips their turn.");
 		}
 		notifyObservers();
 	}
@@ -320,8 +320,8 @@ public class Board {
 	 * @return which team has not lost the game
 	 */
 	public String assassPressed() {	
-		assCnt-=1;
-		if(turn=="red") {
+		setAssCnt(getAssCnt() - 1);
+		if(getTurn()=="red") {
 			return "Assassin chosen by Red Team! Blue Team Wins!";
 			//In future there will be a system.exit(0);
 		}
@@ -330,7 +330,7 @@ public class Board {
 	}
 
 	public void submit() {
-		reply = choose(GUI.GUI.entry.getText());
+		setReply(choose(GUI.GUI.entry.getText()));
 		notifyObservers();
 		clear();
 	}
@@ -360,11 +360,91 @@ public class Board {
 	}
 
 	public void egg2() {
-		redCnt=1337;
-		bluCnt=1337;
-		assCnt=1337;
-		turn="egg";
+		setRedCnt(1337);
+		setBluCnt(1337);
+		setAssCnt(1337);
+		setTurn("egg");
 		notifyObservers();
+	}
+
+	public int getRedCnt() {
+		return redCnt;
+	}
+
+	public void setRedCnt(int redCnt) {
+		this.redCnt = redCnt;
+	}
+
+	public int getBluCnt() {
+		return bluCnt;
+	}
+
+	public void setBluCnt(int bluCnt) {
+		this.bluCnt = bluCnt;
+	}
+
+	public int getAssCnt() {
+		return assCnt;
+	}
+
+	public void setAssCnt(int assCnt) {
+		this.assCnt = assCnt;
+	}
+
+	public String getTurn() {
+		return turn;
+	}
+
+	public void setTurn(String turn) {
+		this.turn = turn;
+	}
+
+	public ArrayList<Person> getMainBoard() {
+		return mainBoard;
+	}
+
+	public void setMainBoard(ArrayList<Person> mainBoard) {
+		this.mainBoard = mainBoard;
+	}
+
+	public ArrayList<String> getKamiWords() {
+		return kamiWords;
+	}
+
+	public void setKamiWords(ArrayList<String> kamiWords) {
+		this.kamiWords = kamiWords;
+	}
+
+	public String getReply() {
+		return reply;
+	}
+
+	public void setReply(String reply) {
+		this.reply = reply;
+	}
+
+	public String getCurClue() {
+		return curClue;
+	}
+
+	public void setCurClue(String curClue) {
+		this.curClue = curClue;
+	}
+
+	public String[] getList() {
+		return list;
+	}
+
+	public void setList(String[] list) {
+		this.list = list;
+	}
+
+	public ArrayList<String> getCodeNames() {
+		return codeNames;
+	}
+
+	public void setCodeNames(ArrayList<String> codeNames) {
+		this.codeNames = codeNames;
 	}
 	
 }

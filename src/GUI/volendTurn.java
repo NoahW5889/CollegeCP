@@ -14,7 +14,7 @@ public class volendTurn implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if(_b.bluCnt>=1&&_b.redCnt>=1&&_b.assCnt>=1) {
+		if(_b.getBluCnt()>=1&&_b.getRedCnt()>=1&&_b.getAssCnt()>=1) {
 		_b.volendTurn();
 		}
 	}

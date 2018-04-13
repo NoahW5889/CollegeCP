@@ -3,6 +3,8 @@ package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -99,6 +101,18 @@ public class GUI implements Observer {
 		submit.addActionListener(new SubmitHandler(_board));
 		
 		entry = new JTextField();
+		entry.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(_board.getBluCnt()>=1&&_board.getRedCnt()>=1&&_board.getAssCnt()>=1) {
+					if(_board.getTurn()=="red"||_board.getTurn()=="blue")
+						_board.submit();
+					else
+						_board.validClues();
+				}
+			}
+		});
 		controlPanel.add(entry);
 		
 		exit = new JButton("Exit");
@@ -123,7 +137,7 @@ public class GUI implements Observer {
 	
 	@Override
 	public void update() {
-		if(_board.turn=="egg") {
+		if(_board.getTurn()=="egg") {
 			_cardPanel.removeAll();
 			for(int i=0;i<25;i++) {
 				JLabel winner = new JLabel("<html>Easter Eggs<br>Are Cool :)");
@@ -135,19 +149,19 @@ public class GUI implements Observer {
 				_cardPanel.add(winner);
 			}
 		}
-		else if(_board.redCnt==0) {
+		else if(_board.getRedCnt()==0) {
 			_cardPanel.removeAll();
 				winPhase="red";
 				winner();
 		}
-		else if(_board.bluCnt==0) {
+		else if(_board.getBluCnt()==0) {
 			_cardPanel.removeAll();
 			winPhase="blue";
 			winner();
 		}
-		else if(_board.assCnt==0) {
+		else if(_board.getAssCnt()==0) {
 			_cardPanel.removeAll();
-			if(_board.turn=="red")
+			if(_board.getTurn()=="red")
 				winPhase="blue";
 			else
 				winPhase="red";
@@ -155,9 +169,9 @@ public class GUI implements Observer {
 		}
 		
 		else {
-		if (_board.turn=="Red Spy"||_board.turn=="Blue Spy") {
+		if (_board.getTurn()=="Red Spy"||_board.getTurn()=="Blue Spy") {
 			_cardPanel.removeAll();
-			ArrayList<Person> codeNames = _board.mainBoard;
+			ArrayList<Person> codeNames = _board.getMainBoard();
 			
 			for(int i = 0; i<codeNames.size();i++) {
 				
@@ -178,7 +192,7 @@ public class GUI implements Observer {
 						add.setBackground(Color.magenta);
 						
 					}
-					if(_board.kamiWords.contains(codeNames.get(i).getCodeName())) {
+					if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 						add.setBackground(Color.yellow);
 					}
 					_cardPanel.add(add);
@@ -190,13 +204,13 @@ public class GUI implements Observer {
 		}
 		else {
 		_cardPanel.removeAll();
-		ArrayList<Person> codeNames = _board.mainBoard;
+		ArrayList<Person> codeNames = _board.getMainBoard();
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
 				
 			JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
 			setButtonProperties(add);
-			if(_board.kamiWords.contains(codeNames.get(i).getCodeName())) {
+			if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 				add.addActionListener(new easterEggHandler(_board));
 				}
 			else{
@@ -220,10 +234,10 @@ public class GUI implements Observer {
 		}
 		responsePanel.removeAll();
 	
-		JLabel response = new JLabel(_board.reply);
+		JLabel response = new JLabel(_board.getReply());
 		JLabel curClu = null;
-		if(_board.turn == "red" || _board.turn == "blue") {
-			curClu = new JLabel("Current" + _board.turn + " Clue: "+_board.curClue.replaceAll("[^a-zA-Z0-9 ]", ""));
+		if(_board.getTurn() == "red" || _board.getTurn() == "blue") {
+			curClu = new JLabel("Current" + _board.getTurn() + " Clue: "+_board.getCurClue().replaceAll("[^a-zA-Z0-9 ]", ""));
 		}else {
 			curClu = new JLabel("Current Clue: ");
 		}
@@ -238,9 +252,9 @@ public class GUI implements Observer {
 		responsePanel.add(curTurCnt);
 		
 		turnPanel.removeAll();
-		JLabel turn = new JLabel("Turn: "+_board.turn);
+		JLabel turn = new JLabel("Turn: "+_board.getTurn());
 		setLabelProperties(turn);
-		if(_board.turn=="red" || _board.turn == "Red Spy")
+		if(_board.getTurn()=="red" || _board.getTurn() == "Red Spy")
 			turn.setBackground(Color.red);
 		else
 			turn.setBackground(Color.blue);
