@@ -41,6 +41,8 @@ public class GUI implements Observer {
 	private JButton exit;
 	private JButton newGame;
 	private JPanel middlePanel;
+	private JButton submit;
+	private JButton endTurn;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -95,7 +97,7 @@ public class GUI implements Observer {
 		turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.X_AXIS));
 		controlPanel.add(turnPanel);
 		
-		JButton submit = new JButton("Submit");
+		 submit = new JButton("Submit");
 		setButtonProperties(submit);
 		controlPanel.add(submit);
 		submit.addActionListener(new SubmitHandler(_board));
@@ -126,7 +128,7 @@ public class GUI implements Observer {
 		newGame.addActionListener(new NewGameHandler(_board));
 		
 
-		JButton endTurn = new JButton("End Turn");
+		endTurn = new JButton("End Turn");
 		setButtonProperties(endTurn);
 		controlPanel.add(endTurn);
 		endTurn.addActionListener(new volendTurn(_board));
@@ -137,29 +139,26 @@ public class GUI implements Observer {
 	
 	@Override
 	public void update() {
-		if(_board.getTurn()=="egg") {
-			_cardPanel.removeAll();
-			for(int i=0;i<25;i++) {
-				JLabel winner = new JLabel("<html>Easter Eggs<br>Are Cool :)");
-				setLabelProperties(winner);
-				if(i%2==0)
-					winner.setBackground(Color.red);
-				else
-					winner.setBackground(Color.blue);
-				_cardPanel.add(winner);
-			}
-		}
+		if(_board.getTurn()=="Buffer") 
+			buffer();
+		
+		else if(_board.getTurn()=="egg") 
+			egg();
+
 		else if(_board.getRedCnt()==0) {
+			entry.setEditable(false);
 			_cardPanel.removeAll();
 				winPhase="red";
 				winner();
 		}
 		else if(_board.getBluCnt()==0) {
+			entry.setEditable(false);
 			_cardPanel.removeAll();
 			winPhase="blue";
 			winner();
 		}
 		else if(_board.getAssCnt()==0) {
+			entry.setEditable(false);
 			_cardPanel.removeAll();
 			if(_board.getTurn()=="red")
 				winPhase="blue";
@@ -169,40 +168,56 @@ public class GUI implements Observer {
 		}
 		
 		else {
-		if (_board.getTurn()=="Red Spy"||_board.getTurn()=="Blue Spy") {
-			_cardPanel.removeAll();
-			ArrayList<Person> codeNames = _board.getMainBoard();
-			
-			for(int i = 0; i<codeNames.size();i++) {
-				
-					JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
-					setButtonProperties(add);
-					if(codeNames.get(i).getTeam()=="bystander")
-						add.setBackground(Color.lightGray);
-					else if(codeNames.get(i).getTeam()=="red")
-						add.setBackground(Color.red);
-					else if(codeNames.get(i).getTeam()=="blue")
-						add.setBackground(Color.blue);
-					else {
-						add.setBackground(Color.black);
-						add.setForeground(Color.WHITE);
-						
-					}
-					if(codeNames.get(i).getRevealed()==true) {
-						add.setBackground(Color.magenta);
-						
-					}
-					if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
-						add.setBackground(Color.yellow);
-					}
-					_cardPanel.add(add);
-				
-			}
-			
-
-			
+			entry.setEditable(true);
+			responsePanel.setVisible(true);
+			submit.setVisible(true);
+			entry.setVisible(true);
+			turnPanel.setVisible(true);
+			endTurn.setVisible(true);
+		if (_board.getTurn()=="Red Spy"||_board.getTurn()=="Blue Spy") 
+				spyBoard();
+	
+		else 
+			playerBoard();	
 		}
-		else {
+		
+		resetOther();
+		// This should be last statement of this method:
+		updateJFrameIfNotHeadless();
+	}
+	
+	private void resetOther() {
+		responsePanel.removeAll();
+		
+		JLabel response = new JLabel(_board.getReply());
+		JLabel curClu = null;
+		if(_board.getTurn() == "red" || _board.getTurn() == "blue") {
+			curClu = new JLabel("Current Clue: "+_board.getCurClue().replaceAll("[^a-zA-Z0-9 ]", ""));
+		}else {
+			curClu = new JLabel("Current Clue: ");
+		}
+		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
+		setLabelProperties(response);
+		setLabelProperties(curClu);
+		curClu.setBackground(Color.green);
+		setLabelProperties(curTurCnt);
+		curTurCnt.setBackground(Color.green);
+		responsePanel.add(curClu);
+		responsePanel.add(response);
+		responsePanel.add(curTurCnt);
+		
+		turnPanel.removeAll();
+		JLabel turn = new JLabel("Turn: "+_board.getTurn());
+		setLabelProperties(turn);
+		if(_board.getTurn()=="red" || _board.getTurn() == "Red Spy")
+			turn.setBackground(Color.red);
+		else
+			turn.setBackground(Color.blue);
+		turnPanel.add(turn);
+	
+	}
+
+	private void playerBoard() {
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		for(int i = 0; i<codeNames.size();i++) {
@@ -230,44 +245,78 @@ public class GUI implements Observer {
 				_cardPanel.add(add);
 			}
 		}
-		}
-		}
-		responsePanel.removeAll();
-	
-		JLabel response = new JLabel(_board.getReply());
-		JLabel curClu = null;
-		if(_board.getTurn() == "red" || _board.getTurn() == "blue") {
-			curClu = new JLabel("Current" + _board.getTurn() + " Clue: "+_board.getCurClue().replaceAll("[^a-zA-Z0-9 ]", ""));
-		}else {
-			curClu = new JLabel("Current Clue: ");
-		}
-		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
-		setLabelProperties(response);
-		setLabelProperties(curClu);
-		curClu.setBackground(Color.green);
-		setLabelProperties(curTurCnt);
-		curTurCnt.setBackground(Color.green);
-		responsePanel.add(curClu);
-		responsePanel.add(response);
-		responsePanel.add(curTurCnt);
-		
-		turnPanel.removeAll();
-		JLabel turn = new JLabel("Turn: "+_board.getTurn());
-		setLabelProperties(turn);
-		if(_board.getTurn()=="red" || _board.getTurn() == "Red Spy")
-			turn.setBackground(Color.red);
-		else
-			turn.setBackground(Color.blue);
-		turnPanel.add(turn);
-	
-		// This should be last statement of this method:
-		updateJFrameIfNotHeadless();
 	}
-	
+
+	private void spyBoard() {
+		_cardPanel.removeAll();
+		ArrayList<Person> codeNames = _board.getMainBoard();
+		
+		for(int i = 0; i<codeNames.size();i++) {
+			
+				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				setButtonProperties(add);
+				if(codeNames.get(i).getTeam()=="bystander")
+					add.setBackground(Color.lightGray);
+				else if(codeNames.get(i).getTeam()=="red")
+					add.setBackground(Color.red);
+				else if(codeNames.get(i).getTeam()=="blue")
+					add.setBackground(Color.blue);
+				else {
+					add.setBackground(Color.black);
+					add.setForeground(Color.WHITE);
+					
+				}
+				if(codeNames.get(i).getRevealed()==true) {
+					add.setBackground(Color.magenta);
+					
+				}
+				if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
+					add.setBackground(Color.yellow);
+				}
+				_cardPanel.add(add);
+			
+		}
+
+	}
+
+	private void egg() {
+		_cardPanel.removeAll();
+		entry.setEditable(false);
+		for(int i=0;i<25;i++) {
+			JLabel winner = new JLabel("<html>Easter Eggs<br>Are Cool :)");
+			setLabelProperties(winner);
+			if(i%2==0)
+				winner.setBackground(Color.red);
+			else
+				winner.setBackground(Color.blue);
+			_cardPanel.add(winner);
+		}
+	}
+
+	private void buffer() {
+		entry.setEditable(false);
+		_cardPanel.removeAll();
+		for(int i=0;i<25;i++) {
+			JButton buff = new JButton("<html>Press to start<br>next turn.");
+			buff.addActionListener(new bufHandler(_board));
+			setButtonProperties(buff);
+			if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false)
+				buff.setBackground(Color.blue);
+			else
+				buff.setBackground(Color.red);
+			_cardPanel.add(buff);
+		}
+	}
+
 	private void winner() {
 		Random ran = new Random();
 		int secret = ran.nextInt(25);
 		_cardPanel.removeAll();
+		responsePanel.setVisible(false);
+		submit.setVisible(false);
+		entry.setVisible(false);
+		turnPanel.setVisible(false);
+		endTurn.setVisible(false);
 		for(int i=0;i<25;i++) {
 			if(i==secret) {
 				JButton winner = new JButton(winPhase.toUpperCase()+" TEAM WINS!");

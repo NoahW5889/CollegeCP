@@ -22,6 +22,8 @@ public class Board {
 	private String reply;
 	private String curClue;
 	private ArrayList<String> kamiWords=new ArrayList<String>();
+	private String prevTurn;
+	private String lastGuess;
 	
 	/*
 	 * constructor used to send in filename to read for codeNames
@@ -208,6 +210,7 @@ public class Board {
 	 * @return if correct,incorrect or skipped turn
 	 */
 	public String choose(String entered) {	
+		setLastGuess(entered);
 		
 		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
 			return "Invalid Entry. Try Again.";
@@ -224,21 +227,35 @@ public class Board {
 		
 			
 		else if(entered.equalsIgnoreCase("skip")) {
-			if(getTurn()=="red" || getTurn() == "Red Spy") {
+			if(getTurn()=="red" ) {
+				setPrevTurn("red");
+				setTurn("Buffer");
+				return "Red Team Skips their turn.";
+			}
+			else if(getTurn() == "Red Spy") {
 				setTurn("Blue Spy");
 				return "Red Team Skips their turn.";
 			}
-			else {
+			else if(getTurn() == "Blue Spy") {
 				setTurn("Red Spy");
 				return "Blue Team Skips their turn.";
 			}
-		}else if(getTurn()=="red") {
+			else {
+				setPrevTurn("blue");
+				setTurn("Buffer");
+				return "Blue Team Skips their turn.";
+			}
+			
+			
+		}
+		else if(getTurn()=="red") {
 			for(int i=0;i<getMainBoard().size();i++) {
 				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
 					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
 						setRedCnt(getRedCnt() - 1);
 						getMainBoard().get(i).setRevealed(true);
-						setTurn("Red Spy");
+						setPrevTurn("blue");
+						setTurn("Buffer");
 						return "Correct Guess!";
 						
 					}
@@ -247,12 +264,14 @@ public class Board {
 					}
 					else if(getMainBoard().get(i).getTeam()=="bystander") {
 						getMainBoard().get(i).setRevealed(true);
-						setTurn("Blue Spy");
+						setPrevTurn("red");
+						setTurn("Buffer");
 						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
-			setTurn("Blue Spy");
+			setPrevTurn("red");
+			setTurn("Buffer");
 			return "Incorrect Guess.";
 		}
 		
@@ -262,7 +281,8 @@ public class Board {
 					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
 						setBluCnt(getBluCnt() - 1);
 						getMainBoard().get(i).setRevealed(true);
-						setTurn("Blue Spy");
+						setPrevTurn("red");
+						setTurn("Buffer");
 						return "Correct Guess!";
 					}
 					else if(getMainBoard().get(i).getTeam()=="assassin") {
@@ -271,12 +291,14 @@ public class Board {
 					}
 					else if(getMainBoard().get(i).getTeam()=="bystander") {
 						getMainBoard().get(i).setRevealed(true);
-						setTurn("Red Spy");
+						setPrevTurn("blue");
+						setTurn("Buffer");
 						return "Incorrect, Bystander revealed.";
 					}
 				}
 			}
-				setTurn("Red Spy");
+			setPrevTurn("blue");
+				setTurn("Buffer");
 				return "Incorrect Guess.";
 			}
 		if(getTurn() == "Blue Spy" || getTurn() == "Red Spy") {
@@ -304,13 +326,45 @@ public class Board {
 		notifyObservers();
 	}
 	
+	public boolean checkGuess(String last) {
+		if(last.equalsIgnoreCase("skip")) 
+			return false;
+		else if(getTurn()=="red") {
+			for(int i=0;i<getMainBoard().size();i++) {
+				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(last)) {
+					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) 
+						return true;	
+				}
+			}
+		}
+		else if(getTurn()=="blue") {
+			for(int i=0;i<getMainBoard().size();i++) {
+				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(last)) {
+					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) 
+						return true;	
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void volendTurn() {
-		if(getTurn()=="red" || getTurn() == "Red Spy") {
+		if(getTurn()=="red") {
+			setPrevTurn("red");
+			setTurn("Buffer");
+			setReply("Red Team Skips their turn.");
+		}
+		else if(getTurn() == "Red Spy") {
 			setTurn("Blue Spy");
 			setReply("Red Team Skips their turn.");
 		}
-		else{
+		else if(getTurn() == "Blue Spy") {
 			setTurn("Red Spy");
+			setReply("Blue Team Skips their turn.");
+		}
+		else{
+			setPrevTurn("blue");
+			setTurn("Buffer");
 			setReply("Blue Team Skips their turn.");
 		}
 		notifyObservers();
@@ -446,5 +500,23 @@ public class Board {
 	public void setCodeNames(ArrayList<String> codeNames) {
 		this.codeNames = codeNames;
 	}
+	
+	public void setPrevTurn(String prev) {
+		this.prevTurn = prev;
+	}
+	
+	public String getPrevTurn(){
+		return prevTurn;
+	}
+
+	public String getLastGuess() {
+		// TODO Auto-generated method stub
+		return lastGuess;
+	}
+	
+	public void setLastGuess(String las) {
+		this.lastGuess = las;
+	}
+
 	
 }
