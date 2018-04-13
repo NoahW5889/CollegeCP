@@ -360,6 +360,7 @@ public class Board {
 	}
 
 	public void egg2() {
+		reply = "WOOHOO!!! Go Easter Eggs!!!";
 		redCnt=1337;
 		bluCnt=1337;
 		assCnt=1337;
