@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Random;
+
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ public class GUI implements Observer {
 	
 	private Driver _windowHolder;
 	private Board _board;
+	private JPanel _mainPanel;
 	private JPanel _cardPanel;
 	public static JTextField entry;
 	private JPanel controlPanel;
@@ -32,13 +35,16 @@ public class GUI implements Observer {
 	private JPanel startMenu;
 	private JMenu toolsMenu = new JMenu("File"); 
 	private JMenuBar menuBar = new JMenuBar();
-	
+	private String winPhase=null;
+	private JButton exit;
+	private JButton newGame;
+	private JPanel middlePanel;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
 		_board = b;
 		
-		JPanel _mainPanel = mp;
+		 _mainPanel = mp;
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.Y_AXIS));
 		
 		JMenuItem NewGame = new JMenuItem("New Game"); // Create a menu item.
@@ -69,7 +75,7 @@ public class GUI implements Observer {
 		_cardPanel = new JPanel();
 		_cardPanel.setLayout(new GridLayout(5,5));
 		
-		JPanel middlePanel = new JPanel();
+		 middlePanel = new JPanel();
 		middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
 		_mainPanel.add(middlePanel);
 		
@@ -95,12 +101,12 @@ public class GUI implements Observer {
 		entry = new JTextField();
 		controlPanel.add(entry);
 		
-		JButton exit = new JButton("Exit");
+		exit = new JButton("Exit");
 		setButtonProperties(exit);
 		controlPanel.add(exit);
 		exit.addActionListener(new ExitHandler(_board));
 		
-		JButton newGame = new JButton("New Game");
+		newGame = new JButton("New Game");
 		setButtonProperties(newGame);
 		controlPanel.add(newGame);
 		newGame.addActionListener(new NewGameHandler(_board));
@@ -117,18 +123,35 @@ public class GUI implements Observer {
 	
 	@Override
 	public void update() {
-		
-		if(_board.redCnt==0) {
+		if(_board.turn=="egg") {
 			_cardPanel.removeAll();
-				
+			for(int i=0;i<25;i++) {
+				JLabel winner = new JLabel("<html>Easter Eggs<br>Are Cool :)");
+				setLabelProperties(winner);
+				if(i%2==0)
+					winner.setBackground(Color.red);
+				else
+					winner.setBackground(Color.blue);
+				_cardPanel.add(winner);
+			}
+		}
+		else if(_board.redCnt==0) {
+			_cardPanel.removeAll();
+				winPhase="red";
+				winner();
 		}
 		else if(_board.bluCnt==0) {
 			_cardPanel.removeAll();
-			
+			winPhase="blue";
+			winner();
 		}
 		else if(_board.assCnt==0) {
 			_cardPanel.removeAll();
-			
+			if(_board.turn=="red")
+				winPhase="blue";
+			else
+				winPhase="red";
+			winner();
 		}
 		
 		else {
@@ -138,7 +161,7 @@ public class GUI implements Observer {
 			
 			for(int i = 0; i<codeNames.size();i++) {
 				
-					JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
+					JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
 					setButtonProperties(add);
 					if(codeNames.get(i).getTeam()=="bystander")
 						add.setBackground(Color.lightGray);
@@ -227,6 +250,33 @@ public class GUI implements Observer {
 		updateJFrameIfNotHeadless();
 	}
 	
+	private void winner() {
+		Random ran = new Random();
+		int secret = ran.nextInt(25);
+		_cardPanel.removeAll();
+		for(int i=0;i<25;i++) {
+			if(i==secret) {
+				JButton winner = new JButton(winPhase.toUpperCase()+" TEAM WINS!");
+				setButtonProperties(winner);
+				if(winPhase=="red")
+					winner.setBackground(Color.red);
+				else
+					winner.setBackground(Color.blue);
+				winner.addActionListener(new eggHandler2(_board));
+				_cardPanel.add(winner);
+			}
+			else {
+			JButton winner = new JButton(winPhase.toUpperCase()+" TEAM WINS!!!");
+			setButtonProperties(winner);
+			if(winPhase=="red")
+				winner.setBackground(Color.red);
+			else
+				winner.setBackground(Color.blue);
+			_cardPanel.add(winner);
+			}
+		}
+	}
+
 	public void updateJFrameIfNotHeadless() {
 		if (_windowHolder != null) {
 			_windowHolder.updateJFrame();
