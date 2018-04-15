@@ -28,6 +28,8 @@ public class Board {
 	/*
 	 * constructor used to send in filename to read for codeNames
 	 * @param readCSVFile Takes in the gameWords.txt and stores in codeNames
+	 * sets _observers to new arraylist
+	 * sets readinFile to the file parameter
 	 */		
 	public Board(String file) {
 		
@@ -37,11 +39,21 @@ public class Board {
 	}
 	
 	/*Starts the game
-	 * codeNames is shuffled
+	 * list for easter egg created
+	 * reply is set to"start of Game"
 	 * list is created
-	 * board is filled
-	 * board is shuffled three times
+	 * board is created
+	 * assCnt is count set to 1
+	 * redcnt is set to 9
+	 * blueCnt is set to 8
 	 * turn is set to "red"
+	 * codeNames is shuffled
+	 * creates list of words for game
+	 * fills board with spys
+	 * shuffles the main board
+	 * sets turn to "Red Spy"
+	 * sets CurClu to empty string
+	 * All observers are notified
 	 */
 	public void startGame() {
 		setKamiWords(new ArrayList<String>());
@@ -80,8 +92,8 @@ public class Board {
     }
 	
 	/*
-	 * Creates a list of 25 random codeNames/words from the list created in readCSVFile 
-	 * @param list[] sets each element in list , to a random word in codeNames
+	 * Creates a list of 25 random codeNames/words and 2 KamiWords(for easter egg) from the list created in readCSVFile 
+	 * 
 	 */
 	public void createList() {
 	
@@ -144,6 +156,11 @@ public class Board {
 		return true;
 	}
 	
+	/*
+	 * Returns the current spy count
+	 * @return RedCnt if turn is red
+	 * @return BluCnt if turn is blue
+	 */	
 	public int currentTurnCnt() {
 		if(getTurn()=="red" || getTurn() == "Red Spy") {
 			return getRedCnt();
@@ -152,13 +169,15 @@ public class Board {
 			return getBluCnt();
 		}
 	}
-	
+	/*
+	 * Ends the game automatically 
+	 */	
 	public void easterEgg() {
-		if(getTurn()=="red") {
+		if(getTurn()=="red"||getTurn()=="Red Spy") {
 			setRedCnt(0);
 			setReply("Game Over Red Team Wins(EE)");
 		}
-		if(getTurn()=="blue") {
+		else{
 			setBluCnt(0);
 			setReply("Game Over Blue Team Wins(EE)");
 		}

@@ -62,7 +62,7 @@ public class GUI implements Observer {
 		quitGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(quitGame); // Add menu item to menu.
 		
-		JMenuItem easterEgg = new JMenuItem("Easter Egg");   // Create a menu item.
+		JMenuItem easterEgg = new JMenuItem("Easter Egg Tester");   // Create a menu item.
 		easterEgg.addActionListener(new easterEggHandler(_board));         // Add listener to menu item.
 		easterEgg.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(easterEgg); // Add menu item to menu.
@@ -223,7 +223,7 @@ public class GUI implements Observer {
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
 				
-			JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: Unknown");
+			JButton add = new JButton("<html>   "+"<br>  "+codeNames.get(i).getCodeName());
 			setButtonProperties(add);
 			if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 				add.addActionListener(new easterEggHandler(_board));
@@ -234,7 +234,7 @@ public class GUI implements Observer {
 			_cardPanel.add(add);
 			}
 			else {
-				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>"+codeNames.get(i).getTeam());
+				JButton add = new JButton("<html>"+codeNames.get(i).getTeam());
 				setButtonProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
@@ -252,9 +252,15 @@ public class GUI implements Observer {
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		
 		for(int i = 0; i<codeNames.size();i++) {
-			
-				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+			JButton add;
+			if(codeNames.get(i).getRevealed()==true) {
+				 add = new JButton("<html>"+codeNames.get(i).getTeam());
+			}
+			else{
+				 add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+			}
 				setButtonProperties(add);
+			
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
@@ -272,6 +278,7 @@ public class GUI implements Observer {
 				}
 				if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 					add.setBackground(Color.yellow);
+					add.setForeground(Color.black);
 				}
 				_cardPanel.add(add);
 			
