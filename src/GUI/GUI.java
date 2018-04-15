@@ -223,7 +223,7 @@ public class GUI implements Observer {
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
 				
-			JButton add = new JButton("<html>   "+"<br>  "+codeNames.get(i).getCodeName());
+			JButton add = new JButton("<html>   "+"<br>  "+codeNames.get(i).getCodeName().toUpperCase());
 			setButtonProperties(add);
 			if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 				add.addActionListener(new easterEggHandler(_board));
@@ -234,7 +234,7 @@ public class GUI implements Observer {
 			_cardPanel.add(add);
 			}
 			else {
-				JButton add = new JButton("<html>"+codeNames.get(i).getTeam());
+				JButton add = new JButton("<html>"+codeNames.get(i).getTeam().toUpperCase());
 				setButtonProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
@@ -254,10 +254,10 @@ public class GUI implements Observer {
 		for(int i = 0; i<codeNames.size();i++) {
 			JButton add;
 			if(codeNames.get(i).getRevealed()==true) {
-				 add = new JButton("<html>"+codeNames.get(i).getTeam());
+				 add = new JButton("<html>"+codeNames.get(i).getTeam().toUpperCase());
 			}
 			else{
-				 add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				 add = new JButton("<html>"+codeNames.get(i).getCodeName().toUpperCase()+"<br>Team: "+codeNames.get(i).getTeam().toUpperCase());
 			}
 				setButtonProperties(add);
 			
@@ -302,6 +302,7 @@ public class GUI implements Observer {
 
 	private void buffer() {
 		entry.setEditable(false);
+		
 		_cardPanel.removeAll();
 		for(int i=0;i<25;i++) {
 			JButton buff = new JButton("<html>Press to start<br>next turn.");

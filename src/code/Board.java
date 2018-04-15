@@ -287,7 +287,17 @@ public class Board {
 						setTurn("Buffer");
 						return "Incorrect, Bystander revealed.";
 					}
+					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+						setBluCnt(getBluCnt() - 1);
+						getMainBoard().get(i).setRevealed(true);
+						setPrevTurn("red");
+						setTurn("Buffer");
+						return "Incorrect Guess!";
+						
+					}
 				}
+				
+				
 			}
 			setPrevTurn("red");
 			setTurn("Buffer");
@@ -313,6 +323,13 @@ public class Board {
 						setPrevTurn("blue");
 						setTurn("Buffer");
 						return "Incorrect, Bystander revealed.";
+					}
+					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+						setRedCnt(getRedCnt() - 1);
+						getMainBoard().get(i).setRevealed(true);
+						setPrevTurn("blue");
+						setTurn("Buffer");
+						return "Incorrect Guess!";
 					}
 				}
 			}
