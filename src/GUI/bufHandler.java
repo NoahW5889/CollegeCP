@@ -16,9 +16,10 @@ public class bufHandler implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(_b.getPrevTurn()=="blue"&&_b.checkGuess(_b.getLastGuess())==false)
-			_b.setTurn("Red Spy");
+			_b.setTurn("Red SpyMaster");
 		else
-			_b.setTurn("Blue Spy");
+			_b.setTurn("Blue SpyMaster");
+		_b.setReply(_b.getTurn()+"s turn.");
 		_b.notifyObservers();
 	}
 

@@ -35,14 +35,15 @@ public class GUI implements Observer {
 	private JPanel turnPanel;
 	private JPanel responsePanel;
 	private JPanel startMenu;
-	private JMenu toolsMenu = new JMenu("File"); 
-	private JMenuBar menuBar = new JMenuBar();
+	private JMenu toolsMenu; 
+	private JMenuBar menuBar;
 	private String winPhase=null;
 	private JButton exit;
 	private JButton newGame;
 	private JPanel middlePanel;
 	private JButton submit;
 	private JButton endTurn;
+	private JLabel curTurCnt;
 	
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
@@ -51,22 +52,23 @@ public class GUI implements Observer {
 		 _mainPanel = mp;
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.Y_AXIS));
 		
+		toolsMenu = new JMenu("File");
+		menuBar = new JMenuBar();
+		
 		JMenuItem NewGame = new JMenuItem("New Game"); // Create a menu item.
 		NewGame.addActionListener(new NewGameHandler(_board));        // Add listener to menu item.
 		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(NewGame);
 		
+		JMenuItem rules = new JMenuItem("Rules");
+		rules.addActionListener(new RulesHandler(_board));
+		rules.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(rules);
 		
 		JMenuItem quitGame = new JMenuItem("Quit");   // Create a menu item.
 		quitGame.addActionListener(new ExitHandler(_board));         // Add listener to menu item.
 		quitGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(quitGame); // Add menu item to menu.
-		
-		JMenuItem easterEgg = new JMenuItem("Easter Egg Tester");   // Create a menu item.
-		easterEgg.addActionListener(new easterEggHandler(_board));         // Add listener to menu item.
-		easterEgg.setFont(new Font("Courier", Font.BOLD, 20));
-		toolsMenu.add(easterEgg); // Add menu item to menu.
-		
 		
 		toolsMenu.setFont(new Font("Courier", Font.BOLD, 24));
 		menuBar.add(toolsMenu);
@@ -97,7 +99,7 @@ public class GUI implements Observer {
 		turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.X_AXIS));
 		controlPanel.add(turnPanel);
 		
-		 submit = new JButton("Submit");
+		submit = new JButton("Submit");
 		setButtonProperties(submit);
 		controlPanel.add(submit);
 		submit.addActionListener(new SubmitHandler(_board));
@@ -119,12 +121,10 @@ public class GUI implements Observer {
 		
 		exit = new JButton("Exit");
 		setButtonProperties(exit);
-		controlPanel.add(exit);
 		exit.addActionListener(new ExitHandler(_board));
 		
 		newGame = new JButton("New Game");
 		setButtonProperties(newGame);
-		controlPanel.add(newGame);
 		newGame.addActionListener(new NewGameHandler(_board));
 		
 
@@ -174,7 +174,9 @@ public class GUI implements Observer {
 			entry.setVisible(true);
 			turnPanel.setVisible(true);
 			endTurn.setVisible(true);
-		if (_board.getTurn()=="Red Spy"||_board.getTurn()=="Blue Spy") 
+			controlPanel.remove(exit);
+			controlPanel.remove(newGame);
+		if (_board.getTurn()=="Red SpyMaster"||_board.getTurn()=="Blue SpyMaster") 
 				spyBoard();
 	
 		else 
@@ -192,16 +194,20 @@ public class GUI implements Observer {
 		JLabel response = new JLabel(_board.getReply());
 		JLabel curClu = null;
 		if(_board.getTurn() == "red" || _board.getTurn() == "blue") {
-			curClu = new JLabel("Current Clue: "+_board.getCurClue().replaceAll("[^a-zA-Z0-9 ]", ""));
+			curClu = new JLabel("Current Clue: "+_board.getCurClue().replaceAll("[^a-zA-Z0-9 ]", "")+"||Max Guess: "+_board.getMaxGuess());
+			curTurCnt = new JLabel("Spy's left: "+_board.currentTurnCnt()+"||Current Guess: "+_board.getCurGuessCnt());
 		}else {
 			curClu = new JLabel("Current Clue: ");
+			curTurCnt = new JLabel("Spy's left: "+_board.currentTurnCnt());
 		}
-		JLabel curTurCnt = new JLabel("Current Count: "+_board.currentTurnCnt());
+		
 		setLabelProperties(response);
 		setLabelProperties(curClu);
-		curClu.setBackground(Color.green);
 		setLabelProperties(curTurCnt);
+		curClu.setBackground(Color.green);
 		curTurCnt.setBackground(Color.green);
+		curTurCnt.setFont(new Font("Courier", Font.BOLD, 27));
+		curClu.setFont(new Font("Courier", Font.BOLD, 27));
 		responsePanel.add(curClu);
 		responsePanel.add(response);
 		responsePanel.add(curTurCnt);
@@ -209,7 +215,7 @@ public class GUI implements Observer {
 		turnPanel.removeAll();
 		JLabel turn = new JLabel("Turn: "+_board.getTurn());
 		setLabelProperties(turn);
-		if(_board.getTurn()=="red" || _board.getTurn() == "Red Spy")
+		if(_board.getTurn()=="red" || _board.getTurn() == "Red SpyMaster")
 			turn.setBackground(Color.red);
 		else
 			turn.setBackground(Color.blue);
@@ -222,8 +228,7 @@ public class GUI implements Observer {
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		for(int i = 0; i<codeNames.size();i++) {
 			if(codeNames.get(i).getRevealed()==false) {
-				
-			JButton add = new JButton("<html>   "+"<br>  "+codeNames.get(i).getCodeName().toUpperCase());
+			JButton add = new JButton("<html>"+"<br>"+codeNames.get(i).getCodeName());
 			setButtonProperties(add);
 			if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 				add.addActionListener(new easterEggHandler(_board));
@@ -234,8 +239,8 @@ public class GUI implements Observer {
 			_cardPanel.add(add);
 			}
 			else {
-				JButton add = new JButton("<html>"+codeNames.get(i).getTeam().toUpperCase());
-				setButtonProperties(add);
+				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				setLabelProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
@@ -252,15 +257,9 @@ public class GUI implements Observer {
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		
 		for(int i = 0; i<codeNames.size();i++) {
-			JButton add;
-			if(codeNames.get(i).getRevealed()==true) {
-				 add = new JButton("<html>"+codeNames.get(i).getTeam().toUpperCase());
-			}
-			else{
-				 add = new JButton("<html>"+codeNames.get(i).getCodeName().toUpperCase()+"<br>Team: "+codeNames.get(i).getTeam().toUpperCase());
-			}
-				setButtonProperties(add);
 			
+				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				setButtonProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
@@ -278,7 +277,6 @@ public class GUI implements Observer {
 				}
 				if(_board.getKamiWords().contains(codeNames.get(i).getCodeName())) {
 					add.setBackground(Color.yellow);
-					add.setForeground(Color.black);
 				}
 				_cardPanel.add(add);
 			
@@ -302,7 +300,6 @@ public class GUI implements Observer {
 
 	private void buffer() {
 		entry.setEditable(false);
-		
 		_cardPanel.removeAll();
 		for(int i=0;i<25;i++) {
 			JButton buff = new JButton("<html>Press to start<br>next turn.");
@@ -320,11 +317,12 @@ public class GUI implements Observer {
 		Random ran = new Random();
 		int secret = ran.nextInt(25);
 		_cardPanel.removeAll();
-		responsePanel.setVisible(false);
 		submit.setVisible(false);
+		responsePanel.setVisible(false);
 		entry.setVisible(false);
 		turnPanel.setVisible(false);
 		endTurn.setVisible(false);
+		_board.setReply(winPhase);
 		for(int i=0;i<25;i++) {
 			if(i==secret) {
 				JButton winner = new JButton(winPhase.toUpperCase()+" TEAM WINS!");
@@ -345,6 +343,8 @@ public class GUI implements Observer {
 				winner.setBackground(Color.blue);
 			_cardPanel.add(winner);
 			}
+			controlPanel.add(exit);
+			controlPanel.add(newGame);
 		}
 	}
 
