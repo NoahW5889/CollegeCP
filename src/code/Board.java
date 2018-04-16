@@ -386,7 +386,13 @@ public class Board {
 		
 		notifyObservers();
 	}
-	
+	/**
+	 * Method that checks the guess
+	 * If skip or any codeName is entered false is returned
+	 * If not equal to any codeName or skip true is returned
+	 * @param last
+	 * @return
+	 */
 	public boolean checkGuess(String last) {
 		if(last.equalsIgnoreCase("skip")) 
 			return false;
@@ -408,7 +414,14 @@ public class Board {
 		}
 		return false;
 	}
-	
+	/**
+	 * Method for ending turn voluntarily 
+	 * If turn equals red or blue it sets turn to buffer ,and updates PrevTurn
+	 * If turn equals Blue Spy it changes the turn to Red Spy
+	 * If turn equals Red Spy it changes the turn to Blue Spy
+	 * Sets reply box to say who skipped their turn
+	 * Notifys all observers
+	 */
 	public void volendTurn() {
 		if(getTurn()=="red") {
 			setPrevTurn("red");
@@ -443,38 +456,60 @@ public class Board {
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
 		//In future there will be a system.exit(0);
 	}
-
+	/**
+	 * Method for guessing 
+	 * Sets the reply text to what is returned by the choose function,with parameters GUI.GUI.entry.getText())
+	 * Notifys all observers
+	 * Clears the textfield
+	 */
 	public void submit() {
 		setReply(choose(GUI.GUI.entry.getText()));
 		notifyObservers();
 		clear();
 	}
-	
+	/**
+	 * Method for adding an observer to the _observers Arraylist
+	 * @param obs
+	 * adds obs to the _observers arraylist
+	 */
 	public void addObserver(Observer obs) {
 		_observers.add(obs);
 		notifyObservers();
 	}
-
+	/**
+	 * Method that notify observers 
+	 * calls the update method which updates the GUI
+	 */
 	public void notifyObservers() {
 		for (Observer obs : _observers) {
 			obs.update();
 		}
 	}
-	
+	/**
+	 * Method for emptying the textfield
+	 * sets GUI.GUI.entry to an empty string
+	 */
 	public void clear() {
 		GUI.GUI.entry.setText("");
 	}
-	
+	/**
+	 * Method for exiting the application
+	 * calls system.exit(0) which  exits the appication
+	 */
 	public void exit() {
 		System.exit(0);
 		
 	}
-
+	/**
+	 * method for starting a new game
+	 * calls  the startGame method 
+	 */
 	public void newGame() {
 		startGame();
 	}
-	/**
-	 * 
+	/**method for the second easter egg
+	 * sets redCnt,bluCnt,assCnt to 1337 and sets turn to "egg"
+	 * notifies all observers 
 	 */
 	public void egg2() {
 		setRedCnt(1337);
