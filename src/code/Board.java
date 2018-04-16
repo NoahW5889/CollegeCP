@@ -461,11 +461,9 @@ public class Board {
 	public String assassPressed() {	
 		setAssCnt(getAssCnt() - 1);
 		if(getTurn()=="red") {
-			return "Assassin chosen by Red Team! Blue Team Wins!";
-			//In future there will be a system.exit(0);
+			return "Assassin chosen by Red Team! Blue Team Wins!";//In future there will be a system.exit(0);
 		}
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
-		//In future there will be a system.exit(0);
 	}
 	/**
 	 * Method for guessing 
