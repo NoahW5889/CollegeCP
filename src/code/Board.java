@@ -60,7 +60,7 @@ public class Board {
 	 */
 	public void startGame() {
 		setKamiWords(new ArrayList<String>());
-		setReply("Start of Game");
+		setReply("Start of Game. Red SpyMasters Turn.");
 		setList(new String[25]);
 		setMainBoard(new ArrayList<Person>());
 		setAssCnt(1);
@@ -132,7 +132,7 @@ public class Board {
 		String pl = h.replaceAll("[^a-zA-Z]", "");
 		for(int i=0;i<25;i++) {
 			if(pl==null||pl.trim().isEmpty()||(pl.equalsIgnoreCase((getMainBoard().get(i).getCodeName()))&&getMainBoard().get(i).getRevealed()==false)) {
-				setReply("Invalid Clue.");
+				setReply("Invalid Clue. Empty.");
 				return false;
 			}
 		}
@@ -254,7 +254,7 @@ public class Board {
 		}
 		
 		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
-			return "Invalid Entry. Try Again.";
+			return "Invalid Entry. Empty. Try Again.";
 		}
 		else if(entered.length() > 15) {
 			return "Entry is too long. Try Again.";

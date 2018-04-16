@@ -47,6 +47,7 @@ public class GUI implements Observer {
 	private JButton submit;
 	private JButton endTurn;
 	private JLabel curTurCnt;
+	private JLabel turn;
 	
 	
 	/**
@@ -239,10 +240,12 @@ public class GUI implements Observer {
 		responsePanel.add(curTurCnt);
 		
 		turnPanel.removeAll();
-		JLabel turn = new JLabel("Turn: "+_board.getTurn());
+		turn = new JLabel("Turn: "+_board.getTurn());
 		setLabelProperties(turn);
 		if(_board.getTurn()=="red" || _board.getTurn() == "Red SpyMaster")
 			turn.setBackground(Color.red);
+		else if(_board.getTurn()=="Buffer")
+			turn.setBackground(Color.gray);
 		else
 			turn.setBackground(Color.blue);
 		turnPanel.add(turn);
@@ -269,7 +272,15 @@ public class GUI implements Observer {
 			_cardPanel.add(add);
 			}
 			else {
-				JLabel add = new JLabel(codeNames.get(i).getTeam());
+				JLabel add;
+				if(codeNames.get(i).getTeam()=="red")
+					add = new JLabel("Red Agent");
+				else if(codeNames.get(i).getTeam()=="blue")
+					add = new JLabel("Blue Agent");
+				else if(codeNames.get(i).getTeam()=="bystander")
+					add = new JLabel("Innocent Bystander");
+				else
+					add = new JLabel("Assassin");
 				setLabelProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
@@ -291,9 +302,21 @@ public class GUI implements Observer {
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		
+		
 		for(int i = 0; i<codeNames.size();i++) {
-			
-				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+			JLabel add;
+			if(codeNames.get(i).getRevealed()==false) 
+				add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+			else {
+				if(codeNames.get(i).getTeam()=="red")
+					add = new JLabel("Red Agent");
+				else if(codeNames.get(i).getTeam()=="blue")
+					add = new JLabel("Blue Agent");
+				else if(codeNames.get(i).getTeam()=="bystander")
+					add = new JLabel("Innocent Bystander");
+				else
+					add = new JLabel("Assassin");
+			}
 				setLabelProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
@@ -346,7 +369,7 @@ public class GUI implements Observer {
 	 * JButtons(@param buff) that all display "Press to start next turn.". Happens
 	 * after guessers turns only.
 	 */
-	private void buffer() {
+	private void buffer() {	
 		entry.setEditable(false);
 		_cardPanel.removeAll();
 		for(int i=0;i<25;i++) {
