@@ -173,8 +173,10 @@ public class Board {
 			return getBluCnt();
 		}
 	}
-	/*
-	 * Ends the game automatically 
+	/**Method that Ends the game automatically for who ever clicked on it
+	 * 
+	 * If turn is equal to red or Red Spy red team wins
+	 * Otherwise blue team wins
 	 */	
 	public void easterEgg() {
 		if(getTurn()=="red"||getTurn()=="Red SpyMaster") {
@@ -188,6 +190,14 @@ public class Board {
 		notifyObservers();
 	}
 	
+	/**
+	 * Method that checks if a clue is valid or not
+	 *If validClue() returns true the turn is switched
+	 *If validClue() returns false the the reply is changed and the spymaster is allowed to choose again
+	 *CurClu is set to the text at entry
+	 *The textfield is cleared
+	 *All observers are notified
+	 */
 	public void validClues() {
 		if(validClue()==true) {
 			if(getTurn() == "Red SpyMaster") {
@@ -230,6 +240,7 @@ public class Board {
 	
 	/**
 	 * Takes in entry/chosen card, determines if correct
+	 * 
 	 * @param entered players choice
 	 * @return if correct,incorrect or skipped turn
 	 */
@@ -378,7 +389,7 @@ public class Board {
 			setReply("Red Team Has Won the Game");
 		}
 		 if(q=="blue") {
-			setReply("Red Team Has Won the Game");
+			setReply("Blue Team Has Won the Game");
 		}
 		 if(q=="assass") {
 			setReply(assassPressed());

@@ -6,7 +6,7 @@ public class Person {
 	private Boolean revealed;	//holds reveal status for instance
 	private String team;	//holds team for instance
 	
-	/*
+	/**
 	 * constructor creating person object
 	 * @param _code takes in codeName to set codeName of person to
 	 * @param _team takes in team to be set for person and sets team to it
@@ -18,7 +18,7 @@ public class Person {
 		revealed = false;
 	}
 	
-	/*
+	/**
 	 * gets team of requested person
 	 * @return team of requested person
 	 */
@@ -26,7 +26,7 @@ public class Person {
 		return team;
 	}
 	
-	/*
+	/**
 	 * gets codeName of requested person
 	 * @return codeName of requested person
 	 */
@@ -34,7 +34,7 @@ public class Person {
 		return codeName;
 	}
 
-	/*
+	/**
 	 * gets revealed status of requested person
 	 * @return revealed status of requested person
 	 */
@@ -42,7 +42,7 @@ public class Person {
 		return revealed;
 	}
 
-	/*
+	/**
 	 * sets revealed status of requested person to param
 	 * @param revealed holds status input to set revealed of person to (true or false)
 	 */
