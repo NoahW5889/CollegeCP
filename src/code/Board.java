@@ -27,7 +27,7 @@ public class Board {
 	private int maxGuess;
 	private int curGuessCnt=1;
 	
-	/*
+	/**
 	 * constructor used to send in filename to read for codeNames
 	 * @param readCSVFile Takes in the gameWords.txt and stores in codeNames
 	 * sets _observers to new arraylist
@@ -40,7 +40,8 @@ public class Board {
 		_observers = new ArrayList<Observer>();
 	}
 	
-	/*Starts the game
+	/**
+	 * Starts the game
 	 * list for easter egg created
 	 * reply is set to"start of Game"
 	 * list is created
@@ -74,7 +75,7 @@ public class Board {
 		notifyObservers();
 	}
 
-	/*
+	/**
 	 * Reads codeNames from a file, stores them in ArrayList BULLET POINT 3
 	 * @param filename list of game words from a text file
 	 * @return an arraylist of game words read in from a file
@@ -93,9 +94,9 @@ public class Board {
     	  return getCodeNames();
     }
 	
-	/*
-	 * Creates a list of 25 random codeNames/words and 2 KamiWords(for easter egg) from the list created in readCSVFile 
-	 * 
+	/**
+	 * Creates a list of 25 random codeNames/words and 2 KamiWords(for easter egg) 
+	 * from the list created in readCSVFile
 	 */
 	public void createList() {
 	
@@ -116,7 +117,7 @@ public class Board {
 	}
 	
 	
-	/*
+	/**
 	 * Checks if clue is legal or not
 	 * @return true if clue is valid
 	 * @return false if clue is not valid
@@ -159,7 +160,7 @@ public class Board {
 		return true;
 	}
 	
-	/*
+	/**
 	 * Returns the current spy count
 	 * @return RedCnt if turn is red
 	 * @return BluCnt if turn is blue
@@ -201,7 +202,7 @@ public class Board {
 		clear();
 		notifyObservers();
 	}
-	/*
+	/**
 	 * Fills board to size 25 players
 	 * @param add a player to mainBoard, while setting its team depending on number in string 
 	 */
@@ -227,7 +228,7 @@ public class Board {
 		}
 	}
 	
-	/*
+	/**
 	 * Takes in entry/chosen card, determines if correct
 	 * @param entered players choice
 	 * @return if correct,incorrect or skipped turn
@@ -367,7 +368,7 @@ public class Board {
 		return "ERROR";
 	}
 	
-	/*
+	/**
 	 * Returns whether the game has been won or not
 	 * @return if the game has been won or not 
 	 */
@@ -429,7 +430,7 @@ public class Board {
 		}
 		notifyObservers();
 	}
-	/*
+	/**
 	 * Method called when assassin is chosen, returns winner
 	 * @return which team has not lost the game
 	 */

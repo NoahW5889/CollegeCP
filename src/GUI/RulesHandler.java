@@ -9,11 +9,18 @@ public class RulesHandler implements ActionListener {
 
 	private Board _b;
 	
+	/**
+	 * links Board class
+	 * @param b the proper Board class to be used
+	 */
 	public RulesHandler(Board b) {
 		_b=b;
 	}
 
-	@Override
+	/**
+	 * happens when action is performed, resulting in @param setReply
+	 * to display link to rules
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		_b.setReply("<html>==========================Rules.=========================="
 					+ "<br>Please refer to Link."

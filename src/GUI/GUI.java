@@ -24,6 +24,9 @@ import code.Driver;
 import code.Observer;
 import code.Person;
 
+/**
+ * @author Noah Wutz, Maurice Campbell, Fulton Lin
+ */
 public class GUI implements Observer {
 	
 	private Driver _windowHolder;
@@ -45,6 +48,15 @@ public class GUI implements Observer {
 	private JButton endTurn;
 	private JLabel curTurCnt;
 	
+	
+	/**
+	 * Class Construcot setting up, creating, labeling, and setting JButtons, JLabels,
+	 * Jpanels, etc... Ties Board class into this class.
+	 * 
+	 * @param b	Ties Board class into here for implemention of GUI/creation
+	 * @param mp	Brings in mainPanel from driver to be ground or GUI
+	 * @param driver	Connects Driver to class for implementation of GUI/creation
+	 */
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
 		_board = b;
@@ -54,9 +66,9 @@ public class GUI implements Observer {
 		
 		toolsMenu = new JMenu("File");
 		menuBar = new JMenuBar();
-		
-		JMenuItem NewGame = new JMenuItem("New Game"); // Create a menu item.
-		NewGame.addActionListener(new NewGameHandler(_board));        // Add listener to menu item.
+		 
+		JMenuItem NewGame = new JMenuItem("New Game");
+		NewGame.addActionListener(new NewGameHandler(_board)); 
 		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(NewGame);
 		
@@ -65,10 +77,10 @@ public class GUI implements Observer {
 		rules.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(rules);
 		
-		JMenuItem quitGame = new JMenuItem("Quit");   // Create a menu item.
-		quitGame.addActionListener(new ExitHandler(_board));         // Add listener to menu item.
+		JMenuItem quitGame = new JMenuItem("Quit");
+		quitGame.addActionListener(new ExitHandler(_board));
 		quitGame.setFont(new Font("Courier", Font.BOLD, 20));
-		toolsMenu.add(quitGame); // Add menu item to menu.
+		toolsMenu.add(quitGame);
 		
 		toolsMenu.setFont(new Font("Courier", Font.BOLD, 24));
 		menuBar.add(toolsMenu);
@@ -107,6 +119,11 @@ public class GUI implements Observer {
 		entry = new JTextField();
 		entry.addActionListener(new ActionListener() {
 			
+			/**
+			 * Occurs when Enter button on keyboard is pressed while in edit
+			 * of @param entry. Results in either method of submit or validClues
+			 * depending on turn
+			 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(_board.getBluCnt()>=1&&_board.getRedCnt()>=1&&_board.getAssCnt()>=1) {
@@ -137,6 +154,10 @@ public class GUI implements Observer {
 		_board.addObserver(this);
 	}
 	
+	/**
+	 * Called when GUI is needed to update in order to display
+	 * the proper texts, buttons, etc...
+	 */
 	@Override
 	public void update() {
 		if(_board.getTurn()=="Buffer") 
@@ -188,6 +209,11 @@ public class GUI implements Observer {
 		updateJFrameIfNotHeadless();
 	}
 	
+	/**
+	 * Resets @param responsePanel and @param turnPanel in order to succesfully and fully update
+	 * the game board to display the proper items. sets @param curClue and @param curTurCnt to
+	 * new JLabels displaying current clue, guess, spys left, and max guess.
+	 */
 	private void resetOther() {
 		responsePanel.removeAll();
 		
@@ -222,7 +248,11 @@ public class GUI implements Observer {
 		turnPanel.add(turn);
 	
 	}
-
+	/**
+	 * Resets @param _cardPanel viewed by red/blue guesser. Recreates board adding
+	 * buttons(@param add) for unrevealed characters and labels for revealed characters along with displaying
+	 * team if revealed, otherwise just displaying codename.
+	 */
 	private void playerBoard() {
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.getMainBoard();
@@ -239,7 +269,7 @@ public class GUI implements Observer {
 			_cardPanel.add(add);
 			}
 			else {
-				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				JLabel add = new JLabel(codeNames.get(i).getTeam());
 				setLabelProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
@@ -251,15 +281,20 @@ public class GUI implements Observer {
 			}
 		}
 	}
-
+	
+	/**
+	 * Resets @param _cardPanel viewed by red/blue spyMaster. Recreates board adding
+	 * labels(@param add) for unrevealed characters and labels for revealed characters along with displaying
+	 * team and codenames for spymasters to view.
+	 */
 	private void spyBoard() {
 		_cardPanel.removeAll();
 		ArrayList<Person> codeNames = _board.getMainBoard();
 		
 		for(int i = 0; i<codeNames.size();i++) {
 			
-				JButton add = new JButton("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
-				setButtonProperties(add);
+				JLabel add = new JLabel("<html>"+codeNames.get(i).getCodeName()+"<br>Team: "+codeNames.get(i).getTeam());
+				setLabelProperties(add);
 				if(codeNames.get(i).getTeam()=="bystander")
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
@@ -284,6 +319,12 @@ public class GUI implements Observer {
 
 	}
 
+	/**
+	 * Removes all cards on @param _cardPanel and replaces them with @param winner (JLabel)
+	 * displaying "Easter Eggs Are Cool :)" alternating in colors representing teams. This 
+	 * only happens after game has been won and proper
+	 * JButton on win screen has been pressed. sets entry field to Editable(false).
+	 */
 	private void egg() {
 		_cardPanel.removeAll();
 		entry.setEditable(false);
@@ -298,6 +339,13 @@ public class GUI implements Observer {
 		}
 	}
 
+	/**
+	 * This is a buffer screen used to prevent the guessers from seeing the 
+	 * board (@param _cardPanel) after guessing incorrectly, ending turn, or
+	 * reaching max guesses. This replaces all cards on @param _cardPanel with reacurring
+	 * JButtons(@param buff) that all display "Press to start next turn.". Happens
+	 * after guessers turns only.
+	 */
 	private void buffer() {
 		entry.setEditable(false);
 		_cardPanel.removeAll();
@@ -313,6 +361,13 @@ public class GUI implements Observer {
 		}
 	}
 
+	/**
+	 * This only happens when a winner has been determined. Removes all cards
+	 * from @param _card Panel, sets visability of @params submit, responsePanel,
+	 * entry, turnPanel, and endTurn to false. Sets reply displayed then adds new
+	 * JButtons(@param winner) onto @_cardPanel displaying which team has won.
+	 * This also sets special random button to link to easter egg method.
+	 */
 	private void winner() {
 		Random ran = new Random();
 		int secret = ran.nextInt(25);
@@ -348,6 +403,9 @@ public class GUI implements Observer {
 		}
 	}
 
+	/**
+	 * updates JFramed] of @param _windowHolder
+	 */
 	public void updateJFrameIfNotHeadless() {
 		if (_windowHolder != null) {
 			_windowHolder.updateJFrame();
@@ -355,7 +413,11 @@ public class GUI implements Observer {
 	}
 
 
-	
+	/**
+	 * sets JButtons design up making them more appealing
+	 * Font: Courier, Bold, size: 30
+	 * @param button	the button to be set up this way
+	 */
 	public void setButtonProperties(JButton button) {
 		button.setFont(new Font("Courier", Font.BOLD, 30));
 		button.setBackground(Color.WHITE);
@@ -364,6 +426,11 @@ public class GUI implements Observer {
 		button.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.DARK_GRAY, Color.LIGHT_GRAY));
 	}
 	
+	/**
+	 * sets JLabels design up making them more appealing
+	 * Font: Courier, Bold, size: 30
+	 * @param label	the label to be set up this way
+	 */
 	public void setLabelProperties(JLabel label) {
 		label.setFont(new Font("Courier", Font.BOLD, 30));
 		label.setBackground(Color.WHITE);

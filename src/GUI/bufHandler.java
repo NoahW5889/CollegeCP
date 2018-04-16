@@ -9,11 +9,19 @@ public class bufHandler implements ActionListener {
 
 	private Board _b;
 	
+	/**
+	 * links Board class
+	 * @param b the proper Board class to be used
+	 */
 	public bufHandler(Board b) {
 		_b=b;
 	}
 
-	@Override
+	/**
+	 * happens when action is performed, resulting in the setting of 
+	 * turns to change along with reply and method called of
+	 * notifyObservers
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		if(_b.getPrevTurn()=="blue"&&_b.checkGuess(_b.getLastGuess())==false)
 			_b.setTurn("Red SpyMaster");
