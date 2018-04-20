@@ -137,7 +137,7 @@ public class Board {
 			}
 		}
 		boolean hasNum = false;
-		String placeHolder = h.replaceAll("[^\\d.]", "");
+		String placeHolder = h.replaceAll("[^\\d.-]", "");
 		if(placeHolder.trim().isEmpty()) {
 			setReply("Invalid Clue. No Number.");
 			return false;
@@ -151,8 +151,14 @@ public class Board {
 		if(hasNum == true) {
 			long result = Long.parseLong(placeHolder);
 			if(getTurn() == "Red SpyMaster" && getRedCnt() < result) {
+				setReply("Invalid Clue. Count too High.");
 				return false;
 			}else if(getTurn() == "Blue SpyMaster" && getBluCnt() < result) {
+				setReply("Invalid Clue. Count too High.");
+				return false;
+			}
+			else if(result < 0) {
+				setReply("Invalid Clue. Count Cannot Be Below 0.");
 				return false;
 			}
 		}
