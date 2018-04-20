@@ -23,7 +23,7 @@ public class Board {
 	private String curClue;
 	private ArrayList<String> kamiWords=new ArrayList<String>();
 	private String prevTurn;
-	private String lastGuess;
+	private String lastGuess="";
 	private int maxGuess;
 	private int curGuessCnt=1;
 	
