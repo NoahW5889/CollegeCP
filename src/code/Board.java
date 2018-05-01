@@ -18,6 +18,8 @@ public class Board {
 	private int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
 	private int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	private int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	private int grnCnt=0;
+	private int playerCnt;
 	private ArrayList<Observer> _observers;	
 	private String reply;
 	private String curClue;
@@ -26,6 +28,7 @@ public class Board {
 	private String lastGuess="";
 	private int maxGuess;
 	private int curGuessCnt=1;
+	private ArrayList<String> elimPlayers=new ArrayList<String>();
 	
 	/**
 	 * constructor used to send in filename to read for codeNames
@@ -58,14 +61,30 @@ public class Board {
 	 * sets CurClu to empty string
 	 * All observers are notified
 	 */
+	public void playerSet(int q) {
+		
+		setPlayerCnt(q);
+		startGame();
+		notifyObservers();
+	}
+	
 	public void startGame() {
+		if(playerCnt==3) {
+			setRedCnt(6);
+			setBluCnt(5);
+			setGrnCnt(5);
+			setAssCnt(2);	
+		}
+		else {
+			setAssCnt(1);
+			setRedCnt(9);
+			setBluCnt(8);
+			
+		}
 		setKamiWords(new ArrayList<String>());
 		setReply("Start of Game. Red SpyMasters Turn.");
 		setList(new String[25]);
 		setMainBoard(new ArrayList<Person>());
-		setAssCnt(1);
-		setRedCnt(9);
-		setBluCnt(8);
 		Collections.shuffle(getCodeNames());
 		createList();
 		fillBoard();
@@ -169,9 +188,10 @@ public class Board {
 		if(getTurn()=="red" || getTurn() == "Red SpyMaster") {
 			return getRedCnt();
 		}
-		else {
+		else if(getTurn()=="blue" || getTurn() == "Blue SpyMaster") {
 			return getBluCnt();
 		}
+		else return getGrnCnt();
 	}
 	/**Method that Ends the game automatically for who ever clicked on it
 	 * 
@@ -183,9 +203,13 @@ public class Board {
 			setRedCnt(0);
 			setReply("Game Over Red Team Wins(EE)");
 		}
-		else{
+		else if(getTurn()=="blue"){
 			setBluCnt(0);
 			setReply("Game Over Blue Team Wins(EE)");
+		}
+		else{
+			setGrnCnt(0);
+			setReply("Game Over Green Team Wins(EE)");
 		}
 		notifyObservers();
 	}
@@ -207,6 +231,10 @@ public class Board {
 				setTurn("blue");
 				setReply("The Clue is Valid. "+getTurn()+"s turn.");
 			}
+			else if(getTurn() == "Green SpyMaster") {
+				setTurn("green");
+				setReply("The Clue is Valid. "+getTurn()+"s turn.");
+			}
 			setCurClue(GUI.GUI.entry.getText());
 		}
 		clear();
@@ -217,8 +245,30 @@ public class Board {
 	 * @param add a player to mainBoard, while setting its team depending on number in string 
 	 */
 	public void fillBoard() {
+		if(playerCnt==3) {
+			for(int i=0;i<25;i++) {
+				Person person=null;
+				if(i<6) {
+				person = new Person(getCodeNames().get(i),"red");
+				}			
+				else if(i>=6&&i<11) {
+					person = new Person(getCodeNames().get(i),"blue");				
+				}
+				else if(i>=11&&i<16) {
+					person = new Person(getCodeNames().get(i),"green");
+				}
+				else if(i>=16&&i<23) {
+					person= new Person(getCodeNames().get(i),"bystander");
+				}
+				else {
+					person = new Person(getCodeNames().get(i),"assassin");
+				}
+				getMainBoard().add(person);
+			}
+			
+		}
 		
-		
+		else {
 		for(int i=0;i<25;i++) {
 			Person person=null;
 			if(i<9) {
@@ -235,6 +285,7 @@ public class Board {
 				person = new Person(getCodeNames().get(i),"assassin");
 			}
 			getMainBoard().add(person);
+		}
 		}
 	}
 	
@@ -282,9 +333,23 @@ public class Board {
 				setTurn("Blue SpyMaster");
 				return "Red Team Skips their turn. Blue SpyMasters Turn.";
 			}
+			else if(getTurn() == "Green SpyMaster") {
+				setTurn("Red SpyMaster");
+				return "Green Team Skips their turn. Red SpyMasters Turn.";
+			}
 			else if(getTurn() == "Blue SpyMaster") {
+				if(getPlayerCnt()==3) {
+					setTurn("Green SpyMaster");	
+					return "Blue Team Skips their turn. Green SpyMasters Turn.";
+				}
+				else {
 				setTurn("Red SpyMaster");
 				return "Blue Team Skips their turn. Red SpyMasters Turn.";
+				}
+			}
+			else if(getTurn() == "green") {
+				setTurn("Red SpyMaster");
+				return "Green Team Skips their turn. Red SpyMasters Turn.";
 			}
 			else {
 				setPrevTurn("blue");
@@ -296,84 +361,13 @@ public class Board {
 			
 		}
 		else if(getTurn()=="red") {
-			for(int i=0;i<getMainBoard().size();i++) {
-				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
-					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
-						setRedCnt(getRedCnt() - 1);
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("blue");
-						setTurn("red");
-						curGuessCnt+=1;
-						return "Correct Guess. Still Red Teams Turn.";
-						
-					}
-					else if(getMainBoard().get(i).getTeam()=="assassin") {
-						return assassPressed();
-					}
-					else if(getMainBoard().get(i).getTeam()=="bystander") {
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("red");
-						setTurn("Buffer");
-						curGuessCnt=0;
-						return "Incorrect Guess. Blue SpyMasters Turn.";
-					}
-					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
-						setBluCnt(getBluCnt() - 1);
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("red");
-						setTurn("Buffer");
-						curGuessCnt=0;
-						return "Incorrect Guess. Blue SpyMasters Turn.";
-						
-					}
-				}
-				
-				
-			}
-			setPrevTurn("red");
-			setTurn("Buffer");
-			curGuessCnt=0;
-			return "Incorrect Guess. Blue SpyMasters Turn.";
+			return redChoose(entered);
 		}
 		
 		else if(getTurn()=="blue") {
-			for(int i=0;i<getMainBoard().size();i++) {
-				if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
-					if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
-						setBluCnt(getBluCnt() - 1);
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("red");
-						setTurn("blue");
-						curGuessCnt+=1;
-						return "Correct Guess! Still Blue Teams turn";
-					}
-					else if(getMainBoard().get(i).getTeam()=="assassin") {
-						
-						return assassPressed();
-					}
-					else if(getMainBoard().get(i).getTeam()=="bystander") {
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("blue");
-						setTurn("Buffer");
-						curGuessCnt=0;
-						return "Incorrect Guess. Red SpryMasters Turn.";
-					}
-					if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
-						setRedCnt(getRedCnt() - 1);
-						getMainBoard().get(i).setRevealed(true);
-						setPrevTurn("blue");
-						setTurn("Buffer");
-						curGuessCnt=0;
-						return "Incorrect Guess. Red SpryMasters Turn.";
-					}
-				}
+			return bluChoose(entered);
 			}
-			setPrevTurn("blue");
-				setTurn("Buffer");
-				curGuessCnt=0;
-				return "Incorrect Guess. Red SpryMasters Turn.";
-			}
-		if(getTurn() == "Blue SpyMaster" || getTurn() == "Red SpyMaster") {
+		if(getTurn() == "Blue SpyMaster" || getTurn() == "Red SpyMaster"||getTurn()=="Green SpyMFaster") {
 			return "Enter a Clue and a num.";
 		}
 		return "ERROR";
@@ -433,24 +427,56 @@ public class Board {
 	 * Sets reply box to say who skipped their turn
 	 * Notifys all observers
 	 */
+	
+
 	public void volendTurn() {
+		
 		if(getTurn()=="red") {
 			setPrevTurn("red");
 			setTurn("Buffer");
 			setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
+		}
+		else if(getTurn()=="green") {
+			setPrevTurn("green");
+			setTurn("Buffer");
+			setReply("Green Team Skips their turn. Red SpyMasters Turn.");
+		}
+		else if(getTurn()=="Green SpyMaster") {
+			setTurn("Red SpyMaster");
+			setReply("Green Team Skips their turn. Red SpyMasters Turn.");
 		}
 		else if(getTurn() == "Red SpyMaster") {
 			setTurn("Blue SpyMaster");
 			setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
 		}
 		else if(getTurn() == "Blue SpyMaster") {
+			if(playerCnt==3) {
+				setTurn("Green SpyMaster");
+				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+			}
+			else {
 			setTurn("Red SpyMaster");
 			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			}
+			
 		}
-		else{
+		
+		else if(getTurn()=="blue") {
+			if(playerCnt==3) {
+				setPrevTurn("blue");
+				setTurn("Buffer");
+				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+			}
+			else {
 			setPrevTurn("blue");
 			setTurn("Buffer");
 			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			}
+			
+		}
+		else{
+		
+			setReply("Error");
 		}
 		notifyObservers();
 	}
@@ -460,10 +486,29 @@ public class Board {
 	 */
 	public String assassPressed() {	
 		setAssCnt(getAssCnt() - 1);
+		if(getPlayerCnt()==3){
+			if(getTurn()=="red") {
+				elimPlayers.add("red");
+				return "Assassin chosen by Red Team! Red Team Eliminated";//In future there will be a system.exit(0);
+			}
+			if(getTurn()=="green") {
+				elimPlayers.add("green");
+				return "Assassin chosen by Green Team! Green Team Eliminated!";//In future there will be a system.exit(0);
+			}
+			
+			else {
+				elimPlayers.add("blue");
+				return "Assassin chosen by Blue Team! Blue Team Eliminated!";
+			}
+			}
+		
+		else {
 		if(getTurn()=="red") {
 			return "Assassin chosen by Red Team! Blue Team Wins!";//In future there will be a system.exit(0);
 		}
+		
 		else return "Assassin chosen by Blue Team! Red Team Wins!";
+		}
 	}
 	/**
 	 * Method for guessing 
@@ -715,4 +760,107 @@ public class Board {
 		return this.curGuessCnt;
 	}
 	
-}
+	public int getPlayerCnt() {
+		return playerCnt;
+	
+	}
+	public void setPlayerCnt(int q) {
+		playerCnt=q;
+	}
+	public void setGrnCnt(int q) {
+		grnCnt=q;
+	}
+	public int getGrnCnt() {
+		return grnCnt;
+	}
+	
+	public void setElimPlayer(ArrayList<String> y) {
+		elimPlayers=y;
+	}
+	
+	public ArrayList<String> getElimPlayer(){
+		return elimPlayers;
+	}
+	
+	private String redChoose(String entered) {
+		 
+				for(int i=0;i<getMainBoard().size();i++) {
+					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+							setRedCnt(getRedCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("blue");
+							setTurn("red");
+							curGuessCnt+=1;
+							return "Correct Guess. Still Red Teams Turn.";
+							
+						}
+						else if(getMainBoard().get(i).getTeam()=="assassin") {
+							return assassPressed();
+						}
+						else if(getMainBoard().get(i).getTeam()=="bystander") {
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("red");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Blue SpyMasters Turn.";
+						}
+						if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+							setBluCnt(getBluCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("red");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Blue SpyMasters Turn.";
+							
+						}
+					}
+					
+					
+				}
+				setPrevTurn("red");
+				setTurn("Buffer");
+				curGuessCnt=0;
+				return "Incorrect Guess. Blue SpyMasters Turn.";
+			}
+	
+			private String bluChoose(String entered) {
+				for(int i=0;i<getMainBoard().size();i++) {
+					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+						if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+							setBluCnt(getBluCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("red");
+							setTurn("blue");
+							curGuessCnt+=1;
+							return "Correct Guess! Still Blue Teams turn";
+						}
+						else if(getMainBoard().get(i).getTeam()=="assassin") {
+							
+							return assassPressed();
+						}
+						else if(getMainBoard().get(i).getTeam()=="bystander") {
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("blue");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Red SpryMasters Turn.";
+						}
+						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+							setRedCnt(getRedCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("blue");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Red SpryMasters Turn.";
+						}
+					}
+				}
+				setPrevTurn("blue");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Red SpryMasters Turn.";
+				}
+				
+			}
+	

@@ -3,8 +3,7 @@ package GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -50,6 +49,7 @@ public class GUI implements Observer {
 	private JLabel turn;
 	
 	
+	
 	/**
 	 * Class Construcot setting up, creating, labeling, and setting JButtons, JLabels,
 	 * Jpanels, etc... Ties Board class into this class.
@@ -61,6 +61,7 @@ public class GUI implements Observer {
 	public GUI(Board b, JPanel mp, Driver driver) {
 		_windowHolder = driver;
 		_board = b;
+		
 		
 		 _mainPanel = mp;
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.Y_AXIS));
@@ -118,23 +119,9 @@ public class GUI implements Observer {
 		submit.addActionListener(new SubmitHandler(_board));
 		
 		entry = new JTextField();
-		entry.addActionListener(new ActionListener() {
+		entry.addActionListener(new enterHandler(_board));
 			
-			/**
-			 * Occurs when Enter button on keyboard is pressed while in edit
-			 * of @param entry. Results in either method of submit or validClues
-			 * depending on turn
-			 */
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(_board.getBluCnt()>=1&&_board.getRedCnt()>=1&&_board.getAssCnt()>=1) {
-					if(_board.getTurn()=="red"||_board.getTurn()=="blue")
-						_board.submit();
-					else
-						_board.validClues();
-				}
-			}
-		});
+	
 		controlPanel.add(entry);
 		
 		exit = new JButton("Exit");
@@ -151,7 +138,9 @@ public class GUI implements Observer {
 		controlPanel.add(endTurn);
 		endTurn.addActionListener(new volendTurn(_board));
 		
+		
 		_board.startGame();
+		_board.playerSet(3);
 		_board.addObserver(this);
 	}
 	
@@ -161,8 +150,13 @@ public class GUI implements Observer {
 	 */
 	@Override
 	public void update() {
+	
 		if(_board.getTurn()=="Buffer") 
 			buffer();
+		
+		else if(_board.getTurn()=="Player Choose") {
+		
+		}
 		
 		else if(_board.getTurn()=="egg") 
 			egg();
@@ -179,7 +173,14 @@ public class GUI implements Observer {
 			winPhase="blue";
 			winner();
 		}
+		else if(_board.getAssCnt()<2&&_board.getPlayerCnt()==3) {
+			if(_board.getElimPlayer().contains(_board.getTurn())) {
+				_board.volendTurn();
+			}
+		}
 		else if(_board.getAssCnt()==0) {
+		
+			
 			entry.setEditable(false);
 			_cardPanel.removeAll();
 			if(_board.getTurn()=="red")
@@ -187,6 +188,7 @@ public class GUI implements Observer {
 			else
 				winPhase="red";
 			winner();
+			
 		}
 		
 		else {
@@ -231,8 +233,8 @@ public class GUI implements Observer {
 		setLabelProperties(response);
 		setLabelProperties(curClu);
 		setLabelProperties(curTurCnt);
-		curClu.setBackground(Color.green);
-		curTurCnt.setBackground(Color.green);
+		curClu.setBackground(Color.lightGray);
+		curTurCnt.setBackground(Color.lightGray);
 		curTurCnt.setFont(new Font("Courier", Font.BOLD, 27));
 		curClu.setFont(new Font("Courier", Font.BOLD, 27));
 		responsePanel.add(curClu);
@@ -286,6 +288,8 @@ public class GUI implements Observer {
 					add.setBackground(Color.lightGray);
 				else if(codeNames.get(i).getTeam()=="red")
 					add.setBackground(Color.red);
+				else if(codeNames.get(i).getTeam()=="green")
+					add.setBackground(Color.green);
 				else
 					add.setBackground(Color.blue);
 				_cardPanel.add(add);
@@ -314,6 +318,8 @@ public class GUI implements Observer {
 					add = new JLabel("Blue Agent");
 				else if(codeNames.get(i).getTeam()=="bystander")
 					add = new JLabel("Innocent Bystander");
+				else if(codeNames.get(i).getTeam()=="green")
+					add = new JLabel("Green Agent");
 				else
 					add = new JLabel("Assassin");
 			}
@@ -324,6 +330,8 @@ public class GUI implements Observer {
 					add.setBackground(Color.red);
 				else if(codeNames.get(i).getTeam()=="blue")
 					add.setBackground(Color.blue);
+				else if(codeNames.get(i).getTeam()=="green")
+					add.setBackground(Color.green);
 				else {
 					add.setBackground(Color.black);
 					add.setForeground(Color.WHITE);
@@ -378,6 +386,7 @@ public class GUI implements Observer {
 			setButtonProperties(buff);
 			if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false)
 				buff.setBackground(Color.blue);
+			
 			else
 				buff.setBackground(Color.red);
 			_cardPanel.add(buff);
