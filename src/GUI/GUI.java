@@ -69,10 +69,15 @@ public class GUI implements Observer {
 		toolsMenu = new JMenu("File");
 		menuBar = new JMenuBar();
 		 
-		JMenuItem NewGame = new JMenuItem("New Game");
+		JMenuItem NewGame = new JMenuItem("New Game 2 Players");
 		NewGame.addActionListener(new NewGameHandler(_board)); 
 		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(NewGame);
+		
+		JMenuItem NewGame3 = new JMenuItem("New Game 3 Players");
+		NewGame3.addActionListener(new newGameHandler3(3,_board)); 
+		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(NewGame3);
 		
 		JMenuItem rules = new JMenuItem("Rules");
 		rules.addActionListener(new RulesHandler(_board));
@@ -140,7 +145,6 @@ public class GUI implements Observer {
 		
 		
 		_board.startGame();
-		_board.playerSet(3);
 		_board.addObserver(this);
 	}
 	
@@ -173,12 +177,49 @@ public class GUI implements Observer {
 			winPhase="blue";
 			winner();
 		}
-		else if(_board.getAssCnt()<2&&_board.getPlayerCnt()==3) {
-			if(_board.getElimPlayer().contains(_board.getTurn())) {
-				_board.volendTurn();
+		else if(_board.getGrnCnt()==0&&_board.getPlayerCnt()==3) {
+			entry.setEditable(false);
+			_cardPanel.removeAll();
+			winPhase="green";
+			winner();
+		}
+		
+		else if(_board.getAssCnt()<=0&&_board.getPlayerCnt()==3) {
+			if(_board.getElimPlayer().contains("red")==false) {
+				entry.setEditable(false);
+				_cardPanel.removeAll();
+				winPhase="red";
+				winner();
+			}
+			else if(_board.getElimPlayer().contains("green")==false) {
+				entry.setEditable(false);
+				_cardPanel.removeAll();
+				winPhase="green";
+				winner();
+				
+			}
+			else{
+				entry.setEditable(false);
+				_cardPanel.removeAll();
+				winPhase="blue";
+				winner();
+				
 			}
 		}
-		else if(_board.getAssCnt()==0) {
+		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Blue SpyMaster"&&_board.getElimPlayer().contains("blue")) {
+				_board.volendTurn();			
+		}
+		
+		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Red SpyMaster"&&_board.getElimPlayer().contains("red")) {
+			_board.volendTurn();		
+		}
+		
+		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Green SpyMaster"&&_board.getElimPlayer().contains("green")) {
+			_board.volendTurn();		
+		}
+		
+		
+		else if(_board.getAssCnt()==0&&_board.getPlayerCnt()!=3) {
 		
 			
 			entry.setEditable(false);
@@ -200,7 +241,7 @@ public class GUI implements Observer {
 			endTurn.setVisible(true);
 			controlPanel.remove(exit);
 			controlPanel.remove(newGame);
-		if (_board.getTurn()=="Red SpyMaster"||_board.getTurn()=="Blue SpyMaster") 
+		if (_board.getTurn()=="Red SpyMaster"||_board.getTurn()=="Blue SpyMaster"||_board.getTurn()=="Green SpyMaster") 
 				spyBoard();
 	
 		else 
@@ -246,6 +287,8 @@ public class GUI implements Observer {
 		setLabelProperties(turn);
 		if(_board.getTurn()=="red" || _board.getTurn() == "Red SpyMaster")
 			turn.setBackground(Color.red);
+		else if(_board.getTurn()=="green" || _board.getTurn() == "Green SpyMaster")
+			turn.setBackground(Color.green);
 		else if(_board.getTurn()=="Buffer")
 			turn.setBackground(Color.gray);
 		else
@@ -281,6 +324,8 @@ public class GUI implements Observer {
 					add = new JLabel("Blue Agent");
 				else if(codeNames.get(i).getTeam()=="bystander")
 					add = new JLabel("Innocent Bystander");
+				else if(codeNames.get(i).getTeam()=="green")
+					add = new JLabel("Green Agent");
 				else
 					add = new JLabel("Assassin");
 				setLabelProperties(add);
@@ -386,9 +431,14 @@ public class GUI implements Observer {
 			setButtonProperties(buff);
 			if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false)
 				buff.setBackground(Color.blue);
+			else if(_board.getPrevTurn()=="green"&&_board.checkGuess(_board.getLastGuess())==false)
+				buff.setBackground(Color.red);
 			
 			else
-				buff.setBackground(Color.red);
+				if(_board.getPlayerCnt()==3) {
+					buff.setBackground(Color.green);
+				}
+				else buff.setBackground(Color.red);
 			_cardPanel.add(buff);
 		}
 	}
@@ -416,6 +466,8 @@ public class GUI implements Observer {
 				setButtonProperties(winner);
 				if(winPhase=="red")
 					winner.setBackground(Color.red);
+				else if(winPhase=="green")
+				winner.setBackground(Color.green);
 				else
 					winner.setBackground(Color.blue);
 				winner.addActionListener(new eggHandler2(_board));
@@ -426,6 +478,8 @@ public class GUI implements Observer {
 			setButtonProperties(winner);
 			if(winPhase=="red")
 				winner.setBackground(Color.red);
+			else if(winPhase=="green")
+				winner.setBackground(Color.green);
 			else
 				winner.setBackground(Color.blue);
 			_cardPanel.add(winner);

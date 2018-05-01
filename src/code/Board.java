@@ -65,7 +65,7 @@ public class Board {
 		
 		setPlayerCnt(q);
 		startGame();
-		notifyObservers();
+		
 	}
 	
 	public void startGame() {
@@ -112,6 +112,28 @@ public class Board {
         }
     	  return getCodeNames();
     }
+	
+	public void buffer() {
+		if(getPlayerCnt()==3) {
+			if(getPrevTurn()=="blue")
+				setTurn("Green SpyMaster");
+			else if(getPrevTurn()=="green") {
+				setTurn("Red SpyMaster");
+			}
+			else setTurn("Blue SpyMaster");
+			
+		}
+		else {
+		if(getPrevTurn()=="blue"&&checkGuess(getLastGuess())==false)
+			setTurn("Red SpyMaster");
+		else
+			setTurn("Blue SpyMaster");
+		setReply(getTurn()+"s turn.");
+		}
+		notifyObservers();
+	}
+		
+		
 	
 	/**
 	 * Creates a list of 25 random codeNames/words and 2 KamiWords(for easter egg) 
@@ -363,6 +385,9 @@ public class Board {
 		else if(getTurn()=="red") {
 			return redChoose(entered);
 		}
+		else if(getTurn()=="green") {
+			return greChoose(entered);
+		}
 		
 		else if(getTurn()=="blue") {
 			return bluChoose(entered);
@@ -385,6 +410,9 @@ public class Board {
 		 if(q=="blue") {
 			setReply("Blue Team Has Won the Game");
 		}
+		 if(q=="green") {
+				setReply("Green Team Has Won the Game");
+			}
 		 if(q=="assass") {
 			setReply(assassPressed());
 		}
@@ -434,29 +462,35 @@ public class Board {
 		if(getTurn()=="red") {
 			setPrevTurn("red");
 			setTurn("Buffer");
-			setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
+			if(getElimPlayer().contains("red"))setReply("Red Team Has Been Eliminated");
+			else setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
 		}
 		else if(getTurn()=="green") {
 			setPrevTurn("green");
 			setTurn("Buffer");
-			setReply("Green Team Skips their turn. Red SpyMasters Turn.");
+			if(getElimPlayer().contains("green"))setReply("Green Team Has Been Eliminated");
+			else setReply("Green Team Skips their turn. Red SpyMasters Turn.");
 		}
 		else if(getTurn()=="Green SpyMaster") {
 			setTurn("Red SpyMaster");
-			setReply("Green Team Skips their turn. Red SpyMasters Turn.");
+			if(getElimPlayer().contains("green"))setReply("Green Team Has Been Eliminated");
+			else setReply("Green Team Skips their turn. Red SpyMasters Turn.");
 		}
 		else if(getTurn() == "Red SpyMaster") {
 			setTurn("Blue SpyMaster");
-			setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
+			if(getElimPlayer().contains("red"))setReply("Red Team Has Been Eliminated");
+			else setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
 		}
 		else if(getTurn() == "Blue SpyMaster") {
 			if(playerCnt==3) {
 				setTurn("Green SpyMaster");
-				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+				if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
+				else setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
 			}
 			else {
 			setTurn("Red SpyMaster");
-			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
+			else setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
 			}
 			
 		}
@@ -465,12 +499,14 @@ public class Board {
 			if(playerCnt==3) {
 				setPrevTurn("blue");
 				setTurn("Buffer");
-				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+				if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
+				else setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
 			}
 			else {
 			setPrevTurn("blue");
 			setTurn("Buffer");
-			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
+			else setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
 			}
 			
 		}
@@ -489,15 +525,22 @@ public class Board {
 		if(getPlayerCnt()==3){
 			if(getTurn()=="red") {
 				elimPlayers.add("red");
+				if(getAssCnt()>0)
+				volendTurn();
 				return "Assassin chosen by Red Team! Red Team Eliminated";//In future there will be a system.exit(0);
 			}
 			if(getTurn()=="green") {
+				
 				elimPlayers.add("green");
+				if(getAssCnt()>0)
+				volendTurn();
 				return "Assassin chosen by Green Team! Green Team Eliminated!";//In future there will be a system.exit(0);
 			}
 			
 			else {
 				elimPlayers.add("blue");
+				if(getAssCnt()>0)
+				volendTurn();
 				return "Assassin chosen by Blue Team! Blue Team Eliminated!";
 			}
 			}
@@ -844,7 +887,7 @@ public class Board {
 							setPrevTurn("blue");
 							setTurn("Buffer");
 							curGuessCnt=0;
-							return "Incorrect Guess. Red SpryMasters Turn.";
+							return "Incorrect Guess. Red SpyMasters Turn.";
 						}
 						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
 							setRedCnt(getRedCnt() - 1);
@@ -857,6 +900,44 @@ public class Board {
 					}
 				}
 				setPrevTurn("blue");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Red SpryMasters Turn.";
+				}
+			
+			private String greChoose(String entered) {
+				for(int i=0;i<getMainBoard().size();i++) {
+					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+						if(getMainBoard().get(i).getTeam()=="green"&&getMainBoard().get(i).getRevealed()!=true) {
+							setGrnCnt(getGrnCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("blue");
+							setTurn("green");
+							curGuessCnt+=1;
+							return "Correct Guess! Still Green Teams turn";
+						}
+						else if(getMainBoard().get(i).getTeam()=="assassin") {
+							
+							return assassPressed();
+						}
+						else if(getMainBoard().get(i).getTeam()=="bystander") {
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("green");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Red SpyMasters Turn.";
+						}
+						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+							setRedCnt(getRedCnt() - 1);
+							getMainBoard().get(i).setRevealed(true);
+							setPrevTurn("green");
+							setTurn("Buffer");
+							curGuessCnt=0;
+							return "Incorrect Guess. Red SpryMasters Turn.";
+						}
+					}
+				}
+				setPrevTurn("green");
 					setTurn("Buffer");
 					curGuessCnt=0;
 					return "Incorrect Guess. Red SpryMasters Turn.";
