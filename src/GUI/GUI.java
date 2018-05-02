@@ -62,8 +62,7 @@ public class GUI implements Observer {
 		_windowHolder = driver;
 		_board = b;
 		
-		
-		 _mainPanel = mp;
+		_mainPanel = mp;
 		_mainPanel.setLayout(new BoxLayout(_mainPanel, BoxLayout.Y_AXIS));
 		
 		toolsMenu = new JMenu("File");

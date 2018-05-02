@@ -15,10 +15,10 @@ public class Board {
 	String readinFile=null;
 	private ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
 	private String turn="red";	//holds "red" or "blue" to determine turn
-	private int assCnt=1;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
-	private int redCnt=9;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
-	private int bluCnt=8;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
-	private int grnCnt=0;
+	private int assCnt;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
+	private int redCnt;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
+	private int bluCnt;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
+	private int grnCnt;
 	private int playerCnt;
 	private ArrayList<Observer> _observers;	
 	private String reply;
@@ -833,122 +833,121 @@ public class Board {
 	}
 	
 	private String redChoose(String entered) {
-		 
-				for(int i=0;i<getMainBoard().size();i++) {
-					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
-						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
-							setRedCnt(getRedCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("blue");
-							setTurn("red");
-							curGuessCnt+=1;
-							return "Correct Guess. Still Red Teams Turn.";
-							
-						}
-						else if(getMainBoard().get(i).getTeam()=="assassin") {
-							return assassPressed();
-						}
-						else if(getMainBoard().get(i).getTeam()=="bystander") {
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("red");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Blue SpyMasters Turn.";
-						}
-						if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
-							setBluCnt(getBluCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("red");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Blue SpyMasters Turn.";
-							
-						}
-					}
-					
-					
+
+		for(int i=0;i<getMainBoard().size();i++) {
+			if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+				if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+					setRedCnt(getRedCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("blue");
+					setTurn("red");
+					curGuessCnt+=1;
+					return "Correct Guess. Still Red Teams Turn.";
+
 				}
-				setPrevTurn("red");
-				setTurn("Buffer");
-				curGuessCnt=0;
-				return "Incorrect Guess. Blue SpyMasters Turn.";
+				else if(getMainBoard().get(i).getTeam()=="assassin") {
+					getMainBoard().get(i).setRevealed(true);
+					return assassPressed();
+				}
+				else if(getMainBoard().get(i).getTeam()=="bystander") {
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("red");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Blue SpyMasters Turn.";
+				}
+				if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+					setBluCnt(getBluCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("red");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Blue SpyMasters Turn.";
+
+				}
 			}
-	
-			private String bluChoose(String entered) {
-				for(int i=0;i<getMainBoard().size();i++) {
-					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
-						if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
-							setBluCnt(getBluCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("red");
-							setTurn("blue");
-							curGuessCnt+=1;
-							return "Correct Guess! Still Blue Teams turn";
-						}
-						else if(getMainBoard().get(i).getTeam()=="assassin") {
-							
-							return assassPressed();
-						}
-						else if(getMainBoard().get(i).getTeam()=="bystander") {
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("blue");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Red SpyMasters Turn.";
-						}
-						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
-							setRedCnt(getRedCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("blue");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Red SpryMasters Turn.";
-						}
-					}
+		}
+		setPrevTurn("red");
+		setTurn("Buffer");
+		curGuessCnt=0;
+		return "Incorrect Guess. Blue SpyMasters Turn.";
+	}
+
+	private String bluChoose(String entered) {
+		for(int i=0;i<getMainBoard().size();i++) {
+			if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+				if(getMainBoard().get(i).getTeam()=="blue"&&getMainBoard().get(i).getRevealed()!=true) {
+					setBluCnt(getBluCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("red");
+					setTurn("blue");
+					curGuessCnt+=1;
+					return "Correct Guess! Still Blue Teams turn";
 				}
-				setPrevTurn("blue");
+				else if(getMainBoard().get(i).getTeam()=="assassin") {
+
+					return assassPressed();
+				}
+				else if(getMainBoard().get(i).getTeam()=="bystander") {
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("blue");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Red SpyMasters Turn.";
+				}
+				if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+					setRedCnt(getRedCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("blue");
 					setTurn("Buffer");
 					curGuessCnt=0;
 					return "Incorrect Guess. Red SpryMasters Turn.";
 				}
-			
-			private String greChoose(String entered) {
-				for(int i=0;i<getMainBoard().size();i++) {
-					if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
-						if(getMainBoard().get(i).getTeam()=="green"&&getMainBoard().get(i).getRevealed()!=true) {
-							setGrnCnt(getGrnCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("blue");
-							setTurn("green");
-							curGuessCnt+=1;
-							return "Correct Guess! Still Green Teams turn";
-						}
-						else if(getMainBoard().get(i).getTeam()=="assassin") {
-							
-							return assassPressed();
-						}
-						else if(getMainBoard().get(i).getTeam()=="bystander") {
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("green");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Red SpyMasters Turn.";
-						}
-						if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
-							setRedCnt(getRedCnt() - 1);
-							getMainBoard().get(i).setRevealed(true);
-							setPrevTurn("green");
-							setTurn("Buffer");
-							curGuessCnt=0;
-							return "Incorrect Guess. Red SpryMasters Turn.";
-						}
-					}
+			}
+		}
+		setPrevTurn("blue");
+		setTurn("Buffer");
+		curGuessCnt=0;
+		return "Incorrect Guess. Red SpryMasters Turn.";
+	}
+
+	private String greChoose(String entered) {
+		for(int i=0;i<getMainBoard().size();i++) {
+			if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
+				if(getMainBoard().get(i).getTeam()=="green"&&getMainBoard().get(i).getRevealed()!=true) {
+					setGrnCnt(getGrnCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("blue");
+					setTurn("green");
+					curGuessCnt+=1;
+					return "Correct Guess! Still Green Teams turn";
 				}
-				setPrevTurn("green");
+				else if(getMainBoard().get(i).getTeam()=="assassin") {
+
+					return assassPressed();
+				}
+				else if(getMainBoard().get(i).getTeam()=="bystander") {
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("green");
+					setTurn("Buffer");
+					curGuessCnt=0;
+					return "Incorrect Guess. Red SpyMasters Turn.";
+				}
+				if(getMainBoard().get(i).getTeam()=="red"&&getMainBoard().get(i).getRevealed()!=true) {
+					setRedCnt(getRedCnt() - 1);
+					getMainBoard().get(i).setRevealed(true);
+					setPrevTurn("green");
 					setTurn("Buffer");
 					curGuessCnt=0;
 					return "Incorrect Guess. Red SpryMasters Turn.";
 				}
-				
 			}
-	
+		}
+		setPrevTurn("green");
+		setTurn("Buffer");
+		curGuessCnt=0;
+		return "Incorrect Guess. Red SpryMasters Turn.";
+	}
+
+}
+
