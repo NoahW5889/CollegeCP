@@ -21,6 +21,7 @@ public class NewGameHandler implements ActionListener {
 	 * happens when action is performed, resulting in newGame method to trigger
 	 */
 	public void actionPerformed(ActionEvent e) {
+		_b.setPlayerCnt(2);
 		_b.newGame();
 	}
 }

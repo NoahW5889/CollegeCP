@@ -532,23 +532,24 @@ public class Board {
 			if(getTurn()=="red") {
 				elimPlayers.add("red");
 				if(getAssCnt()>0)
-				volendTurn();
+				setTurn("Buffer");
 				return "Assassin chosen by Red Team! Red Team Eliminated";//In future there will be a system.exit(0);
 			}
 			if(getTurn()=="green") {
 				
 				elimPlayers.add("green");
 				if(getAssCnt()>0)
-				volendTurn();
+				setTurn("Buffer");
 				return "Assassin chosen by Green Team! Green Team Eliminated!";//In future there will be a system.exit(0);
 			}
 			
-			else {
+			else if(getTurn()=="blue") {
 				elimPlayers.add("blue");
 				if(getAssCnt()>0)
-				volendTurn();
+				setTurn("Buffer");
 				return "Assassin chosen by Blue Team! Blue Team Eliminated!";
 			}
+			return"error"; 
 			}
 		
 		else {

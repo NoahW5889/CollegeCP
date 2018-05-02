@@ -76,7 +76,7 @@ public class GUI implements Observer {
 		
 		JMenuItem NewGame3 = new JMenuItem("New Game 3 Players");
 		NewGame3.addActionListener(new newGameHandler3(3,_board)); 
-		NewGame.setFont(new Font("Courier", Font.BOLD, 20));
+		NewGame3.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(NewGame3);
 		
 		JMenuItem rules = new JMenuItem("Rules");
@@ -158,9 +158,6 @@ public class GUI implements Observer {
 		if(_board.getTurn()=="Buffer") 
 			buffer();
 		
-		else if(_board.getTurn()=="Player Choose") {
-		
-		}
 		
 		else if(_board.getTurn()=="egg") 
 			egg();
@@ -207,15 +204,18 @@ public class GUI implements Observer {
 			}
 		}
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Blue SpyMaster"&&_board.getElimPlayer().contains("blue")) {
-				_board.volendTurn();			
+			_board.setTurn("Green SpyMaster");
+			_board.notifyObservers();
 		}
 		
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Red SpyMaster"&&_board.getElimPlayer().contains("red")) {
-			_board.volendTurn();		
+			_board.setTurn("Blue SpyMaster");
+			_board.notifyObservers();
 		}
 		
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Green SpyMaster"&&_board.getElimPlayer().contains("green")) {
-			_board.volendTurn();		
+			_board.setTurn("Red SpyMaster");
+			_board.notifyObservers();
 		}
 		
 		
