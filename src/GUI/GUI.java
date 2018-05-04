@@ -203,16 +203,19 @@ public class GUI implements Observer {
 			}
 		}
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Blue SpyMaster"&&_board.getElimPlayer().contains("blue")) {
+			_board.elimReply();
 			_board.setTurn("Green SpyMaster");
 			_board.notifyObservers();
 		}
 		
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Red SpyMaster"&&_board.getElimPlayer().contains("red")) {
+			_board.elimReply();
 			_board.setTurn("Blue SpyMaster");
 			_board.notifyObservers();
 		}
 		
 		else if(_board.getAssCnt()<2&&_board.getAssCnt()>0&&_board.getPlayerCnt()==3&&_board.getTurn()=="Green SpyMaster"&&_board.getElimPlayer().contains("green")) {
+			_board.elimReply();
 			_board.setTurn("Red SpyMaster");
 			_board.notifyObservers();
 		}

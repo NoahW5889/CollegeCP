@@ -453,6 +453,18 @@ public class Board {
 		}
 		return false;
 	}
+	
+	public void elimReply() {
+		if(getTurn()=="Red SpyMaster") {
+			setReply("Red Team has Been Eliminated");
+		}
+		else if(getTurn()=="Green SpyMaster") {
+			setReply("Green Team has Been Eliminated");
+		}
+		else {
+			setReply("Blue Team has Been Eliminated");
+		}
+	}
 	/**
 	 * Method for ending turn voluntarily 
 	 * If turn equals red or blue it sets turn to buffer ,and updates PrevTurn
@@ -468,35 +480,29 @@ public class Board {
 		if(getTurn()=="red") {
 			setPrevTurn("red");
 			setTurn("Buffer");
-			if(getElimPlayer().contains("red"))setReply("Red Team Has Been Eliminated");
-			else setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
+		 setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
 		}
 		else if(getTurn()=="green") {
 			setPrevTurn("green");
 			setTurn("Buffer");
-			if(getElimPlayer().contains("green"))setReply("Green Team Has Been Eliminated");
-			else setReply("Green Team Skips their turn. Red SpyMasters Turn.");
+		 setReply("Green Team Skips their turn. Red SpyMasters Turn.");
 		}
 		else if(getTurn()=="Green SpyMaster") {
 			setTurn("Red SpyMaster");
-			if(getElimPlayer().contains("green"))setReply("Green Team Has Been Eliminated");
-			else setReply("Green Team Skips their turn. Red SpyMasters Turn.");
+		setReply("Green Team Skips their turn. Red SpyMasters Turn.");
 		}
 		else if(getTurn() == "Red SpyMaster") {
 			setTurn("Blue SpyMaster");
-			if(getElimPlayer().contains("red"))setReply("Red Team Has Been Eliminated");
-			else setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
+			 setReply("Red Team Skips their turn. Blue SpyMasters Turn.");
 		}
 		else if(getTurn() == "Blue SpyMaster") {
 			if(playerCnt==3) {
 				setTurn("Green SpyMaster");
-				if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
-				else setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
 			}
 			else {
 			setTurn("Red SpyMaster");
-			if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
-			else setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
 			}
 			
 		}
@@ -505,14 +511,12 @@ public class Board {
 			if(playerCnt==3) {
 				setPrevTurn("blue");
 				setTurn("Buffer");
-				if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
-				else setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
+				setReply("Blue Team Skips their turn. Green SpyMasters Turn.");
 			}
 			else {
 			setPrevTurn("blue");
 			setTurn("Buffer");
-			if(getElimPlayer().contains("blue"))setReply("Blue Team Has Been Eliminated");
-			else setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
+			setReply("Blue Team Skips their turn. Red SpyMasters Turn.");
 			}
 			
 		}
