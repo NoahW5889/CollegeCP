@@ -323,6 +323,10 @@ public class Board {
 	 * @return if correct,incorrect or skipped turn
 	 */
 	public String choose(String entered) {	
+		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
+			return "Invalid Entry. Empty. Try Again.";
+		}
+		
 		setLastGuess(entered);
 		
 		if(!(curGuessCnt<maxGuess)) {
@@ -342,9 +346,7 @@ public class Board {
 			}
 		}
 		
-		if(entered==null||entered.equals(null)||entered.trim().isEmpty()||entered.isEmpty()) {
-			return "Invalid Entry. Empty. Try Again.";
-		}
+		
 		else if(entered.length() > 15) {
 			return "Entry is too long. Try Again.";
 		}
@@ -813,6 +815,14 @@ public class Board {
 		return this.curGuessCnt;
 	}
 	
+	public void setMaxGuessCnt(int i) {
+		maxGuess = i;
+	}
+	
+	public void setCurGuessCnt(int i) {
+		curGuessCnt=i;
+	}
+	
 	public int getPlayerCnt() {
 		return playerCnt;
 	
@@ -885,7 +895,7 @@ public class Board {
 					setPrevTurn("red");
 					setTurn("blue");
 					curGuessCnt+=1;
-					return "Correct Guess! Still Blue Teams turn";
+					return "Correct Guess! Still Blue Teams Turn.";
 				}
 				else if(getMainBoard().get(i).getTeam()=="assassin") {
 
@@ -904,14 +914,14 @@ public class Board {
 					setPrevTurn("blue");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					return "Incorrect Guess. Red SpryMasters Turn.";
+					return "Incorrect Guess. Red SpyMasters Turn.";
 				}
 			}
 		}
 		setPrevTurn("blue");
 		setTurn("Buffer");
 		curGuessCnt=0;
-		return "Incorrect Guess. Red SpryMasters Turn.";
+		return "Incorrect Guess. Red SpyMasters Turn.";
 	}
 
 	private String greChoose(String entered) {
@@ -923,7 +933,7 @@ public class Board {
 					setPrevTurn("blue");
 					setTurn("green");
 					curGuessCnt+=1;
-					return "Correct Guess! Still Green Teams turn";
+					return "Correct Guess! Still Green Teams Turn";
 				}
 				else if(getMainBoard().get(i).getTeam()=="assassin") {
 

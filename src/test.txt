@@ -11,3 +11,16 @@ BP#		Class						Functionality							             		 					Method(s) 													
 #8		Board.java					Updates when location selected and checks team        							choose(String entered)         									testChoose()
 #9		Board.java					Checks if the game has been won                      							gameState()                										testGameState()
 #10		Board.java					Returns who did not lose the game(who won)                     					assassPressed()            										testAssassinPressed()
+
+Phase #2 Grading Rubric
+BP#		Class						Functionality							             		 					Method(s) 														TestCase
+#1		test.txt					labeling classes to methods, functionality, and test cases						*****************												***************
+
+
+
+
+
+
+
+
+

@@ -148,7 +148,7 @@ public class TestCases {
 	 */
 	public void bluePosition() {	//
 		for(int i=0;i<board.getMainBoard().size();i++) {
-			if(board.getMainBoard().get(i).getTeam()=="blue")
+			if(board.getMainBoard().get(i).getTeam()=="blue"&&board.getMainBoard().get(i).getRevealed()==false)
 				bluPos=i;
 		}
 	}
@@ -193,7 +193,7 @@ public class TestCases {
 		board.startGame();	//calls startGame() method
 		assertNotEquals(codeNames, board.getCodeNames());	//Makes sure the codeNames ArrayList got shuffled
 		assertEquals(board.getMainBoard().size(),25);	//Makes sure board size is 25
-		assertEquals(board.getTurn(),"red");	//Makes sure starting turn is red
+		assertEquals(board.getTurn(),"menu");	//Makes sure starting menu opens
 	}
 	
 	@Test
@@ -232,37 +232,37 @@ public class TestCases {
 		bluePosition();	//gets position of blue agent for testing
 		assassinPosition();	//gets position of assassin red agent for testing
 		bystanderPosition();	//gets position of bystander for testing
+		board.setCurGuessCnt(0);
+		board.setMaxGuessCnt(3);
 		
-		assertEquals(board.choose(null),"Invalid Entry. Try Again"); //enters null as a choice
-		assertEquals(board.choose(""),"Invalid Entry. Try Again");	//enters empty string as choice
-		assertEquals(board.choose("  "),"Invalid Entry. Try Again");	//enters spaces as choice
-		assertEquals(board.choose("rules"),"===============\nRules.\n===============\nPlease refer to video."	//enters rules as choice
-				+ "\nhttps://www.youtube.com/watch?v=sy0AnMDcap0&t=20s"
-				+ "\n===============");
+		assertEquals(board.choose(null),"Invalid Entry. Empty. Try Again."); //enters null as a choice
+		assertEquals(board.choose(""),"Invalid Entry. Empty. Try Again.");	//enters empty string as choice
+		assertEquals(board.choose("  "),"Invalid Entry. Empty. Try Again.");	//enters spaces as choice
 		
 		board.setTurn("red");	//sets turn to red team
-		assertEquals(board.choose("skip"),"Red Team Skips their turn.");	//tests skip turn choice
-		assertEquals(board.getTurn(),"blue");	//tests making sure skip method changed turns
+		assertEquals(board.choose("skip"),"Red Team Skips their turn. Blue SpyMasters Turn.");	//tests skip turn choice
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
 		board.setTurn("blue");	//sets turn to blue team
-		assertEquals(board.choose("skip"),"Blue Team Skips their turn.");	//tests skip turn choice
-		assertEquals(board.getTurn(),"red");	//tests making sure skip method changed turns
+		assertEquals(board.choose("skip"),"Blue Team Skips their turn. Red SpyMasters Turn.");	//tests skip turn choice
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
 		
 		board.setTurn("red");	//sets turn to red team
-		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Correct Guess!");	//tests red turn choosing red agent
-		assertEquals(board.choose(board.getMainBoard().get(bluPos).getCodeName()),"Incorrect Guess.");	//tests red turn choosing blue agent
-		assertEquals(board.getTurn(),"blue");	//tests making sure incorrect guess changed turns
+		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Correct Guess. Still Red Teams Turn.");	//tests red turn choosing red agent
+		assertEquals(board.choose(board.getMainBoard().get(bluPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");	//tests red turn choosing blue agent
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("red");	//sets turn to red team
 		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Red Team! Blue Team Wins!");	//tests red turn choosing assassin
-		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect, Bystander revealed");	//tests red turn choosing bystander
-		assertEquals(board.getTurn(),"blue");	//tests making sure incorrect guess changed turns
+		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");	//tests red turn choosing bystander
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("blue");	//sets turn to blue team
-		assertEquals(board.choose(board.getMainBoard().get(bluPos).getCodeName()),"Correct Guess!");	//tests blue turn choosing blue agent
-		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess.");	//tests blue turn choosing red agent
-		assertEquals(board.getTurn(),"red");	//tests making sure incorrect guess changed turns
+		bluePosition();
+		assertEquals(board.choose(board.getMainBoard().get(bluPos).getCodeName()),"Correct Guess! Still Blue Teams Turn.");	//tests blue turn choosing blue agent
+		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests blue turn choosing red agent
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("blue");	//sets turn to blue team
 		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Blue Team! Red Team Wins!");	//tests blue turn choosing assassin
-		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect, Bystander revealed");	//tests blue turn choosing bystander
-		assertEquals(board.getTurn(),"red");	//tests making sure incorrect guess changed turns
+		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests blue turn choosing bystander
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 	}
 /*	
 	@Test
