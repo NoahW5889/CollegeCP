@@ -47,7 +47,9 @@ public class GUI implements Observer {
 	private JButton endTurn;
 	private JLabel curTurCnt;
 	private JLabel turn;
-	
+	private JPanel menu;
+	private JPanel rulesPanel;
+	private JLabel rule;
 	
 	
 	/**
@@ -77,6 +79,11 @@ public class GUI implements Observer {
 		NewGame3.addActionListener(new newGameHandler3(3,_board)); 
 		NewGame3.setFont(new Font("Courier", Font.BOLD, 20));
 		toolsMenu.add(NewGame3);
+		
+		JMenuItem menuItem = new JMenuItem("Menu");
+		menuItem.addActionListener(new menuHandler(_board)); 
+		menuItem.setFont(new Font("Courier", Font.BOLD, 20));
+		toolsMenu.add(menuItem);
 		
 		JMenuItem rules = new JMenuItem("Rules");
 		rules.addActionListener(new RulesHandler(_board));
@@ -112,6 +119,32 @@ public class GUI implements Observer {
 		_mainPanel.add(controlPanel);
 		
 		middlePanel.add(_cardPanel);
+		
+		menu = new JPanel();
+		menu.setLayout(new GridLayout(10,7));
+		menu.setBackground(Color.white);
+		menuSetup();
+		menu.setVisible(false);
+		_mainPanel.add(menu);
+		
+		rulesPanel = new JPanel();
+		rulesPanel.setLayout(new BoxLayout(rulesPanel, BoxLayout.X_AXIS));
+		rulesPanel.setBackground(Color.white);
+		rulesPanel.setVisible(false);
+		_mainPanel.add(rulesPanel);
+		
+		rule = new JLabel("<html>==========================Rules.=========================" + 
+				 "<br>Please refer to Link." + 
+				 "<br>https://czechgames.com/files/rules/codenames-rules-en.pdf" + 
+				 "<br>==========================================================");
+		
+		setLabelProperties(rule);
+		rulesPanel.add(rule);
+		JButton back = new JButton("Back");
+		back.addActionListener(new menuHandler(_board));
+		setButtonProperties(back);
+		rulesPanel.add(back);
+		
 		
 		turnPanel = new JPanel();
 		turnPanel.setLayout(new BoxLayout(turnPanel, BoxLayout.X_AXIS));
@@ -154,7 +187,13 @@ public class GUI implements Observer {
 	@Override
 	public void update() {
 	
-		if(_board.getTurn()=="Buffer") 
+		if(_board.getTurn()=="rules")
+			rules();
+		
+		else if(_board.getTurn()=="menu")
+			menu();
+		
+		else if(_board.getTurn()=="Buffer") 
 			buffer();
 		
 		
@@ -235,12 +274,17 @@ public class GUI implements Observer {
 		}
 		
 		else {
+			rulesPanel.setVisible(false);
+			menu.setVisible(false);
+			_cardPanel.setVisible(true);
 			entry.setEditable(true);
 			responsePanel.setVisible(true);
 			submit.setVisible(true);
 			entry.setVisible(true);
 			turnPanel.setVisible(true);
 			endTurn.setVisible(true);
+			controlPanel.setVisible(true);
+			
 			controlPanel.remove(exit);
 			controlPanel.remove(newGame);
 		if (_board.getTurn()=="Red SpyMaster"||_board.getTurn()=="Blue SpyMaster"||_board.getTurn()=="Green SpyMaster") 
@@ -344,6 +388,111 @@ public class GUI implements Observer {
 		}
 	}
 	
+	private void menuSetup() {
+		JLabel welcome = new JLabel("     Welcome");
+		setLabelProperties(welcome);
+		welcome.setBorder(null);
+		JLabel to = new JLabel("      to");
+		setLabelProperties(to);
+		to.setBorder(null);
+		JLabel codeNames = new JLabel("CodeNames!");
+		setLabelProperties(codeNames);
+		codeNames.setBorder(null);
+		JLabel author = new JLabel("Coded By:");
+		setLabelProperties(author);
+		author.setBorder(null);
+		JLabel noah = new JLabel("Noah Wutz");
+		setLabelProperties(noah);
+		noah.setBorder(null);
+		JLabel maurice = new JLabel("Maurice C.");
+		setLabelProperties(maurice);
+		maurice.setBorder(null);
+		JLabel fulton = new JLabel("Fulton Lin");
+		setLabelProperties(fulton);
+		fulton.setBorder(null);
+		JLabel tim = new JLabel("Tim");
+		setLabelProperties(tim);
+		tim.setBorder(null);
+		JLabel select = new JLabel("Select Number");
+		setLabelProperties(select);
+		select.setBorder(null);
+		JLabel players = new JLabel("  Of Players");
+		setLabelProperties(players);
+		players.setBorder(null);
+		JButton twoPlay = new JButton("2 Players");
+		twoPlay.addActionListener(new NewGameHandler(_board));
+		setButtonProperties(twoPlay);
+		JButton threePlay = new JButton("3 Players");
+		threePlay.addActionListener(new newGameHandler3(3,_board));
+		setButtonProperties(threePlay);
+		JButton rules = new JButton("Rules");
+		rules.addActionListener(new RulesHandler(_board));
+		setButtonProperties(rules);
+		JButton quit = new JButton("Quit");
+		quit.addActionListener(new ExitHandler(_board));
+		setButtonProperties(quit);
+		
+		for(int i=0;i<68;i++) {
+			if(i==2){
+				menu.add(welcome);
+				menu.add(to);
+				menu.add(codeNames);
+			}
+			else if(i==19)
+				menu.add(author);
+			else if(i==26)
+				menu.add(noah);
+			else if(i==33)
+				menu.add(maurice);
+			else if(i==40)
+				menu.add(fulton);
+			else if(i==47)
+				menu.add(tim);
+			else if(i==15)
+				menu.add(select);
+			else if(i==22)
+				menu.add(players);
+			else if(i==36)
+				menu.add(twoPlay);
+			else if(i==43)
+				menu.add(threePlay);
+			else if(i==57)
+				menu.add(rules);
+			else if(i==64)
+				menu.add(quit);
+			else {
+			JLabel space = new JLabel("        ");
+			setLabelProperties(space);
+			space.setVisible(false);
+			menu.add(space);
+			}
+		}
+	}
+	
+private void menu() {
+		rulesPanel.setVisible(false);
+		_cardPanel.setVisible(false);
+		responsePanel.setVisible(false);
+		submit.setVisible(false);
+		entry.setVisible(false);
+		turnPanel.setVisible(false);
+		endTurn.setVisible(false);
+		controlPanel.setVisible(false);
+		menu.setVisible(true);
+	}
+	
+private void rules() {
+	_cardPanel.setVisible(false);
+	responsePanel.setVisible(false);
+	submit.setVisible(false);
+	entry.setVisible(false);
+	turnPanel.setVisible(false);
+	endTurn.setVisible(false);
+	controlPanel.setVisible(false);
+	menu.setVisible(false);
+	rulesPanel.setVisible(true);
+}
+
 	/**
 	 * Resets @param _cardPanel viewed by red/blue spyMaster. Recreates board adding
 	 * labels(@param add) for unrevealed characters and labels for revealed characters along with displaying

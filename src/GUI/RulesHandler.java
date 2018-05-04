@@ -22,11 +22,7 @@ public class RulesHandler implements ActionListener {
 	 * to display link to rules
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		_b.setReply("<html>==========================Rules.=========================="
-					+ "<br>Please refer to Link."
-					+ "<br>https://czechgames.com/files/rules/codenames-rules-en.pdf"
-					+ "<br>=========================================================="
-					+ "<br>"+_b.getTurn()+"s turn.");
+		_b.setTurn("rules");
 		_b.notifyObservers();
 
 	}

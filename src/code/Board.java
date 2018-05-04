@@ -14,7 +14,7 @@ public class Board {
 	private ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
 	String readinFile=null;
 	private ArrayList<Person> mainBoard = new ArrayList<Person>();	//Creation of board
-	private String turn="red";	//holds "red" or "blue" to determine turn
+	private String turn="menu";	//holds "red" or "blue" to determine turn
 	private int assCnt;	//states 1 assassin card, when assCnt equals 0, an assassin has been chosen
 	private int redCnt;	//states 9 red agent cards, when redCnt equals 0, all red agents have been chosen
 	private int bluCnt;	//states 8 blue agent cards, when assCnt equals 0, all blue agents have been chosen
@@ -62,10 +62,8 @@ public class Board {
 	 * All observers are notified
 	 */
 	public void playerSet(int q) {
-		
 		setPlayerCnt(q);
 		startGame();
-		
 	}
 	
 	public void startGame() {
@@ -89,7 +87,8 @@ public class Board {
 		createList();
 		fillBoard();
 		Collections.shuffle(getMainBoard());
-		setTurn("Red SpyMaster");
+		if(getTurn()!="menu")
+			setTurn("Red SpyMaster");
 		setCurClue("");
 		notifyObservers();
 	}

@@ -5,23 +5,17 @@ import java.awt.event.ActionListener;
 
 import code.Board;
 
-public class newGameHandler3 implements ActionListener {
-	
+public class menuHandler implements ActionListener {
 	private Board _b;
-	private int g;
 	
-	public newGameHandler3(int q,Board b) {
+	public menuHandler(Board b) {
 		_b=b;
-		g=q;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		_b.playerSet(g);
-		if(_b.getTurn()=="menu")
-			_b.setTurn("Red SpyMaster");
-		else 
-			_b.newGame();
+		_b.setTurn("menu");
+		_b.newGame();
 		_b.notifyObservers();
 		
 	}

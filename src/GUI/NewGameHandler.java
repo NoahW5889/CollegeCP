@@ -21,7 +21,11 @@ public class NewGameHandler implements ActionListener {
 	 * happens when action is performed, resulting in newGame method to trigger
 	 */
 	public void actionPerformed(ActionEvent e) {
-		_b.setPlayerCnt(2);
-		_b.newGame();
+		_b.playerSet(2);
+		if(_b.getTurn()=="menu")
+			_b.setTurn("Red SpyMaster");
+		else
+			_b.newGame();
+		_b.notifyObservers();
 	}
 }
