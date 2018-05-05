@@ -377,14 +377,14 @@ public class Board {
 				}
 			}
 			else if(getTurn() == "green") {
-				setTurn("Red SpyMaster");
+				setTurn("Buffer");
 				return "Green Team Skips their turn. Red SpyMasters Turn.";
 			}
 			else {
 				setPrevTurn("blue");
 				setTurn("Buffer");
 				curGuessCnt=0;
-				return "Blue Team Skips their turn. Red SpyMasters Turn.";
+				return "Blue Team Skips their turn. Green SpyMasters Turn.";
 			}
 			
 			
@@ -538,7 +538,7 @@ public class Board {
 				elimPlayers.add("red");
 				if(getAssCnt()>0)
 				setTurn("Buffer");
-				return "Assassin chosen by Red Team! Red Team Eliminated";//In future there will be a system.exit(0);
+				return "Assassin chosen by Red Team! Red Team Eliminated!";//In future there will be a system.exit(0);
 			}
 			if(getTurn()=="green") {
 				

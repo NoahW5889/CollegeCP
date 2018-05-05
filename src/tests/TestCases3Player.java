@@ -71,7 +71,7 @@ public class TestCases3Player {
 	int assPos = 0;	//used to hold assassin position
 	int ass2Pos = 0;	//used to hold second assassin position
 	int byPos = 0;	//used to hold bystander position
-	int playerCnt=3;
+	int playerCnt=0;
 	
 	/*Creates arrayList to compare to readCSVFile in Board class
 	 * @param x 	holds String[] list to add into ArrayList<String>
@@ -215,6 +215,7 @@ public class TestCases3Player {
 	public void testStartGame() {	//tests that the game sets up correctly
 		ArrayList<String> codeNames = new ArrayList<String>();	//new ArrayList to set original unshuffled codeNames to
 		codeNames.addAll(board.getCodeNames());	//sets new ArrayList to original unshuffled CodeNames
+		board.playerSet(3);
 		board.startGame();	//calls startGame() method
 		assertNotEquals(codeNames, board.getCodeNames());	//Makes sure the codeNames ArrayList got shuffled
 		assertEquals(board.getMainBoard().size(),25);	//Makes sure board size is 25
@@ -259,6 +260,7 @@ public class TestCases3Player {
 		bystanderPosition();	//gets position of bystander for testing
 		board.setCurGuessCnt(0);
 		board.setMaxGuessCnt(3);
+		board.playerSet(3);
 		
 		assertEquals(board.choose(null),"Invalid Entry. Empty. Try Again."); //enters null as a choice
 		assertEquals(board.choose(""),"Invalid Entry. Empty. Try Again.");	//enters empty string as choice
@@ -268,16 +270,24 @@ public class TestCases3Player {
 		assertEquals(board.choose("skip"),"Red Team Skips their turn. Blue SpyMasters Turn.");	//tests skip turn choice
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
 		board.setTurn("blue");	//sets turn to blue team
-		assertEquals(board.choose("skip"),"Blue Team Skips their turn. Red SpyMasters Turn.");	//tests skip turn choice
+		assertEquals(board.choose("skip"),"Blue Team Skips their turn. Green SpyMasters Turn.");	//tests skip turn choice
+		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
+		board.setTurn("green");	//sets turn to blue team
+		assertEquals(board.choose("skip"),"Green Team Skips their turn. Red SpyMasters Turn.");	//tests skip turn choice
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
 		
 		board.setTurn("red");	//sets turn to red team
+		redPosition();
+		bluePosition();
 		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Correct Guess. Still Red Teams Turn.");	//tests red turn choosing red agent
 		assertEquals(board.choose(board.getMainBoard().get(bluPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");	//tests red turn choosing blue agent
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("red");	//sets turn to red team
-		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Red Team! Blue Team Wins!");	//tests red turn choosing assassin
-		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");	//tests red turn choosing bystander
+		assassinPosition();
+		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Red Team! Red Team Eliminated!");	//tests red turn choosing assassin
+		board.setTurn("blue");	//sets turn to red team
+		bystanderPosition();
+		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests red turn choosing bystander
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("blue");	//sets turn to blue team
 		bluePosition();
@@ -285,24 +295,11 @@ public class TestCases3Player {
 		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests blue turn choosing red agent
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 		board.setTurn("blue");	//sets turn to blue team
-		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Blue Team! Red Team Wins!");	//tests blue turn choosing assassin
+		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Blue Team! Blue Team Eliminated!");	//tests blue turn choosing assassin
 		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests blue turn choosing bystander
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 	}
-/*	
-	@Test
-	public void testGameState() {	//tests game state (win, lose, or not finished)
-		assertEquals(board.gameState(),"No one has won the game.");	//tests at start of game
-		board.redCnt=0;	//adjusts red agent count to 0
-		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 red agents not revealed
-		board.redCnt=9;	//adjusts red agent count to 9
-		board.bluCnt=0;	//adjusts blue agent count to 0
-		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 blue agents not revealed
-		board.bluCnt=8;	//adjusts blue agent count to 8
-		board.assCnt=0;	//adjusts assassin count to 0
-		assertEquals(board.gameState(),"The game has been won.");	//tests with 0 assassin agents not revealed
-	}
-	*/
+	
 	@Test
 	public void testPersonClass() {
 		Person test = new Person("test codeName", "test team");	//creates new person using person class and sets name and team
@@ -321,29 +318,22 @@ public class TestCases3Player {
 	
 	@Test
 	public void testAssassinPressed() {	//tests when assassin is pressed
+		board.playerSet(3);
 		board.setTurn("red");	//changes turn to red
-		assertEquals(board.assassPressed(),"Assassin chosen by Red Team! Blue Team Wins!");	//tests when assassin is chosen by red team
+		assertEquals(board.assassPressed(),"Assassin chosen by Red Team! Red Team Eliminated!");	//tests when assassin is chosen by red team
 		board.setTurn("blue");	//changes turn to blue
-		assertEquals(board.assassPressed(),"Assassin chosen by Blue Team! Red Team Wins!");	//tests when assassin is chosen by blue team
+		assertEquals(board.assassPressed(),"Assassin chosen by Blue Team! Blue Team Eliminated!");	//tests when assassin is chosen by blue team
+		board.setTurn("green");	//changes turn to blue
+		assertEquals(board.assassPressed(),"Assassin chosen by Green Team! Green Team Eliminated!");	//tests when assassin is chosen by blue team
 	}
 	
 	@Test
 	public void testTeamSize() {	//tests to make sure there are the correct number of agents per team along with bystanders and assassins
-		board.createList();// Must create list before test for team sizes
-		board.fillBoard(); // Fills board with persons
-		assertEquals(9,teamSize("red")); //assures 9 red agents
-		assertEquals(8,teamSize("blue")); //assures 8 blue agents
+		board.playerSet(3);
+		assertEquals(6,teamSize("red")); //assures 6 red agents
+		assertEquals(5,teamSize("blue")); //assures 5 blue agents
+		assertEquals(5,teamSize("green")); //assures 5 green agents
 		assertEquals(7,teamSize("bystander")); //assures 7 bystanders 
-		assertEquals(1,teamSize("assassin")); //assures 1 assassin
-	}
-	
-	@Test
-	public void testClues() {	//tests if legal clue method works
-		board.fillBoard();	// Fills board with persons
-	/*	assertFalse(board.validClue(board.list[(int) (Math.random()*25)]));	//chooses random codeName from lists and tests it as clue
-		assertTrue(board.validClue("asjdkfa 123"));	//random testing
-		assertFalse(board.validClue(null));	//testing null input
-		assertFalse(board.validClue(""));	//testing empty string input
-		*/
+		assertEquals(2,teamSize("assassin")); //assures 2 assassin
 	}
 }
