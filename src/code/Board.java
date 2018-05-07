@@ -44,6 +44,15 @@ public class Board {
 	}
 	
 	/**
+	 * Starts game for the 3 players and sets PlayerCnt to 3
+	 * @param q int
+	 */
+	public void playerSet(int q) {
+		setPlayerCnt(q);
+		startGame();
+	}
+	
+	/**
 	 * Starts the game
 	 * list for easter egg created
 	 * reply is set to"start of Game"
@@ -61,10 +70,7 @@ public class Board {
 	 * sets CurClu to empty string
 	 * All observers are notified
 	 */
-	public void playerSet(int q) {
-		setPlayerCnt(q);
-		startGame();
-	}
+	
 	
 	public void startGame() {
 		if(playerCnt==3) {
@@ -1066,7 +1072,7 @@ public class Board {
 		
 	}
 	/**
-	 *Method that return if the board is ina winning state
+	 *Method that return if the board is in awinning state
 	 * @return
 	 */
 	public String isWinner() {
