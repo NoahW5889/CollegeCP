@@ -113,7 +113,9 @@ public class Board {
         }
     	  return getCodeNames();
     }
-	
+	/**
+	 * method that checks who turn is next and sets PrevTurn
+	 */
 	public void buffer() {
 		if(getPlayerCnt()==3) {
 			if(getPrevTurn()=="blue")
@@ -790,37 +792,67 @@ public class Board {
 	public int getCurGuessCnt() {
 		return this.curGuessCnt;
 	}
-	
+	/**
+	 * sets max guess count
+	 * @param i int
+	 */
 	public void setMaxGuessCnt(int i) {
 		maxGuess = i;
 	}
-	
+	/**
+	 * Sets the current Guess Count
+	 * @param i an int
+	 */
 	public void setCurGuessCnt(int i) {
 		curGuessCnt=i;
 	}
-	
+	/**
+	 * Return the amount of players in the game
+	 * @return playerCnt
+	 */
 	public int getPlayerCnt() {
 		return playerCnt;
 	
 	}
+	/**
+	 * Sets the amount of players for the game
+	 * @param q
+	 */
 	public void setPlayerCnt(int q) {
 		playerCnt=q;
 	}
+	/**
+	 * sets the amount of green players
+	 * @param q int
+	 */
 	public void setGrnCnt(int q) {
 		grnCnt=q;
 	}
+	/**
+	 * returns the green agents left on the board
+	 * @return grnCnt
+	 */
 	public int getGrnCnt() {
 		return grnCnt;
 	}
-	
+	/**
+	 * set the  eliminated players arraylist
+	 * @param y an arraylist
+	 */
 	public void setElimPlayer(ArrayList<String> y) {
 		elimPlayers=y;
 	}
-	
+	/**
+	 * returns an arraylist of eliminated players
+	 */
 	public ArrayList<String> getElimPlayer(){
 		return elimPlayers;
 	}
-	
+	/**
+	 * Changes the board during a red turn
+	 * @param entered codename being choses
+	 * @return
+	 */
 	private String redChoose(String entered) {
 
 		for(int i=0;i<getMainBoard().size();i++) {
@@ -881,7 +913,11 @@ public class Board {
 		else
 			return "Incorrect Guess. Blue SpyMasters Turn.";
 	}
-
+	/**
+	 * Changes the board during blue turn
+	 * @param entered the codename being entered
+	 * @return
+	 */
 	private String bluChoose(String entered) {
 		for(int i=0;i<getMainBoard().size();i++) {
 			if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
@@ -956,7 +992,11 @@ public class Board {
 		else
 			return "Incorrect Guess. Red SpyMasters Turn.";
 	}
-
+	/**
+	 * Changes the board during a  green turn
+	 * @param entered 
+	 * @return
+	 */
 	private String greChoose(String entered) {
 		for(int i=0;i<getMainBoard().size();i++) {
 			if(getMainBoard().get(i).getCodeName().equalsIgnoreCase(entered)) {
@@ -1015,14 +1055,20 @@ public class Board {
 		else
 			return "Incorrect Guess. Red SpyMasters Turn.";
 	}
-
+	/**
+	 * Method that return who has won if the second assasin has been pressed
+	 * @return
+	 */
 	public String secAssPrs() {
 		if(getElimPlayer().contains("red")==false) {return"Both Assasins Pressed Red Team Wins";}
 		else if(getElimPlayer().contains("blue")==false) {return"Both Assasins Pressed Blue Team Wins";}
 		else {return"Both Assasins Pressed Green Team Wins";}
 		
 	}
-	
+	/**
+	 *Method that return if the board is ina winning state
+	 * @return
+	 */
 	public String isWinner() {
 		if(getPlayerCnt()==3) {
 		if(getAssCnt()<=0) {
