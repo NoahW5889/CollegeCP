@@ -337,8 +337,9 @@ public class TestCases3Player {
 		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Blue Team! Blue Team Eliminated!");	//tests blue choosing assasssin
 		
 		grePosition();
+		redPosition();
 		board.setTurn("green");
-		assertEquals(board.choose(board.getMainBoard().get(grePos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");
+		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");
 		grePosition();
 		board.setTurn("red");
 		assertEquals(board.choose(board.getMainBoard().get(grePos).getCodeName()),"Incorrect Guess. Green SpyMasters Turn.");
@@ -359,7 +360,7 @@ public class TestCases3Player {
 		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");
 		grePosition();
 		board.setTurn("red");
-		assertEquals(board.choose(board.getMainBoard().get(grePos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");
+		assertEquals(board.choose(board.getMainBoard().get(grePos).getCodeName()),"Incorrect Guess. Green SpyMasters Turn.");
 		
 		board.playerSet(3);
 		board.setTurn("green");	//sets turn to green team

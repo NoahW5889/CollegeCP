@@ -234,6 +234,7 @@ public class TestCases {
 		bystanderPosition();	//gets position of bystander for testing
 		board.setCurGuessCnt(0);
 		board.setMaxGuessCnt(3);
+		board.playerSet(2);
 		
 		assertEquals(board.choose(null),"Invalid Entry. Empty. Try Again."); //enters null as a choice
 		assertEquals(board.choose(""),"Invalid Entry. Empty. Try Again.");	//enters empty string as choice
