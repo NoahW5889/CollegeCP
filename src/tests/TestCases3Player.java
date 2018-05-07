@@ -262,16 +262,6 @@ public class TestCases3Player {
 		assertEquals(board.choose(""),"Invalid Entry. Empty. Try Again.");	//enters empty string as choice
 		assertEquals(board.choose("  "),"Invalid Entry. Empty. Try Again.");	//enters spaces as choice
 		
-		board.setTurn("red");	//sets turn to red team
-		assertEquals(board.choose("skip"),"Red Team Skips their turn. Blue SpyMasters Turn.");	//tests skip turn choice
-		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
-		board.setTurn("blue");	//sets turn to blue team
-		assertEquals(board.choose("skip"),"Blue Team Skips their turn. Green SpyMasters Turn.");	//tests skip turn choice
-		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
-		board.setTurn("green");	//sets turn to blue team
-		assertEquals(board.choose("skip"),"Green Team Skips their turn. Red SpyMasters Turn.");	//tests skip turn choice
-		assertEquals(board.getTurn(),"Buffer");	//tests making sure skip method changed turns
-		
 		redPosition();	//gets position of red agent for testing
 		bluePosition();	//gets position of blue agent for testing
 		grePosition();	//gets position of green agent for testing
@@ -312,17 +302,12 @@ public class TestCases3Player {
 		assertEquals(board.choose(board.getMainBoard().get(byPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");	//tests green turn choosing bystander
 		assertEquals(board.getTurn(),"Buffer");	//tests making sure incorrect guess changed turns
 
-		
-		assassinPosition();
-		board.setTurn("red");	//sets turn to red team
-		assertEquals(board.choose(board.getMainBoard().get(assPos).getCodeName()),"Assassin chosen by Red Team! Red Team Eliminated!");	//tests blue choosing assasssin
-		
 		grePosition();
 		board.setTurn("blue");
 		assertEquals(board.choose(board.getMainBoard().get(grePos).getCodeName()),"Incorrect Guess. Green SpyMasters Turn.");
 		redPosition();
 		board.setTurn("green");
-		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Blue SpyMasters Turn.");
+		assertEquals(board.choose(board.getMainBoard().get(redPos).getCodeName()),"Incorrect Guess. Red SpyMasters Turn.");
 		
 		
 		board.playerSet(3);

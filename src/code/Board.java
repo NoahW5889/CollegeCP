@@ -358,44 +358,6 @@ public class Board {
 			return "Entry is too long. Try Again.";
 		}
 			
-		else if(entered.equalsIgnoreCase("skip")) {
-			if(getTurn()=="red" ) {
-				setPrevTurn("red");
-				setTurn("Buffer");
-				curGuessCnt=0;
-				return "Red Team Skips their turn. Blue SpyMasters Turn.";
-			}
-			else if(getTurn() == "Red SpyMaster") {
-				setTurn("Blue SpyMaster");
-				return "Red Team Skips their turn. Blue SpyMasters Turn.";
-			}
-			else if(getTurn() == "Green SpyMaster") {
-				setTurn("Red SpyMaster");
-				return "Green Team Skips their turn. Red SpyMasters Turn.";
-			}
-			else if(getTurn() == "Blue SpyMaster") {
-				if(getPlayerCnt()==3) {
-					setTurn("Green SpyMaster");	
-					return "Blue Team Skips their turn. Green SpyMasters Turn.";
-				}
-				else {
-				setTurn("Red SpyMaster");
-				return "Blue Team Skips their turn. Red SpyMasters Turn.";
-				}
-			}
-			else if(getTurn() == "green") {
-				setTurn("Buffer");
-				return "Green Team Skips their turn. Red SpyMasters Turn.";
-			}
-			else {
-				setPrevTurn("blue");
-				setTurn("Buffer");
-				curGuessCnt=0;
-				return "Blue Team Skips their turn. Green SpyMasters Turn.";
-			}
-			
-			
-		}
 		else if(getTurn()=="red") {
 			return redChoose(entered);
 		}
@@ -882,12 +844,8 @@ public class Board {
 					setPrevTurn("red");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("green"))
-							return "Incorrect Guess. Red SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Green SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("blue"))
+						return "Incorrect Guess. Green SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Blue SpyMasters Turn.";
 				}
@@ -897,12 +855,8 @@ public class Board {
 					setPrevTurn("red");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("green"))
-							return "Incorrect Guess. Red SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Green SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("blue"))
+						return "Incorrect Guess. Green SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Blue SpyMasters Turn.";
 				}
@@ -912,12 +866,8 @@ public class Board {
 					setPrevTurn("red");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("green"))
-							return "Incorrect Guess. Red SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Green SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("blue"))
+						return "Incorrect Guess. Green SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Blue SpyMasters Turn.";
 				}
@@ -926,12 +876,8 @@ public class Board {
 		setPrevTurn("red");
 		setTurn("Buffer");
 		curGuessCnt=0;
-		if(getPlayerCnt()==3) {
-			if(elimPlayers.contains("green"))
-				return "Incorrect Guess. Red SpyMasters Turn.";
-			else
-				return "Incorrect Guess. Green SpyMasters Turn.";
-		}
+		if(elimPlayers.contains("blue"))
+			return "Incorrect Guess. Green SpyMasters Turn.";
 		else
 			return "Incorrect Guess. Blue SpyMasters Turn.";
 	}
@@ -1032,12 +978,8 @@ public class Board {
 					setPrevTurn("green");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("red"))
-							return "Incorrect Guess. Blue SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Red SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("red"))
+						return "Incorrect Guess. Blue SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Red SpyMasters Turn.";
 				}
@@ -1047,12 +989,8 @@ public class Board {
 					setPrevTurn("green");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("red"))
-							return "Incorrect Guess. Blue SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Red SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("red"))
+						return "Incorrect Guess. Blue SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Red SpyMasters Turn.";
 				}
@@ -1062,12 +1000,8 @@ public class Board {
 					setPrevTurn("green");
 					setTurn("Buffer");
 					curGuessCnt=0;
-					if(getPlayerCnt()==3) {
-						if(elimPlayers.contains("red"))
-							return "Incorrect Guess. Blue SpyMasters Turn.";
-						else
-							return "Incorrect Guess. Red SpyMasters Turn.";
-					}
+					if(elimPlayers.contains("red"))
+						return "Incorrect Guess. Blue SpyMasters Turn.";
 					else
 						return "Incorrect Guess. Red SpyMasters Turn.";
 				}
@@ -1076,12 +1010,8 @@ public class Board {
 		setPrevTurn("green");
 		setTurn("Buffer");
 		curGuessCnt=0;
-		if(getPlayerCnt()==3) {
-			if(elimPlayers.contains("red"))
-				return "Incorrect Guess. Blue SpyMasters Turn.";
-			else
-				return "Incorrect Guess. Red SpyMasters Turn.";
-		}
+		if(elimPlayers.contains("red"))
+			return "Incorrect Guess. Blue SpyMasters Turn.";
 		else
 			return "Incorrect Guess. Red SpyMasters Turn.";
 	}
@@ -1094,6 +1024,7 @@ public class Board {
 	}
 	
 	public String isWinner() {
+		if(getPlayerCnt()==3) {
 		if(getAssCnt()<=0) {
 			if(elimPlayers.contains("red")&&elimPlayers.contains("blue")&&getPlayerCnt()==3&&elimPlayers.size()==2) 
 				return"Game Has Been Won By Green Team";
@@ -1102,6 +1033,7 @@ public class Board {
 			else if(elimPlayers.contains("blue")&&elimPlayers.contains("blue")&&getPlayerCnt()==3&&elimPlayers.size()==2) 
 				return"Game Has Been Won By Red Team";
 		}
+	}
 		else if((getRedCnt()<=0||getBluCnt()<=0)&&getPlayerCnt()!=3)
 			return"Game Has Been Won";
 		return "Game Has Not Been Won";
