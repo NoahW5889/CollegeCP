@@ -9,7 +9,9 @@ import java.util.Collections;
 
 
 public class Board {
-	
+	/**
+	 * instance variables
+	 */
 	private String[] list = new String[25];	//Used to hold 25 and only 25 codeNames
 	private ArrayList<String> codeNames = new ArrayList<String>();	//Used to store codeNames list in
 	String readinFile=null;
