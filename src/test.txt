@@ -12,15 +12,20 @@ BP#		Class						Functionality							             		 					Method(s) 													
 #9		Board.java					Checks if the game has been won                      							gameState()                										testGameState()
 #10		Board.java					Returns who did not lose the game(who won)                     					assassPressed()            										testAssassinPressed()
 
+
+
 Phase #2 Grading Rubric
-BP#		Class						Functionality							             		 					Method(s) 														TestCase
-#1		test.txt					labeling classes to methods, functionality, and test cases						*****************												***************
 
+Class: TestCases3Player
 
+Test: testTeamSize()
+Correct Team Sizes (6 red,5 blue, 5 green, 7 bystander, 2 assassin)
 
+Test: testChoose()
+Returns whether the game has been won or not(winning state and by whom)
 
+Test: testChoose()
+Second assassin pressed, tests to assure correct team wins and proper functions fire
 
-
-
-
-
+Test: test Choose()
+Returns whether team has chosen correctly and if not, proper team is next up

@@ -580,16 +580,19 @@ private void rules() {
 			JButton buff = new JButton("<html>Press to start<br>next turn.");
 			buff.addActionListener(new bufHandler(_board));
 			setButtonProperties(buff);
-			if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false)
+			if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("blue")==false)
 				buff.setBackground(Color.blue);
-			else if(_board.getPrevTurn()=="green"&&_board.checkGuess(_board.getLastGuess())==false)
+			else if(_board.getPrevTurn()=="red"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("blue"))
+				buff.setBackground(Color.green);
+			else if(_board.getPrevTurn()=="green"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("red")==false)
+				buff.setBackground(Color.red);
+			else if(_board.getPrevTurn()=="green"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("red"))
+				buff.setBackground(Color.blue);
+			else if(_board.getPrevTurn()=="blue"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("green")==false)
+				buff.setBackground(Color.green);
+			else if(_board.getPrevTurn()=="blue"&&_board.checkGuess(_board.getLastGuess())==false&&_board.getElimPlayer().contains("green"))
 				buff.setBackground(Color.red);
 			
-			else
-				if(_board.getPlayerCnt()==3) {
-					buff.setBackground(Color.green);
-				}
-				else buff.setBackground(Color.red);
 			_cardPanel.add(buff);
 		}
 	}
